@@ -1,0 +1,39 @@
+.article-header-custom {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0.25rem;
+    justify-content: space-between;
+    margin: 0.25rem;
+    border-bottom: 1px solid #AAA;
+}
+
+.article-header-custom > h1 {
+    font-size: 14pt;
+    float: left;
+}
+
+.article-header-custom > h4 {
+    font-size: 14pt;
+}
+
+.post-info {
+    margin: 0;
+    padding: 0;
+    float: right;
+}
+
+article {
+    padding: 0;
+}
+
+.article-row {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    grid-template-rows: 32px;
+}
+
+.article-icon {
+    display: block;
+    width: 32px;
+    height: 32px;
+}

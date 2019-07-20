@@ -1,0 +1,578 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="Daniel '64Mega' Lawrence" />
+        <meta name="keywords" content="Game Development,JavaScript,JS13k,Postmortem" />
+        <meta name="description" content="Whew, that’s my second JS13k out of the way and boy was it a fun one. Now I’ll be honest and say that I have absolutely no idea how I should approach writing a postmortem for the game. I started Lost In Labyrinth almost a whole month ago …" />
+
+
+    <title>JS13k Postmortem 2017 - 64Bytes</title>
+
+        <link rel="stylesheet" href="https://64mega.github.io/theme/css/bootstrap.pulse.min.css" type="text/css"/>
+
+    <link href="https://64mega.github.io/theme/css/fontawesome-all.min.css" rel="stylesheet" />
+    <link href="https://64mega.github.io/theme/css/pygments/native.css" rel="stylesheet" />
+
+        <link href="https://64mega.github.io/theme/css/typogrify.css" rel="stylesheet" />
+    <link href="https://64mega.github.io/theme/css/pelican-twitchy.min.css" rel="stylesheet" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <!-- Feeds -->
+        <link href="https://64mega.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
+              title="64Bytes ATOM Feed" />
+        <link href="https://64mega.github.io/static-css/custom.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://64mega.github.io/static-css/custom.css">
+
+    <link rel="stylesheet" href="https://64mega.github.io/static-css/article.css">
+
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#603cba">
+    <meta name="theme-color" content="#413a7b">
+</head>
+<body data-spy="scroll" data-target="#scrollspy">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper-small" class="twitchy-background">
+            <ul id="accordion-small" class="sidebar-nav sidebar-nav-small">
+                <li>
+        <a href="https://64mega.github.io" title="64Bytes" class="collapsed">
+            <span class="fas fa-home"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="https://64mega.github.io/archives.html" title="Recent Posts" class="collapsed">
+            <span class="fas fa-th-list"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li id="share-small">
+                    <a data-toggle="collapse" data-parent="#accordion-small" href="#collapse-share-small" title="Share" class="collapsed">
+                        <i class="fas fa-share-alt padding-small"></i>
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-share-small" class="collapse ">
+                    <li>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=https://64mega.github.io/js13k-postmortem-2017.html" title="Share via Facebook" target="popup">
+                            <i class="fas fa-facebook-square padding-small"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://plus.google.com/share?url=https://64mega.github.io/js13k-postmortem-2017.html" title="Share via Google+" target="popup">
+                            <i class="fas fa-google-plus padding-small"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical" title="Share via Twitter" target="popup">
+                            <i class="fas fa-twitter-square padding-small"></i>
+                        </a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion-small" href="#collapse-social-small" title="Social" class="collapsed">
+                        <i class="fas fa-users padding-small"></i>
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social-small" class="collapse ">
+                    <li>
+                        <a href="https://github.com/64Mega" title="GitHub"><i class="fab fa-github-square padding-small"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/64Mega" title="Twitter"><i class="fab fa-twitter-square padding-small"></i></a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="#" title="Back to top" class="collapsed">
+            <span class="fas fa-arrow-up"></span>
+        </a>
+    </li>
+            </ul>
+        </div>
+        <div id="sidebar-wrapper" class="twitchy-background">
+            <ul id="accordion" class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="https://64mega.github.io/">
+<img class="site-logo" src="https://64mega.github.io/static-images/classic-pc-logo.png" width="200" alt="Sitelogo"/>                     </a>
+                </li>
+                    <li class="nav-divider"></li>
+                    <li>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse-latest">
+                            <span class="fas fa-th-list padding-small"></span>
+                            Recent Posts
+                        </a>
+                    </li>
+                    <li class="panel anti-panel"><ul id="collapse-latest" class="sidebar_submenu collapse in">
+                        <li class="">
+                            <a class="hide-overflow" href="https://64mega.github.io/2019-site-revamp.html" title="2019 Site Revamp">
+                                    <i class="fas fa-file-alt padding-small"></i>
+                                2019 Site Revamp
+                            </a>
+                        </li>
+                        <li class="">
+                            <a class="hide-overflow" href="https://64mega.github.io/ld44-venture-out.html" title="LD44 - Venture-Out!">
+                                    <i class="fas fa-gamepad padding-small"></i>
+                                LD44 - Venture-Out!
+                            </a>
+                        </li>
+                        <li class="">
+                            <a class="hide-overflow" href="https://64mega.github.io/7d3d-2019-framework-demo.html" title="7D3D 2019 Framework Demo">
+                                    <i class="fas fa-gamepad padding-small"></i>
+                                7D3D 2019 Framework Demo
+                            </a>
+                        </li>
+                        <li class="">
+                            <a class="hide-overflow" href="https://64mega.github.io/7d3d-2018-software-renderer.html" title="7D3D 2018 Browser Software Renderer">
+                                    <i class="fas fa-gamepad padding-small"></i>
+                                7D3D 2018 Browser Software Renderer
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a class="hide-overflow" href="https://64mega.github.io/js13k-postmortem-2017.html" title="JS13k Postmortem 2017">
+                                    <i class="fas fa-file-alt padding-small"></i>
+                                JS13k Postmortem 2017
+                            </a>
+                        </li>
+                    <li>
+                        <a href="https://64mega.github.io/archives.html">
+                            <i class="fas fa-arrow-right padding-small"></i>
+                            More
+                        </a>
+                    </li>
+                    </ul></li>
+                <li class="nav-divider"></li>
+                <li id="share">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-share" title="Share" class="collapsed">
+                        <i class="fas fa-share-alt padding-small"></i>
+                        Share
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-share" class="sidebar_submenu collapse ">
+                    <li>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=https://64mega.github.io/js13k-postmortem-2017.html" target="popup">
+                            <i class="fab fa-facebook-square padding-small"></i>
+                            Facebook
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://plus.google.com/share?url=https://64mega.github.io/js13k-postmortem-2017.html" target="popup">
+                            <i class="fab fa-google-plus-square padding-small"></i>
+                            Google+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical" target="popup">
+                            <i class="fab fa-twitter-square padding-small"></i>
+                            Twitter
+                        </a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-social">
+                        <i class="fas fa-users padding-small"></i>
+                        Social
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social" class="sidebar_submenu collapse ">
+                    <li>
+                        <a href="https://github.com/64Mega" target="_blank" title="GitHub">
+                            <i class="fab fa-github-square padding-small"></i>
+                            GitHub
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/64Mega" target="_blank" title="Twitter">
+                            <i class="fab fa-twitter-square padding-small"></i>
+                            Twitter
+                        </a>
+                    </li>
+                </ul></li>
+                
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-categories">
+                        <i class="fas fa-folder-open padding-small"></i>
+                        Categories
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-categories" class="sidebar_submenu collapse ">
+                    <li class="active">
+                        <a href="https://64mega.github.io/category/game-development.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            Game Development
+                            <span class="badge badge-secondary float-right categorybadge">1</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://64mega.github.io/category/games.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            Games
+                            <span class="badge badge-secondary float-right categorybadge">5</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://64mega.github.io/category/posts.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            Posts
+                            <span class="badge badge-secondary float-right categorybadge">1</span>
+                        </a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a href="https://64mega.github.io/category/games.html">
+                        <i class="fas fa-gamepad padding-small"></i>
+                        Games
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <!-- open/close sidebar -->
+        <a href="#menu-toggle" class="btn btn-primary" id="menu-toggle">
+            <span id="right-arrow" class="fas fa-chevron-right"  title="expand sidebar"></span>
+            <span id="left-arrow" class="fas fa-chevron-left" title="minimize sidebar"></span>
+        </a>
+       <!-- /open/close sidebar -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+<section id="content">
+    <article>
+        <div class="row">
+            <div class="col-lg-11">
+                <header class="page-header">
+                    <div class="article-header-custom">
+                        <h1>
+                            <a href="https://64mega.github.io/js13k-postmortem-2017.html"
+                            rel="bookmark"
+                            title="Permalink to JS13k Postmortem 2017">
+                                JS13k Postmortem&nbsp;2017
+                            </a>
+                        </h1>
+                        <h4>
+<div class="post-info">
+    <div class="publish-info-block">
+        <small>
+            <span class="published">
+                <i class="fa fa-calendar padding-small"></i><time datetime="2017-09-09T00:00:00+02:00"> Sat 09 September 2017</time>
+            </span>
+            <span class="category">
+                <i class="fa fa-folder-open padding-small"></i><a href="https://64mega.github.io/category/game-development.html">Game Development</a>
+            </span>
+            <span class="tags">
+                <i class="fa fa-tags padding-small"></i>
+                <a href="https://64mega.github.io/tag/game-development.html">Game Development</a>,                 <a href="https://64mega.github.io/tag/javascript.html">JavaScript</a>,                 <a href="https://64mega.github.io/tag/js13k.html">JS13k</a>,                 <a href="https://64mega.github.io/tag/postmortem.html">Postmortem</a>            </span>
+        </small>
+    </div>
+</div><!-- /.post-info -->                        </h4>
+                        <p></p>
+                </div>
+                </header>
+        </div>
+        <div class="row">
+            <div class="col-lg-11">
+                
+
+                <div class="entry-content">
+                    <p><img alt="cover image" src="https://i.imgur.com/BaCRUJQ.png"></p>
+<p>Whew, that&#8217;s my second JS13k out of the way and boy was it a fun&nbsp;one.</p>
+<p>Now I&#8217;ll be honest and say that I have absolutely no idea how I should approach writing a postmortem for the&nbsp;game.</p>
+<p>I started Lost In Labyrinth almost a whole month ago, worked on it mostly at the wee hours between midnight and <span class="caps">3AM</span>, and generally changed direction too many times to&nbsp;count.</p>
+<p>So what I&#8217;ll do to try and maintain a semi-coherent line of thought throughout is to do the typical postmortem thing of &#8220;What went right&#8221; and &#8220;What went wrong&#8221;, followed by a breakdown of my code and what I think I was getting at when I wrote&nbsp;it.</p>
+<p>I&#8217;ll again lean towards honesty and state that the code is a mess. Not merely because it&#8217;s jam code, but because I changed methods used several times throughout development, without necessarily cutting out the old work or refactoring (As will be seen with the <code>EnemyManager</code> code later&nbsp;on).</p>
+<p>Without further rambling, I&#8217;ll get straight to the&nbsp;summary.</p>
+<h1>What I&nbsp;wanted</h1>
+<p>Going into JS13k this year I attempted to keep my goals&nbsp;realistic.</p>
+<p>Last year I aimed <em>way</em> too high with my Commander Crash idea, trying to make a &#8216;simple&#8217; space trucker/adventure&nbsp;game.</p>
+<p>So in the end of that I ended up with a menuing system and some flying&nbsp;stars.</p>
+<p>This year, once I saw the theme, I decided after a day of doodling with pixels and tossing a few ideas around in my head to go with a retro&nbsp;platformer.</p>
+<p>Now when I use the term retro I&#8217;m not referring to &#8220;pixel art&#8221; or the nebulous &#8220;8-bit&#8221;, but I&#8217;m thinking of a very specific type of platformer I used to play as a child: The <span class="caps">DOS</span> era&nbsp;platformer.</p>
+<p>Anybody remember the Commander Keen games? Bio Menace? Yeah. Those are a breed of platformer that have a certain feel to them that you don&#8217;t see often these&nbsp;days.</p>
+<p>Most modern indie platformers try to instead go for the Mario or Mega Man style platforming (Nothing wrong with that), but I&#8217;d personally like to see some more Collect-a-thons and keycard puzzlers out there, as well as some more of what La Mulana and Iji&nbsp;did.</p>
+<p>I&#8217;m getting off track&nbsp;here.</p>
+<p>Lost In Labyrinth was intended to be a game that, as much as possible, captured that basic gameplay of navigating a level, dispatching enemies, finding the key for that level and leaving - all while collecting goodies for points along the&nbsp;way.</p>
+<p>If you play the game as it stands now, you&#8217;ll only see some fragments of that vision that made it into the&nbsp;game.</p>
+<p>I still feel quite happy with how things turned out this year, because I feel like I have so much more of a game than I did last year, and the learning experience is&nbsp;invaluable.</p>
+<h1>What went&nbsp;right</h1>
+<h2>The development&nbsp;process</h2>
+<p>This year I spent extra time before the compo started getting to grips with gulp, and putting some thought into keeping byte-cost down while still allowing for a reasonably complex&nbsp;game.</p>
+<p>Additionally, a bit of structure helped a lot. I allotted two hours every day to the development of the game, and often went well beyond that once I had gotten&nbsp;started.</p>
+<p>Finally, browser-sync was indispensable. Being able to hot-reload the game every time changes are made make all the&nbsp;difference.</p>
+<p>Save a file? Instant reload. Change a sprite? Instant&nbsp;reload.</p>
+<p>Efficient development is all about feedback and iteration. The faster we get our feedback (The results), the faster we can iterate on those&nbsp;results.</p>
+<h2>The&nbsp;scope</h2>
+<p>Barring the fact that I didn&#8217;t finish it, the scope of the game was&nbsp;reasonable.</p>
+<p>Given another solid week of development I may well have finished it in the way I intended&nbsp;it.</p>
+<h2>The&nbsp;motivation</h2>
+<p>Last year I was only beginning to dip my toes into the Javascript ecosystem, learning technologies like React, Angular and&nbsp;Vue.</p>
+<p>I&#8217;m now hopelessly hooked on Javascript as a programming&nbsp;language.</p>
+<p>I come from a C and C++ background, and would adamantly hold onto it (C++) as the One True&nbsp;Language.</p>
+<p>Don&#8217;t get me wrong, I still love C++, and I still develop with it, but I love the Javascript development&nbsp;ecosystem.</p>
+<p>Back to the point: Last year my motivation was that the jam itself was a&nbsp;curiosity.</p>
+<p>This year, my motivation is that I wanted to learn more about Javascript. Mission&nbsp;accomplished.</p>
+<h1>What went&nbsp;wrong</h1>
+<h2>The&nbsp;scope</h2>
+<p>Yes, this also went <em>wrong</em>.</p>
+<p>I went into this determined to make a game that would fit into the one month of development available to me, and designed my concept around this time&nbsp;limit.</p>
+<p>I forgot to take working life into&nbsp;account.</p>
+<p>I&#8217;m what you could call an odd-jobber. I repair computers, I design small websites, I do basic graphics design for print as well as art for&nbsp;games.</p>
+<p>What I failed to remember is that what seems like a slow month for callouts, contracts and commissions can easily become a maelstrom of&nbsp;work.</p>
+<p>So for the first two weeks everything was silent. Then week 3 began with a flurry of activity from a few clients of mine, a rash of broken computers, support queries and so&nbsp;on.</p>
+<p>This week was, again, busy - and also has me working on a website proposal for a local&nbsp;business-owner.</p>
+<p>I&#8217;ll never complain about work, but I should have taken my estimate of &#8220;Yeah, I can finish this in a month&#8221; and cut it down to &#8220;I <em>need</em> the core game to be completed within a&nbsp;week&#8221;.</p>
+<p>Lessons for next&nbsp;year.</p>
+<h2>The&nbsp;code</h2>
+<p>In short: Don&#8217;t develop games while short on&nbsp;sleep.</p>
+<p>Most of my development efforts were happening between midnight and <span class="caps">3AM</span>, for&nbsp;reasons.</p>
+<p>Coffee helps at the time, but nothing can prepare you for the next-day confusion (I call it code hangover), because you will not remember why you did what you did, nor what any of it does other than what was on the&nbsp;&#8216;tin&#8217;.</p>
+<p>I spent a lot of my mornings fixing and replacing spaghetti code in order to continue&nbsp;working.</p>
+<h2>The&nbsp;schedule</h2>
+<p>A month seems like such a long stretch of time when you&#8217;re looking at it from the beginning of said&nbsp;month.</p>
+<p>The month I had disappeared before I knew what happened. I had a schedule worked out, but I&#8217;ll admit I fell into the trap of creating one code feature and taking a coffee break, even if that feature only took me 10 minutes to&nbsp;make.</p>
+<p>Next year I&#8217;ll be using the Pomodoro method and basically forcing myself to work solid blocks of time instead of taking breaks, much like I do when working on client&nbsp;projects.</p>
+<blockquote>
+<p><strong>2019&nbsp;Update</strong></p>
+<p>I actually couldn&#8217;t participate in 2018&#8217;s JS13k due to a death in the family happening
+at the same time as a big contract job. I was completely drained for the rest of the&nbsp;year.</p>
+<p>I&#8217;ll be making a comeback this&nbsp;year!</p>
+</blockquote>
+<h1>Code&nbsp;breakdown</h1>
+<p>And here we get to the real meat of this postmortem, or so I&nbsp;hope.</p>
+<p>It&#8217;s difficult to break down my decision making process when half of that process took place during the midnight shift, but I&#8217;ll try to do a&nbsp;code-walk.</p>
+<p>The code is all visible on <a href="https://github.com/64Mega/lil-js13k">GitHub</a>, so reference there if you need&nbsp;to.</p>
+<p>Let&#8217;s begin with the first thing I made for the project: my index.html&nbsp;file.</p>
+<h2><code>index.html</code></h2>
+<p>I kept it simple, and unlike last year&#8217;s entry I defined the canvas element here instead of trying to create it in&nbsp;code.</p>
+<p>I <em>think</em> I worked it out to be a saving of a couple of bytes that&nbsp;way.</p>
+<p>You&#8217;ll also notice a single <code>&lt;img&gt;</code> tag. This is a placeholder for an inline image that gets substituted by my gulpfile on&nbsp;build.</p>
+<p>I have two image files for the entire game, one for tiles and one for sprites: But only the tiles image is inlined. I&#8217;ll explain why further&nbsp;down.</p>
+<p>Also seen here is a pretty standard <code>&lt;meta&gt;</code> tag for setting up the display width and height. The game kinda works on mobile, but I didn&#8217;t set up any virtual keys for&nbsp;it.</p>
+<p>If you have a tablet with an attachable keyboard, it works pretty much&nbsp;as-expected.</p>
+<h2><code>gulpfile.js</code></h2>
+<p>Last year I made the quirky decision to forgo tools such as webpack or gulp and used C Preprocessor files to concatenate my source into a single <span class="caps">JS</span> file for&nbsp;distribution.</p>
+<p>I&#8217;ll admit that it was because I thought I didn&#8217;t have the time to learn the&nbsp;tools.</p>
+<p>This year, I made a point of learning gulp, and making use of the great resources page on the&nbsp;JS13k.</p>
+<p>I stepped through one of the gulpfiles there and made a tweak or two to it as I progressed through development (The major one being the inlining of the tiles.png&nbsp;image).</p>
+<p>Gulp is&nbsp;awesome.</p>
+<blockquote>
+<p><strong>Another interjection from the&nbsp;future</strong></p>
+<p>I actually hesitate to recommend Gulp for anything outside of absurdly complex&nbsp;deployments.</p>
+<p>For small projects and such, I recommend Parcel. It&#8217;s refreshingly <em>simple</em>.</p>
+</blockquote>
+<h2><code>game.css</code></h2>
+<p>Next up was my css. I like to have a pretty firm idea of what my game is going to look like on the player&#8217;s&nbsp;device.</p>
+<p>The main thing to note here is the #gcanvas styles, specifically the <code>image-rendering</code>property.</p>
+<p>This is what allows me to render crispy pixels without fiddling too much with the&nbsp;context.</p>
+<p>Also of note is that <code>#img-tiles</code> gets hidden, since otherwise the browser would render it on top of the canvas, and that wouldn&#8217;t do at&nbsp;all.</p>
+<h1>Actual Game&nbsp;Code</h1>
+<p>So here we start to get into the game&#8217;s&nbsp;programming.</p>
+<p>A thing to note here is that originally I had a single file, <code>game.js</code>.</p>
+<p>I began to split parts of it off into separate files, and if you&#8217;re wondering what the leading numbers are for, they&#8217;re just there to order the files in my editor pane a&nbsp;bit.</p>
+<p>Let&#8217;s dig into this, starting&nbsp;with&#8230;</p>
+<h2><code>1_config.js</code></h2>
+<p>This is basically my global configuration, where I&#8217;m supposed to be keeping all of my&nbsp;constants.</p>
+<p>I polluted it a bit at some point with the the two functions <code>afor</code> and <code>rfor</code>.</p>
+<p>Those two are&nbsp;interesting.</p>
+<div class="highlight"><pre><span></span><span class="kd">let</span> <span class="nx">afor</span> <span class="o">=</span> <span class="p">(</span><span class="nx">array</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">callback</span><span class="p">(</span><span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">i</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+<span class="kd">let</span> <span class="nx">rfor</span> <span class="o">=</span> <span class="p">(</span><span class="nx">limit</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">limit</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">callback</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+
+
+<p>I made these during one of my midnight-shifts as, if I recall, a way to save a few bytes when needing a for loop to range over an array or, in the case of <code>rfor</code>, up to a fixed&nbsp;number.</p>
+<p>I wasted at least 10 minutes making these, then another 20 minutes replacing all of my for loops in the rest of the&nbsp;code.</p>
+<p>Want to know how much space this saved? I gained about 8&nbsp;bytes.</p>
+<p>Premature optimization is&nbsp;bad.</p>
+<h2><code>2_input.js</code></h2>
+<p>This is my input handler. I took a look at <a href="https://xem.github.io/articles/#jsgamesinputs">How to support arrow keys, <span class="caps">WASD</span> and <span class="caps">ZQSD</span> keyboard inputs in just 160b of <span class="caps">JS</span></a> on the Resources page, and initially decided to go with&nbsp;that.</p>
+<p>I soon found that because I was using strict mode, I couldn&#8217;t. I also found that I wanted my own input scheme, and at the time I was making this (Hint: Was past midnight) I didn&#8217;t feel like code-golfing a tiny&nbsp;solution.</p>
+<p>So I brute-forced the problem. Un-minified, my input code is about 400 bytes of code and covers the entire range of keyboard&nbsp;inputs.</p>
+<p>All it does is assume a 255 key maximum (Should be 256, but again: midnight code), and on keydown/keyup sets the <span class="caps">KEYS</span> array to 1 or&nbsp;0.</p>
+<p>That was the original version. Then later on I decided I wanted a keypress check (E.G: Fire only on first&nbsp;press).</p>
+<p>Normally for this I use an on-location bool &#8216;toggle&#8217;. Something like&nbsp;this:</p>
+<div class="highlight"><pre><span></span><span class="kd">let</span> <span class="nx">kp_space</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+<span class="k">if</span><span class="p">(</span><span class="nx">KEYS</span><span class="p">[</span><span class="mi">32</span><span class="p">])</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">kp_space</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Do a thing</span>
+    <span class="p">}</span>
+    <span class="nx">kp_space</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="nx">kp_space</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span> <span class="p">}</span>
+</pre></div>
+
+
+<p>This takes up quite a bit of space and looks&nbsp;ugly.</p>
+<p>So again I leveraged the fact that I had no restrictions on memory and defined a mirror array called <span class="caps">PRKS</span> (Pressed Keys). On key down, the <span class="caps">KEYS</span> array is set to 1, but not the <span class="caps">PRKS</span>&nbsp;array.</p>
+<p>When the function <code>pressed</code> is called, then the <span class="caps">PRKS</span> array is set using a little block of ternary, which also flags the return value as <code>false</code> if <span class="caps">PRKS</span> is already set to&nbsp;1.</p>
+<p>The onkeyup handler sets <span class="caps">PRKS</span> back to 0&nbsp;again.</p>
+<p>That changed that ugly block of code above to&nbsp;this:</p>
+<div class="highlight"><pre><span></span><span class="k">if</span><span class="p">(</span><span class="nx">pressed</span><span class="p">(</span><span class="mi">32</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c1">// Do a thing</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Then there&#8217;s the <code>held</code> function that is a more readable check against the <span class="caps">KEYS</span>&nbsp;array.</p>
+<h2><code>3_render.js</code></h2>
+<p>Here&#8217;s where I have all of my drawing functions (I&nbsp;think).</p>
+<p>The first thing to note is two constants that <em>shouldn&#8217;t be here</em>. They should be in <code>1_config.js</code>, but hey, jam&nbsp;code.</p>
+<p>The <code>PALETTE</code> array is 16 hard coded palette entries. I chose the Arne16 palette in Aseprite for my game from the start, and I&#8217;ll show how I leveraged this later&nbsp;on.</p>
+<p>The <code>palette_match</code> function compares <span class="caps">RGB</span> values with the <code>PALETTE</code> array, which was used for the leverage I mentioned&nbsp;above.</p>
+<p><code>load_spritemap()</code> and <code>load_tilemap()</code> do what they say on the tin, but <code>load_tilemap()</code> is no longer in use and should have been&nbsp;removed.</p>
+<p>You can see here a little &#8216;cheat&#8217; I did to get myself a quick set of flipped sprites without using up more bytes than&nbsp;necessary.</p>
+<p>I draw the sprites.png image onto a new canvas, flipped, and save that to the <code>DATA</code> block, that you&#8217;ll be seeing&nbsp;later.</p>
+<p>Below this is <code>drawsprite</code>, this takes an array of cell values and performs a lookup into the&nbsp;spritesheet.</p>
+<p>It works row-wise, left to right. Sprite 0 is at 0px,0px, Sprite 1 is at 16px,0px, Sprite 16 is at 0px,16px,&nbsp;etc.</p>
+<p>You can see here that a global timer is used to determine which frame to draw, and here you can also see the flipped sprite image being&nbsp;used.</p>
+<p>The only other real functions of note are <code>drawtext</code> and <code>drawnum</code>, those draw 8x8 cells from the spritesheet at specific locations (Hard coded). Saved me having to make a full font sheet, also saved a few&nbsp;bytes.</p>
+<h2><code>4_player.js</code></h2>
+<p>And here is the messiest (And largest) file in the&nbsp;game.</p>
+<p>The player code went through several changes during my development process, and I remember fondly when my <code>playerdata</code> structure consisted of nothing more than <code>x</code> and <code>y</code> values.</p>
+<p>Aside from a few artifacts left over from refactoring, things should be fairly straightforward to read through in this&nbsp;file.</p>
+<p>At some point I decided to use a state machine to perform actions, but I strayed from the pattern halfway through, so excuse that&nbsp;mess.</p>
+<p>The main entrypoint is the <code>obj.update</code> method, and the majority of the code in the <code>st_*</code> functions is hastily thrown together implementations of basic game mechanics (E.G: Gravity and&nbsp;collision).</p>
+<h2><code>5_audio.js</code></h2>
+<p>This was the last piece of code I worked on before I had to submit&nbsp;early.</p>
+<p>After reading a few of the articles on the Resource page and looking at some of the music generators, I decided to go take a look at the Audio <span class="caps">API</span> myself, and set up a simple tone&nbsp;generator.</p>
+<p>It kinda works, but also kinda doesn&#8217;t&nbsp;work.</p>
+<p>I have ideas as to why, but it&#8217;s been ages since I&#8217;ve worked with audio. Next year I&#8217;ll put some extra effort into&nbsp;it.</p>
+<h2><code>11_enemy.js</code></h2>
+<p>Another large file. This one is a bit of a lie: It says <code>enemy</code> but is, in fact, <code>entity</code>.</p>
+<p>Originally I started out making this solely a file handling enemy behaviors and&nbsp;updates.</p>
+<p>Then I decided I wanted to add a little explosion effect on enemy death, and decided to just leverage the fact that I had a manager already: Thus was born the EnemyManager that I never got around to renaming to&nbsp;EntityManager.</p>
+<p>You can see here that the behaviors for the enemies are pretty simple, they have no gravity and no refined collision&nbsp;checks.</p>
+<p>Not too much to say about this one, it&#8217;s pretty much standard implementation&nbsp;detail.</p>
+<h2><code>99_game.js</code></h2>
+<div class="highlight"><pre><span></span><span class="c1">// BEWARE: Here be messy and incoherent code and/or dragons.</span>
+<span class="c1">// You have been warned.</span>
+</pre></div>
+
+
+<p>The first two lines I wrote during&nbsp;development.</p>
+<p>I&#8217;m a code pessimist. I wasn&#8217;t strictly <em>wrong</em>,&nbsp;though.</p>
+<p>Here you can see a few bits and pieces: Data storage, Game states, World and&nbsp;Camera.</p>
+<p>Also a poorly placed <code>load_spritemap()</code> call.</p>
+<p>The big block of code below all that though is what made the game, as far as I was&nbsp;concerned.</p>
+<p>During development, one of my biggest concerns was how to fit meaningful level data in the game without making the filesize hit 13k too&nbsp;quickly.</p>
+<p>Arrays and base64 encoding took too much space as far as I was concerned (Did test them out), they would have limited the total playfield to a pretty small&nbsp;size.</p>
+<p>Procedural generation is always an option, but I have a predisposition towards wanting to hand-design my levels. Can assure that people are playing the game the way I intended it that&nbsp;way.</p>
+<p>So I decided to leverage my existing&nbsp;data.</p>
+<p>I sacrificed half of my <code>tiles.png</code> image to become a map. If you open it, you&#8217;ll see the level drawn on the right-hand-side of the&nbsp;image.</p>
+<p>The <code>build_levels</code> function iterates over that half and adds tiles to the <span class="caps">WORLD</span>&nbsp;structure.</p>
+<p>This is the reason I had to inline my tiles.png image: The <span class="caps">HTML5</span> canvas will complain about the canvas being tainted if you draw an externally loaded image to it then try to read back from it (<span class="caps">CORS</span>&nbsp;related).</p>
+<p>I got around it by sacrificing a few bytes to inline the image, and the result is that I had a &#8216;level editor&#8217; at hand in the form of&nbsp;Aseprite.</p>
+<p>Here&#8217;s a zoomed-in picture of the game&#8217;s map as it stands&nbsp;now:</p>
+<p><img alt="zoomed-in picture of game level" src="https://i.imgur.com/NmSp956.png"></p>
+<p>Each color in my 16-color palette means something. White is&nbsp;walls/floors.</p>
+<p>Red is an enemy, and is randomly chosen from a pool. My plan was to later use the screen-y value to modify the pool, so harder enemies would show up the further you&nbsp;went.</p>
+<p>The green dot is the player spawn, and the orange line is an &#8216;obstacle&#8217;. Each Y level would have an obstacle, and this was my way of adding variation without needing more than 16&nbsp;colors.</p>
+<p>Ditto for the walls and floors. The tilemap is assigned from top-to-bottom, with each Y level getting the next one&nbsp;down.</p>
+<p>I was quite proud of this, it sped the development process up considerably, and kept my options limited (A good thing in game jams and&nbsp;competitions).</p>
+<p>At this point, the remainder of the file is standard implementation, no trickery&nbsp;involved.</p>
+<h1>Final&nbsp;Notes</h1>
+<p>That was a beast to&nbsp;write.</p>
+<p>Another lesson for next year: Take notes, or at least comment more. It&#8217;ll make writing the postmortem a lot&nbsp;easier.</p>
+<p>I had a load of fun this year, and look forward to next year&#8217;s&nbsp;competition.</p>
+<p>Thanks for&nbsp;reading!</p>
+                </div>
+                <footer class="text-right">
+                    <p>- Daniel '64Mega' Lawrence</p>
+                </footer>
+    <section id="comments" class="comments ">
+        <hr/>
+        <h2>Comments</h2>
+        <div id="disqus_thread"></div>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </section>
+            </div>
+        </div>
+    </article>
+</section>
+<footer>
+    <hr>
+    <div class="row">
+        <div class="col-lg-9 text-center">
+            <p><small>
+                Built by <a href="http://docs.getpelican.com/en/latest">Pelican</a> / <a href="https://github.com/ingwinlu/pelican-twitchy">pelican-twitchy</a>
+                &middot;                      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>, except where indicated otherwise.
+
+            </small></p>
+        </div>
+    </div>
+</footer>            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+    <!-- jQuery Version 1.11.2 -->
+    <script src="https://64mega.github.io/theme/js/jquery-1.11.2.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://64mega.github.io/theme/js/bootstrap.min.js"></script>
+    <!-- twitchy Script -->
+    <script src="https://64mega.github.io/theme/js/pelican_twitchy.min.js"></script>
+    <!-- Begin Cookie Consent https://silktide.com/tools/cookie-consent/ -->
+    <script>
+        window.cookieconsent_options = {
+            message: "This site <em>may</em> contain some cookies 🍪.",
+            learnMore: "More info",
+            link: null,
+            dismiss: "Got it!",
+            theme: "https://64mega.github.io/theme/css/cookieconsent/dark-floating.css",
+        };
+    </script>
+    <script src="https://64mega.github.io/theme/js/cookieconsent.min.js"></script>
+    <!-- End Cookie Consent -->
+
+<!-- disqus -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = '64megaspace'; // required: replace example with your forum shortname
+
+            var disqus_identifier = 'js13k-postmortem-2017';
+        var disqus_url = 'https://64mega.github.io/js13k-postmortem-2017.html';
+
+    var disqus_config = function () {
+        this.language = "en";
+    };
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- /disqus -->
+</body>
+</html>

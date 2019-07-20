@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="Daniel '64Mega' Lawrence" />
+        <meta name="keywords" content="Game,Demo,Jam,Ludum Dare" />
+        <meta name="description" content="Venture-Out is a mix between classic Breakout and classic Nintendo ARPGs like The Legend of Zelda. Or at least, it would be if I’d had the time to flesh it out some more! It is winnable in its current form: Find a way to open the two chests. The …" />
+
+
+    <title>LD44 - Venture-Out! - 64Bytes</title>
+
+        <link rel="stylesheet" href="https://64mega.github.io/theme/css/bootstrap.pulse.min.css" type="text/css"/>
+
+    <link href="https://64mega.github.io/theme/css/fontawesome-all.min.css" rel="stylesheet" />
+    <link href="https://64mega.github.io/theme/css/pygments/native.css" rel="stylesheet" />
+
+        <link href="https://64mega.github.io/theme/css/typogrify.css" rel="stylesheet" />
+    <link href="https://64mega.github.io/theme/css/pelican-twitchy.min.css" rel="stylesheet" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <!-- Feeds -->
+        <link href="https://64mega.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
+              title="64Bytes ATOM Feed" />
+        <link href="https://64mega.github.io/static-css/custom.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://64mega.github.io/static-css/custom.css">
+
+    <link rel="stylesheet" href="https://64mega.github.io/static-css/article.css">
+
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#603cba">
+    <meta name="theme-color" content="#413a7b">
+</head>
+<body data-spy="scroll" data-target="#scrollspy">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper-small" class="twitchy-background">
+            <ul id="accordion-small" class="sidebar-nav sidebar-nav-small">
+                <li>
+        <a href="https://64mega.github.io" title="64Bytes" class="collapsed">
+            <span class="fas fa-home"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="https://64mega.github.io/archives.html" title="Recent Posts" class="collapsed">
+            <span class="fas fa-th-list"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li id="share-small">
+                    <a data-toggle="collapse" data-parent="#accordion-small" href="#collapse-share-small" title="Share" class="collapsed">
+                        <i class="fas fa-share-alt padding-small"></i>
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-share-small" class="collapse ">
+                    <li>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=https://64mega.github.io/ld44-venture-out.html" title="Share via Facebook" target="popup">
+                            <i class="fas fa-facebook-square padding-small"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://plus.google.com/share?url=https://64mega.github.io/ld44-venture-out.html" title="Share via Google+" target="popup">
+                            <i class="fas fa-google-plus padding-small"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical" title="Share via Twitter" target="popup">
+                            <i class="fas fa-twitter-square padding-small"></i>
+                        </a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion-small" href="#collapse-social-small" title="Social" class="collapsed">
+                        <i class="fas fa-users padding-small"></i>
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social-small" class="collapse ">
+                    <li>
+                        <a href="https://github.com/64Mega" title="GitHub"><i class="fab fa-github-square padding-small"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/64Mega" title="Twitter"><i class="fab fa-twitter-square padding-small"></i></a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="#" title="Back to top" class="collapsed">
+            <span class="fas fa-arrow-up"></span>
+        </a>
+    </li>
+            </ul>
+        </div>
+        <div id="sidebar-wrapper" class="twitchy-background">
+            <ul id="accordion" class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="https://64mega.github.io/">
+<img class="site-logo" src="https://64mega.github.io/static-images/classic-pc-logo.png" width="200" alt="Sitelogo"/>                     </a>
+                </li>
+                    <li class="nav-divider"></li>
+                    <li>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse-latest">
+                            <span class="fas fa-th-list padding-small"></span>
+                            Recent Posts
+                        </a>
+                    </li>
+                    <li class="panel anti-panel"><ul id="collapse-latest" class="sidebar_submenu collapse in">
+                        <li class="">
+                            <a class="hide-overflow" href="https://64mega.github.io/2019-site-revamp.html" title="2019 Site Revamp">
+                                    <i class="fas fa-file-alt padding-small"></i>
+                                2019 Site Revamp
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a class="hide-overflow" href="https://64mega.github.io/ld44-venture-out.html" title="LD44 - Venture-Out!">
+                                    <i class="fas fa-gamepad padding-small"></i>
+                                LD44 - Venture-Out!
+                            </a>
+                        </li>
+                        <li class="">
+                            <a class="hide-overflow" href="https://64mega.github.io/7d3d-2019-framework-demo.html" title="7D3D 2019 Framework Demo">
+                                    <i class="fas fa-gamepad padding-small"></i>
+                                7D3D 2019 Framework Demo
+                            </a>
+                        </li>
+                        <li class="">
+                            <a class="hide-overflow" href="https://64mega.github.io/7d3d-2018-software-renderer.html" title="7D3D 2018 Browser Software Renderer">
+                                    <i class="fas fa-gamepad padding-small"></i>
+                                7D3D 2018 Browser Software Renderer
+                            </a>
+                        </li>
+                        <li class="">
+                            <a class="hide-overflow" href="https://64mega.github.io/js13k-postmortem-2017.html" title="JS13k Postmortem 2017">
+                                    <i class="fas fa-file-alt padding-small"></i>
+                                JS13k Postmortem 2017
+                            </a>
+                        </li>
+                    <li>
+                        <a href="https://64mega.github.io/archives.html">
+                            <i class="fas fa-arrow-right padding-small"></i>
+                            More
+                        </a>
+                    </li>
+                    </ul></li>
+                <li class="nav-divider"></li>
+                <li id="share">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-share" title="Share" class="collapsed">
+                        <i class="fas fa-share-alt padding-small"></i>
+                        Share
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-share" class="sidebar_submenu collapse ">
+                    <li>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=https://64mega.github.io/ld44-venture-out.html" target="popup">
+                            <i class="fab fa-facebook-square padding-small"></i>
+                            Facebook
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://plus.google.com/share?url=https://64mega.github.io/ld44-venture-out.html" target="popup">
+                            <i class="fab fa-google-plus-square padding-small"></i>
+                            Google+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical" target="popup">
+                            <i class="fab fa-twitter-square padding-small"></i>
+                            Twitter
+                        </a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-social">
+                        <i class="fas fa-users padding-small"></i>
+                        Social
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social" class="sidebar_submenu collapse ">
+                    <li>
+                        <a href="https://github.com/64Mega" target="_blank" title="GitHub">
+                            <i class="fab fa-github-square padding-small"></i>
+                            GitHub
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/64Mega" target="_blank" title="Twitter">
+                            <i class="fab fa-twitter-square padding-small"></i>
+                            Twitter
+                        </a>
+                    </li>
+                </ul></li>
+                
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-categories">
+                        <i class="fas fa-folder-open padding-small"></i>
+                        Categories
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-categories" class="sidebar_submenu collapse ">
+                    <li >
+                        <a href="https://64mega.github.io/category/game-development.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            Game Development
+                            <span class="badge badge-secondary float-right categorybadge">1</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="https://64mega.github.io/category/games.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            Games
+                            <span class="badge badge-secondary float-right categorybadge">5</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://64mega.github.io/category/posts.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            Posts
+                            <span class="badge badge-secondary float-right categorybadge">1</span>
+                        </a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a href="https://64mega.github.io/category/games.html">
+                        <i class="fas fa-gamepad padding-small"></i>
+                        Games
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <!-- open/close sidebar -->
+        <a href="#menu-toggle" class="btn btn-primary" id="menu-toggle">
+            <span id="right-arrow" class="fas fa-chevron-right"  title="expand sidebar"></span>
+            <span id="left-arrow" class="fas fa-chevron-left" title="minimize sidebar"></span>
+        </a>
+       <!-- /open/close sidebar -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+<section id="content">
+    <article>
+        <div class="row">
+            <div class="col-lg-11">
+                <header class="page-header">
+                    <div class="article-header-custom">
+                        <h1>
+                            <a href="https://64mega.github.io/ld44-venture-out.html"
+                            rel="bookmark"
+                            title="Permalink to LD44 - Venture-Out!">
+                                <span class="caps">LD44</span> -&nbsp;Venture-Out!
+                            </a>
+                        </h1>
+                        <h4>
+<div class="post-info">
+    <div class="publish-info-block">
+        <small>
+            <span class="published">
+                <i class="fa fa-calendar padding-small"></i><time datetime="2019-04-29T00:00:00+02:00"> Mon 29 April 2019</time>
+            </span>
+            <span class="category">
+                <i class="fa fa-folder-open padding-small"></i><a href="https://64mega.github.io/category/games.html">Games</a>
+            </span>
+            <span class="tags">
+                <i class="fa fa-tags padding-small"></i>
+                <a href="https://64mega.github.io/tag/game.html">Game</a>,                 <a href="https://64mega.github.io/tag/demo.html">Demo</a>,                 <a href="https://64mega.github.io/tag/jam.html">Jam</a>,                 <a href="https://64mega.github.io/tag/ludum-dare.html">Ludum Dare</a>            </span>
+        </small>
+    </div>
+</div><!-- /.post-info -->                        </h4>
+                        <p></p>
+                </div>
+                </header>
+        </div>
+        <div class="row">
+            <div class="col-lg-11">
+                
+
+                <div class="entry-content">
+                    <iframe class="itch-embed" frameborder="0" src="https://itch.io/embed/413376" width="552" height="167"></iframe>
+                    <p>Venture-Out is a mix between classic Breakout and classic Nintendo ARPGs like The Legend of Zelda.
+Or at least, it would be if I&#8217;d had the time to flesh it out some more!
+It is winnable in its current form: Find a way to open the two&nbsp;chests.</p>
+<p>The game is made for <span class="caps">DOS</span>, using Watcom C and <span class="caps">NASM</span> to produce the binaries.
+To run it, double-click on one of the batch files to launch DOSBox in your preferred configuration.
+Once done, you might have to manually exit DOSBox by closing the window or typing &#8216;exit&#8217; and hitting&nbsp;enter.</p>
+<p>The idea behind this is to invest in a bit of a risk by cutting into your life-pool (Your spare balls) to
+get the items you need to clear the&nbsp;game.</p>
+<p>Due to the obviously rushed nature of the game, things are a little bit rough around the edges: The ball
+is just using pure diagonal movement with no angular change. This can make things a bit tricky.
+If you have enough spare balls, you can launch some extra&nbsp;ones!</p>
+<blockquote>
+<p><strong>=== <span class="caps">GAME</span> <span class="caps">CONTROLS</span>&nbsp;===</strong></p>
+<p><strong><span class="caps">PADDLE</span> <span class="caps">MOVEMENT</span></strong>-&gt; Arrow&nbsp;Keys</p>
+<p><strong><span class="caps">LAUNCH</span> A <span class="caps">BALL</span></strong>-&gt;&nbsp;Spacebar</p>
+<p><strong><span class="caps">CHANGE</span> <span class="caps">SELECTED</span> <span class="caps">BALL</span> <span class="caps">TYPE</span></strong>-&gt; <span class="caps">TAB</span></p>
+<p><strong><span class="caps">EXIT</span> <span class="caps">GAME</span></strong>-&gt; <span class="caps">ESCAPE</span></p>
+</blockquote>
+<p>Move off-screen to change between&nbsp;areas.</p>
+<p>If you&#8217;re on the screen with a door in the cliff, press <span class="caps">UP</span> to enter it (That&#8217;s the shop).
+To choose an item, use the <span class="caps">LEFT</span> and <span class="caps">RIGHT</span> arrow keys, and press <span class="caps">SPACE</span> to select.
+To leave the shop, press <span class="caps">DOWN</span>.</p>
+<p>Thank you for trying this game&nbsp;out!</p>
+                </div>
+                <footer class="text-right">
+                    <p>- Daniel '64Mega' Lawrence</p>
+                </footer>
+    <section id="comments" class="comments ">
+        <hr/>
+        <h2>Comments</h2>
+        <div id="disqus_thread"></div>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </section>
+            </div>
+        </div>
+    </article>
+</section>
+<footer>
+    <hr>
+    <div class="row">
+        <div class="col-lg-9 text-center">
+            <p><small>
+                Built by <a href="http://docs.getpelican.com/en/latest">Pelican</a> / <a href="https://github.com/ingwinlu/pelican-twitchy">pelican-twitchy</a>
+                &middot;                      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>, except where indicated otherwise.
+
+            </small></p>
+        </div>
+    </div>
+</footer>            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+    <!-- jQuery Version 1.11.2 -->
+    <script src="https://64mega.github.io/theme/js/jquery-1.11.2.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://64mega.github.io/theme/js/bootstrap.min.js"></script>
+    <!-- twitchy Script -->
+    <script src="https://64mega.github.io/theme/js/pelican_twitchy.min.js"></script>
+    <!-- Begin Cookie Consent https://silktide.com/tools/cookie-consent/ -->
+    <script>
+        window.cookieconsent_options = {
+            message: "This site <em>may</em> contain some cookies 🍪.",
+            learnMore: "More info",
+            link: null,
+            dismiss: "Got it!",
+            theme: "https://64mega.github.io/theme/css/cookieconsent/dark-floating.css",
+        };
+    </script>
+    <script src="https://64mega.github.io/theme/js/cookieconsent.min.js"></script>
+    <!-- End Cookie Consent -->
+
+<!-- disqus -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = '64megaspace'; // required: replace example with your forum shortname
+
+            var disqus_identifier = 'ld44-venture-out';
+        var disqus_url = 'https://64mega.github.io/ld44-venture-out.html';
+
+    var disqus_config = function () {
+        this.language = "en";
+    };
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- /disqus -->
+</body>
+</html>

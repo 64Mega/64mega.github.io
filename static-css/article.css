@@ -1,0 +1,18 @@
+blockquote {
+    background-color: white;
+    padding: 0.75rem;
+    color: gray;
+    box-sizing: border-box;
+    box-shadow: 1px 1px 2px 1px #AAA;
+}
+
+img {
+    display: block;
+    max-width: 80%;
+    margin: auto auto;
+}
+
+.itch-embed {
+    display: block;
+    margin: auto auto;
+}

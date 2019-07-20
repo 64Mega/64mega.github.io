@@ -1,0 +1,15 @@
+{
+    "name": "64Bytes",
+    "short_name": "64Bytes",
+    "icons": [
+        {
+            "src": "/android-chrome-96x96.png",
+            "sizes": "96x96",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#413a7b",
+    "background_color": "#413a7b",
+    "start_url": "http://64mega.github.io",
+    "display": "standalone"
+}

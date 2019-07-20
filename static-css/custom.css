@@ -1,0 +1,59 @@
+.jumbotron {
+    display: flex;
+    flex-direction: column;
+    place-content: center;
+    background: white;
+    box-sizing: border-box;
+    border: 1px solid gray;
+    box-shadow: 0px 1px 2px gray;
+    padding: 0.5rem;
+}
+
+
+.jumbotron > img {
+    max-width: 100%;
+    margin: auto auto;
+}
+
+.jumbotron > p {
+    margin: auto auto;
+}
+
+.all-articles-button {
+    margin-top: 0.5rem;
+}
+
+.article-header-custom {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+.article-header-custom > h1,h4 {
+    margin: 0;
+    padding: 0;
+}
+
+.article-header-custom > h4 {
+    font-size: 12pt;
+    color: gray;
+}
+
+.page-header {
+    border: 0;
+    border-bottom: 1px solid gray;
+    margin-bottom: 1rem;
+    margin-left: 0;
+}
+
+.entry-content {
+    font-size: 12pt; 
+}
+
+.col-lg-11 {
+    margin-left: 0;
+}
+
+.row {
+    margin: 0;
+}

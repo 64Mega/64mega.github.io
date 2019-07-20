@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>64Bytes - Games</title><link href="https://64mega.github.io/" rel="alternate"></link><link href="https://64mega.github.io/feeds/games.atom.xml" rel="self"></link><id>https://64mega.github.io/</id><updated>2019-04-29T00:00:00+02:00</updated><subtitle>A miserable little pile of development secrets</subtitle><entry><title>LD44 - Venture-Out!</title><link href="https://64mega.github.io/ld44-venture-out.html" rel="alternate"></link><published>2019-04-29T00:00:00+02:00</published><updated>2019-04-29T00:00:00+02:00</updated><author><name>Daniel '64Mega' Lawrence</name></author><id>tag:64mega.github.io,2019-04-29:/ld44-venture-out.html</id><summary type="html">&lt;p&gt;Venture-Out is a mix between classic Breakout and classic Nintendo ARPGs like The Legend of Zelda.
+Or at least, it would be if I&amp;#8217;d had the time to flesh it out some more!
+It is winnable in its current form: Find a way to open the two&amp;nbsp;chests.&lt;/p&gt;
+&lt;p&gt;The …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Venture-Out is a mix between classic Breakout and classic Nintendo ARPGs like The Legend of Zelda.
+Or at least, it would be if I&amp;#8217;d had the time to flesh it out some more!
+It is winnable in its current form: Find a way to open the two&amp;nbsp;chests.&lt;/p&gt;
+&lt;p&gt;The game is made for &lt;span class="caps"&gt;DOS&lt;/span&gt;, using Watcom C and &lt;span class="caps"&gt;NASM&lt;/span&gt; to produce the binaries.
+To run it, double-click on one of the batch files to launch DOSBox in your preferred configuration.
+Once done, you might have to manually exit DOSBox by closing the window or typing &amp;#8216;exit&amp;#8217; and hitting&amp;nbsp;enter.&lt;/p&gt;
+&lt;p&gt;The idea behind this is to invest in a bit of a risk by cutting into your life-pool (Your spare balls) to
+get the items you need to clear the&amp;nbsp;game.&lt;/p&gt;
+&lt;p&gt;Due to the obviously rushed nature of the game, things are a little bit rough around the edges: The ball
+is just using pure diagonal movement with no angular change. This can make things a bit tricky.
+If you have enough spare balls, you can launch some extra&amp;nbsp;ones!&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;=== &lt;span class="caps"&gt;GAME&lt;/span&gt; &lt;span class="caps"&gt;CONTROLS&lt;/span&gt;&amp;nbsp;===&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;span class="caps"&gt;PADDLE&lt;/span&gt; &lt;span class="caps"&gt;MOVEMENT&lt;/span&gt;&lt;/strong&gt;-&amp;gt; Arrow&amp;nbsp;Keys&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;span class="caps"&gt;LAUNCH&lt;/span&gt; A &lt;span class="caps"&gt;BALL&lt;/span&gt;&lt;/strong&gt;-&amp;gt;&amp;nbsp;Spacebar&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;span class="caps"&gt;CHANGE&lt;/span&gt; &lt;span class="caps"&gt;SELECTED&lt;/span&gt; &lt;span class="caps"&gt;BALL&lt;/span&gt; &lt;span class="caps"&gt;TYPE&lt;/span&gt;&lt;/strong&gt;-&amp;gt; &lt;span class="caps"&gt;TAB&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;span class="caps"&gt;EXIT&lt;/span&gt; &lt;span class="caps"&gt;GAME&lt;/span&gt;&lt;/strong&gt;-&amp;gt; &lt;span class="caps"&gt;ESCAPE&lt;/span&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Move off-screen to change between&amp;nbsp;areas.&lt;/p&gt;
+&lt;p&gt;If you&amp;#8217;re on the screen with a door in the cliff, press &lt;span class="caps"&gt;UP&lt;/span&gt; to enter it (That&amp;#8217;s the shop).
+To choose an item, use the &lt;span class="caps"&gt;LEFT&lt;/span&gt; and &lt;span class="caps"&gt;RIGHT&lt;/span&gt; arrow keys, and press &lt;span class="caps"&gt;SPACE&lt;/span&gt; to select.
+To leave the shop, press &lt;span class="caps"&gt;DOWN&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Thank you for trying this game&amp;nbsp;out!&lt;/p&gt;</content><category term="Game"></category><category term="Demo"></category><category term="Jam"></category><category term="Ludum Dare"></category></entry><entry><title>7D3D 2019 Framework Demo</title><link href="https://64mega.github.io/7d3d-2019-framework-demo.html" rel="alternate"></link><published>2019-01-18T00:00:00+01:00</published><updated>2019-01-18T00:00:00+01:00</updated><author><name>Daniel '64Mega' Lawrence</name></author><id>tag:64mega.github.io,2019-01-18:/7d3d-2019-framework-demo.html</id><summary type="html">&lt;p&gt;A non-game technical demo as my &lt;span class="caps"&gt;7D3D&lt;/span&gt; 2019&amp;nbsp;entry.&lt;/p&gt;
+&lt;p&gt;My goal for this &lt;span class="caps"&gt;7D3D&lt;/span&gt; was to knuckle down and learn some libraries, frameworks and tools for C++ that I&amp;#8217;ve been meaning to look at for a couple of&amp;nbsp;years.&lt;/p&gt;
+&lt;p&gt;These included Premake, Dear ImGui, OpenGL 3.3, AssImp, &lt;span class="caps"&gt;GLFW …&lt;/span&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;A non-game technical demo as my &lt;span class="caps"&gt;7D3D&lt;/span&gt; 2019&amp;nbsp;entry.&lt;/p&gt;
+&lt;p&gt;My goal for this &lt;span class="caps"&gt;7D3D&lt;/span&gt; was to knuckle down and learn some libraries, frameworks and tools for C++ that I&amp;#8217;ve been meaning to look at for a couple of&amp;nbsp;years.&lt;/p&gt;
+&lt;p&gt;These included Premake, Dear ImGui, OpenGL 3.3, AssImp, &lt;span class="caps"&gt;GLFW&lt;/span&gt; and Bullet. I consider my goal &amp;#8216;successful&amp;#8217; in that I got everything working together. I&amp;#8217;m planning on using this as a foundation for the next &lt;span class="caps"&gt;7D3D&lt;/span&gt;, where I&amp;#8217;ll be attempting to build a small game on top of this&amp;nbsp;framework.&lt;/p&gt;
+&lt;p&gt;The demo is three-parts, one of them which doesn&amp;#8217;t exactly work. Once the &amp;#8216;game&amp;#8217; has started, press F1 to open the Debug Window and use the State menu to change the current&amp;nbsp;state.&lt;/p&gt;
+&lt;h3&gt;Normal&amp;nbsp;State:&lt;/h3&gt;
+&lt;p&gt;Renders a&amp;nbsp;model.&lt;/p&gt;
+&lt;h3&gt;HMap Test&amp;nbsp;State:&lt;/h3&gt;
+&lt;p&gt;Broken heightmap generator+viewer. Was broken due to shader and buffer changes halfway&amp;nbsp;through. &lt;/p&gt;
+&lt;h3&gt;Main Game&amp;nbsp;State:&lt;/h3&gt;
+&lt;p&gt;The big &amp;#8216;everything working together&amp;#8217; state. Has a bunch of physics objects spawned randomly, colliding with each other. Camera is following one of the ships and can be moved by using the debug panel and changing the ship X/Y/Z&amp;nbsp;variables.&lt;/p&gt;
+&lt;p&gt;And that&amp;#8217;s literally all there is to&amp;nbsp;it!&lt;/p&gt;
+&lt;h3&gt;Source Code&amp;nbsp;Notes:&lt;/h3&gt;
+&lt;p&gt;Most of the source code is included in the source download, and it&amp;#8217;s a &lt;em&gt;mess&lt;/em&gt;. You have been warned. This is certifiable Jam&amp;nbsp;Code.&lt;/p&gt;</content><category term="Jam"></category><category term="Demo"></category></entry><entry><title>7D3D 2018 Browser Software Renderer</title><link href="https://64mega.github.io/7d3d-2018-software-renderer.html" rel="alternate"></link><published>2018-01-18T00:00:00+01:00</published><updated>2018-01-18T00:00:00+01:00</updated><author><name>Daniel '64Mega' Lawrence</name></author><id>tag:64mega.github.io,2018-01-18:/7d3d-2018-software-renderer.html</id><summary type="html">&lt;p&gt;Made for the &lt;a href="http://itch.io/jam/7d3d-2"&gt;&lt;span class="caps"&gt;7D3D&lt;/span&gt; Jam, January 2018&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This is a relatively simple software rasterizer written in JavaScript in just under 7&amp;nbsp;days.&lt;/p&gt;
+&lt;p&gt;It&amp;#8217;s nothing more than a simple demo at this point. You can walk around, open doors and shoot a bit. As per tradition, I ran out of …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Made for the &lt;a href="http://itch.io/jam/7d3d-2"&gt;&lt;span class="caps"&gt;7D3D&lt;/span&gt; Jam, January 2018&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This is a relatively simple software rasterizer written in JavaScript in just under 7&amp;nbsp;days.&lt;/p&gt;
+&lt;p&gt;It&amp;#8217;s nothing more than a simple demo at this point. You can walk around, open doors and shoot a bit. As per tradition, I ran out of time to do anything&amp;nbsp;else.&lt;/p&gt;
+&lt;p&gt;Controls&amp;nbsp;are:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Arrow Keys:&lt;/strong&gt; walk and&amp;nbsp;turn&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Space Bar:&lt;/strong&gt;&amp;nbsp;shoot&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;E key:&lt;/strong&gt; interact (E.G: Open&amp;nbsp;doors)&lt;/p&gt;
+&lt;p&gt;The full source code is available on GitHub. Beware, it&amp;#8217;s&amp;nbsp;jam-spaghetti!&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/64Mega/7D3D-2-Demo"&gt;https://github.com/64Mega/&lt;span class="caps"&gt;7D3D&lt;/span&gt;-2-Demo&lt;/a&gt;&lt;/p&gt;</content><category term="Game"></category><category term="Demo"></category><category term="Jam"></category></entry><entry><title>LD38 - Swords of Xalavus</title><link href="https://64mega.github.io/ld38-swords-of-xalavus.html" rel="alternate"></link><published>2017-04-24T00:00:00+02:00</published><updated>2017-04-24T00:00:00+02:00</updated><author><name>Daniel '64Mega' Lawrence</name></author><id>tag:64mega.github.io,2017-04-24:/ld38-swords-of-xalavus.html</id><summary type="html">&lt;p&gt;Made for Ludum Dare 38. Loosely adheres to the theme by way of the game being somewhat small for its&amp;nbsp;genre.&lt;/p&gt;
+&lt;p&gt;Swords of Xalavus is a simple &lt;span class="caps"&gt;CRPG&lt;/span&gt; made with nothing but &lt;span class="caps"&gt;HTML5&lt;/span&gt; and a stroke of&amp;nbsp;madness.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Control Overview:&lt;/strong&gt;
+The game controls very much like certain old &lt;span class="caps"&gt;PC&lt;/span&gt; RPGs …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Made for Ludum Dare 38. Loosely adheres to the theme by way of the game being somewhat small for its&amp;nbsp;genre.&lt;/p&gt;
+&lt;p&gt;Swords of Xalavus is a simple &lt;span class="caps"&gt;CRPG&lt;/span&gt; made with nothing but &lt;span class="caps"&gt;HTML5&lt;/span&gt; and a stroke of&amp;nbsp;madness.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Control Overview:&lt;/strong&gt;
+The game controls very much like certain old &lt;span class="caps"&gt;PC&lt;/span&gt; RPGs. A list of available actions is displayed in the player window on the right-hand side of the&amp;nbsp;screen.&lt;/p&gt;
+&lt;p&gt;Move with the arrow keys, perform actions by pressing their associated&amp;nbsp;letter.&lt;/p&gt;
+&lt;p&gt;Certain actions (Attack, Get, Look, Cast) require you to select a target. Move the cursor with the arrow keys and press either enter or the same key again to&amp;nbsp;confirm.&lt;/p&gt;
+&lt;p&gt;To equip weapons and spells, use the Inventory and press Enter. Some of the weapons require you to level up a bit&amp;nbsp;first.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Tip:&lt;/strong&gt;
+Go into the room to your immediate left and get the starting weapon! Read the signs there to get some in-game&amp;nbsp;tips.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Known Issues:&lt;/strong&gt;
++ Audio sometimes not working in Firefox.
++ Sound effects sometimes not working in Internet&amp;nbsp;Explorer/Edge.&lt;/p&gt;</content><category term="Game"></category><category term="Demo"></category><category term="Jam"></category><category term="Ludum Dare"></category></entry><entry><title>DarkSlashRun Demo 01</title><link href="https://64mega.github.io/darkslashrun-demo-01.html" rel="alternate"></link><published>2016-06-16T00:00:00+02:00</published><updated>2016-06-16T00:00:00+02:00</updated><author><name>Daniel '64Mega' Lawrence</name></author><id>tag:64mega.github.io,2016-06-16:/darkslashrun-demo-01.html</id><summary type="html">&lt;p&gt;&lt;img alt="cover image" src="https://img.itch.zone/aW1hZ2UvNTY4MDUvMjU0OTUzLnBuZw==/original/9Xf%2Bsd.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Created for NAGJam&amp;nbsp;2016&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;The theme was &amp;#8220;Down, but Not Out&amp;#8221;. My take on that is a &amp;#8220;revival&amp;#8221; mechanic that puts the player back at the last checkpoint (Nothing revolutionary). The twists were: The player loses their items and artifacts upon death and has to try get to their point …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;img alt="cover image" src="https://img.itch.zone/aW1hZ2UvNTY4MDUvMjU0OTUzLnBuZw==/original/9Xf%2Bsd.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Created for NAGJam&amp;nbsp;2016&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;The theme was &amp;#8220;Down, but Not Out&amp;#8221;. My take on that is a &amp;#8220;revival&amp;#8221; mechanic that puts the player back at the last checkpoint (Nothing revolutionary). The twists were: The player loses their items and artifacts upon death and has to try get to their point of death to pick them up again, and with each death the player&amp;#8217;s maximum &lt;span class="caps"&gt;HP&lt;/span&gt; will drop a little (This feature didn&amp;#8217;t make it into the&amp;nbsp;prototype).&lt;/p&gt;
+&lt;p&gt;The &amp;#8216;vision&amp;#8217; I have for this game is of a Roguelite, randomly generated dungeons and realms with pseudo-random enemies, items and bosses. What I&amp;#8217;ve got to show here is a fragment of what I had&amp;nbsp;planned.&lt;/p&gt;
+&lt;p&gt;Instructions are explained in-game, but a&amp;nbsp;recap:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;h1&gt;Controls&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Arrow Keys:&amp;nbsp;Movement&lt;/li&gt;
+&lt;li&gt;Z Key:&amp;nbsp;Dash/Dodge&lt;/li&gt;
+&lt;li&gt;X Key: Use Healing&amp;nbsp;Potions&lt;/li&gt;
+&lt;li&gt;C Key: Use Secondary Weapon if you&amp;#8217;ve picked it&amp;nbsp;up&lt;/li&gt;
+&lt;li&gt;V Key: Use&amp;nbsp;Sword&lt;/li&gt;
+&lt;li&gt;Escape: Exit to Title, or if on Title screen, exit&amp;nbsp;game&lt;/li&gt;
+&lt;li&gt;F4: Toggle&amp;nbsp;Fullscreen&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Thank you for&amp;nbsp;playing!&lt;/p&gt;</content><category term="Demo"></category><category term="Jam"></category><category term="Game"></category></entry></feed>

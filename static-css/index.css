@@ -1,0 +1,18 @@
+.summary {
+    padding: 0.25rem;
+}
+
+.summary > h1 {
+    font-size: 16pt;
+}
+
+.article-header-custom {
+    margin-bottom: 0.25rem;
+    margin: 0.25rem;
+    border-bottom: 1px solid gray;
+}
+
+article {
+    border: 1px solid gray;
+    padding: 0.5rem;
+}
