@@ -14,6 +14,7 @@
 
         <link rel="stylesheet" href="https://64mega.github.io/theme/css/bootstrap.pulse.min.css" type="text/css"/>
 
+    <link href="https://fonts.googleapis.com/css?family=Fira+Code&display=swap" rel="stylesheet">
     <link href="https://64mega.github.io/theme/css/fontawesome-all.min.css" rel="stylesheet" />
     <link href="https://64mega.github.io/theme/css/pygments/native.css" rel="stylesheet" />
 
@@ -32,6 +33,7 @@
               title="64Bytes ATOM Feed" />
         <link href="https://64mega.github.io/static-css/custom.css" rel="stylesheet" />
 
+    <link rel="stylesheet" href="https://64mega.github.io/theme/css/jquery.fancybox.min.css">
     <link rel="stylesheet" href="https://64mega.github.io/static-css/custom.css">
 
     <link rel="stylesheet" href="https://64mega.github.io/static-css/article.css">
@@ -120,6 +122,12 @@
                     </li>
                     <li class="panel anti-panel"><ul id="collapse-latest" class="sidebar_submenu collapse in">
                         <li class="">
+                            <a class="hide-overflow" href="https://64mega.github.io/js13k-2019-recap.html" title="JS13k 2019 Developer Commentary">
+                                    <i class="fas fa-file-alt padding-small"></i>
+                                JS13k 2019 Developer Commentary
+                            </a>
+                        </li>
+                        <li class="">
                             <a class="hide-overflow" href="https://64mega.github.io/2019-site-revamp.html" title="2019 Site Revamp">
                                     <i class="fas fa-file-alt padding-small"></i>
                                 2019 Site Revamp
@@ -141,12 +149,6 @@
                             <a class="hide-overflow" href="https://64mega.github.io/7d3d-2018-software-renderer.html" title="7D3D 2018 Browser Software Renderer">
                                     <i class="fas fa-gamepad padding-small"></i>
                                 7D3D 2018 Browser Software Renderer
-                            </a>
-                        </li>
-                        <li class="">
-                            <a class="hide-overflow" href="https://64mega.github.io/js13k-postmortem-2017.html" title="JS13k Postmortem 2017">
-                                    <i class="fas fa-file-alt padding-small"></i>
-                                JS13k Postmortem 2017
                             </a>
                         </li>
                     <li>
@@ -231,7 +233,7 @@
                         <a href="https://64mega.github.io/category/posts.html">
                             <i class="fas fa-folder-open padding-small"></i>
                             Posts
-                            <span class="badge badge-secondary float-right categorybadge">1</span>
+                            <span class="badge badge-secondary float-right categorybadge">2</span>
                         </a>
                     </li>
                 </ul></li>
@@ -293,20 +295,22 @@
                 
 
                 <div class="entry-content">
+                    
                     <iframe class="itch-embed" frameborder="0" src="https://itch.io/embed/357470" width="552" height="167"></iframe>
                     <p>A non-game technical demo as my <span class="caps">7D3D</span> 2019&nbsp;entry.</p>
 <p>My goal for this <span class="caps">7D3D</span> was to knuckle down and learn some libraries, frameworks and tools for C++ that I&#8217;ve been meaning to look at for a couple of&nbsp;years.</p>
 <p>These included Premake, Dear ImGui, OpenGL 3.3, AssImp, <span class="caps">GLFW</span> and Bullet. I consider my goal &#8216;successful&#8217; in that I got everything working together. I&#8217;m planning on using this as a foundation for the next <span class="caps">7D3D</span>, where I&#8217;ll be attempting to build a small game on top of this&nbsp;framework.</p>
 <p>The demo is three-parts, one of them which doesn&#8217;t exactly work. Once the &#8216;game&#8217; has started, press F1 to open the Debug Window and use the State menu to change the current&nbsp;state.</p>
-<h3>Normal&nbsp;State:</h3>
+<h3 id="normal-state">Normal&nbsp;State:</h3>
 <p>Renders a&nbsp;model.</p>
-<h3>HMap Test&nbsp;State:</h3>
+<h3 id="hmap-test-state">HMap Test&nbsp;State:</h3>
 <p>Broken heightmap generator+viewer. Was broken due to shader and buffer changes halfway&nbsp;through. </p>
-<h3>Main Game&nbsp;State:</h3>
+<h3 id="main-game-state">Main Game&nbsp;State:</h3>
 <p>The big &#8216;everything working together&#8217; state. Has a bunch of physics objects spawned randomly, colliding with each other. Camera is following one of the ships and can be moved by using the debug panel and changing the ship X/Y/Z&nbsp;variables.</p>
 <p>And that&#8217;s literally all there is to&nbsp;it!</p>
-<h3>Source Code&nbsp;Notes:</h3>
+<h3 id="source-code-notes">Source Code&nbsp;Notes:</h3>
 <p>Most of the source code is included in the source download, and it&#8217;s a <em>mess</em>. You have been warned. This is certifiable Jam&nbsp;Code.</p>
+                    <a class="top-widget" href="#"><span>△</span><span>Back To Top</span></a>
                 </div>
                 <footer class="text-right">
                     <p>- Daniel '64Mega' Lawrence</p>
@@ -328,8 +332,9 @@
     <div class="row">
         <div class="col-lg-9 text-center">
             <p><small>
-                Built by <a href="http://docs.getpelican.com/en/latest">Pelican</a> / <a href="https://github.com/ingwinlu/pelican-twitchy">pelican-twitchy</a>
-                &middot;                      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc/4.0/80x15.png" /></a>
+                Built with <a href="http://docs.getpelican.com/en/latest">Pelican</a>
+                <br />
+                Theme based on <a href="https://github.com/ingwinlu/pelican-twitchy">pelican-twitchy</a>                      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc/4.0/80x15.png" /></a>
     Content
   licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>, except where indicated otherwise.
 
@@ -345,6 +350,8 @@
     <script src="https://64mega.github.io/theme/js/jquery-1.11.2.min.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="https://64mega.github.io/theme/js/bootstrap.min.js"></script>
+    <!-- Fancybox Script -->
+    <script src="https://64mega.github.io/theme/js/jquery.fancybox.min.js"></script>
     <!-- twitchy Script -->
     <script src="https://64mega.github.io/theme/js/pelican_twitchy.min.js"></script>
     <!-- Begin Cookie Consent https://silktide.com/tools/cookie-consent/ -->

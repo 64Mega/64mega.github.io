@@ -1,5 +1,620 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>64Bytes - Posts</title><link href="https://64mega.github.io/" rel="alternate"></link><link href="https://64mega.github.io/feeds/posts.atom.xml" rel="self"></link><id>https://64mega.github.io/</id><updated>2019-07-20T00:00:00+02:00</updated><subtitle>A miserable little pile of development secrets</subtitle><entry><title>2019 Site Revamp</title><link href="https://64mega.github.io/2019-site-revamp.html" rel="alternate"></link><published>2019-07-20T00:00:00+02:00</published><updated>2019-07-20T00:00:00+02:00</updated><author><name>Daniel '64Mega' Lawrence</name></author><id>tag:64mega.github.io,2019-07-20:/2019-site-revamp.html</id><summary type="html">&lt;p&gt;Behold, the only thing I ever do on my GitHub pages site anymore! Spruce up or change out my current site generator for a newer, fresher&amp;nbsp;one!&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>64Bytes - Posts</title><link href="https://64mega.github.io/" rel="alternate"></link><link href="https://64mega.github.io/feeds/posts.atom.xml" rel="self"></link><id>https://64mega.github.io/</id><updated>2019-09-17T00:00:00+02:00</updated><subtitle>A miserable little pile of development secrets</subtitle><entry><title>JS13k 2019 Developer Commentary</title><link href="https://64mega.github.io/js13k-2019-recap.html" rel="alternate"></link><published>2019-09-17T00:00:00+02:00</published><updated>2019-09-17T00:00:00+02:00</updated><author><name>Daniel '64Mega' Lawrence</name></author><id>tag:64mega.github.io,2019-09-17:/js13k-2019-recap.html</id><summary type="html">&lt;p&gt;In (hopefully) continuing tradition, here&amp;#8217;s a postmortem for my JS13k 2019 entry,&amp;nbsp;Xycore!&lt;/p&gt;
+&lt;p&gt;Fair warning though, I&amp;#8217;m writing this well over two weeks since touching the majority of the code, so I might have forgotten some things, or misremembered some things. I also wrote &lt;em&gt;this&lt;/em&gt; over the period …&lt;/p&gt;</summary><content type="html">&lt;p&gt;In (hopefully) continuing tradition, here&amp;#8217;s a postmortem for my JS13k 2019 entry,&amp;nbsp;Xycore!&lt;/p&gt;
+&lt;p&gt;Fair warning though, I&amp;#8217;m writing this well over two weeks since touching the majority of the code, so I might have forgotten some things, or misremembered some things. I also wrote &lt;em&gt;this&lt;/em&gt; over the period of a week - it&amp;#8217;s likely to come across as a bit &lt;em&gt;disjointed&lt;/em&gt; or &lt;em&gt;random&lt;/em&gt;. You have been&amp;nbsp;warned.&lt;/p&gt;
+&lt;p&gt;Feel free to hit me up on &lt;a href="https://twitter.com/64Mega"&gt;Twitter&lt;/a&gt; if you want some specific information on a feature that I glossed over or forgot to&amp;nbsp;mention.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Fun fact: I practically reworked my blog&amp;#8217;s theme from the ground up during the course of writing this, to add useful features (Such as a fancybox gallery), a dark theme, proper code highlighting, some stylization of headings, a table of contents and a bunch of small style&amp;nbsp;adjustments.&lt;/p&gt;
+&lt;p&gt;The theme I&amp;#8217;m using is &lt;code&gt;pelican-twitchy&lt;/code&gt;, but I&amp;#8217;ve changed nearly &lt;em&gt;everything&lt;/em&gt; at this point. The only thing I&amp;#8217;ve left alone is the sidebar&amp;nbsp;(Mostly).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This fancy Table of Contents will let you jump to any major heading, and if you want to quickly return to it, there&amp;#8217;s a fancy little &amp;#8220;Back to Top&amp;#8221; button at the bottom right of the&amp;nbsp;page.&lt;/p&gt;
+&lt;div class="toc"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#xycore-an-overview"&gt;Xycore: An&amp;nbsp;overview&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#the-original-idea"&gt;The original&amp;nbsp;idea&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#art-style-limitations"&gt;Art Style&amp;nbsp;Limitations&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#initial-design-decisions"&gt;Initial Design&amp;nbsp;Decisions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#a-note-on-my-design-process"&gt;A note on my design&amp;nbsp;process&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#the-code"&gt;The&amp;nbsp;Code&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#my-tools"&gt;My&amp;nbsp;Tools&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#level-data-storage"&gt;Level Data&amp;nbsp;Storage&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#the-canvas"&gt;The&amp;nbsp;Canvas&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#code-organization"&gt;Code&amp;nbsp;Organization&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#development-process"&gt;Development Process&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#game-progression"&gt;Game&amp;nbsp;Progression&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#a-bit-of-juice"&gt;A bit of&amp;nbsp;&amp;#8220;Juice&amp;#8221;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#the-bosses"&gt;The Bosses&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#the-magma-centipede-boss"&gt;The &amp;#8220;Magma Centipede&amp;#8221;&amp;nbsp;boss&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#the-venus-flytrap-boss"&gt;The &amp;#8220;Venus Flytrap&amp;#8221;&amp;nbsp;boss&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#the-mother-brain-boss"&gt;The &amp;#8220;Mother Brain&amp;#8221;&amp;nbsp;boss&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#the-tank-boss"&gt;The &amp;#8220;Tank&amp;#8221;&amp;nbsp;Boss&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#an-audio-experiment"&gt;An Audio&amp;nbsp;Experiment&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#the-save-system"&gt;The Save&amp;nbsp;System&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#player-progression"&gt;Player Progression&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#player-weapons"&gt;Player&amp;nbsp;Weapons&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#barrier-doors"&gt;Barrier&amp;nbsp;Doors&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#health-upgrades"&gt;Health&amp;nbsp;Upgrades&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#armor-upgrades"&gt;Armor&amp;nbsp;Upgrades&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#enemy-variety"&gt;Enemy&amp;nbsp;Variety&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#ending-and-escape-sequence"&gt;Ending and Escape&amp;nbsp;Sequence&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#the-canvas-flip-bug"&gt;The Canvas Flip&amp;nbsp;Bug&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#submission"&gt;Submission&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#bug-1-monitor-sync-rate"&gt;Bug #1 - Monitor Sync&amp;nbsp;Rate&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#bug-2-color-profiles"&gt;Bug #2 - Color&amp;nbsp;Profiles&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#summary"&gt;Summary&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#what-went-right"&gt;What Went&amp;nbsp;Right&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#what-went-wrong"&gt;What Went&amp;nbsp;Wrong&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#what-ill-do-next"&gt;What I&amp;#8217;ll Do&amp;nbsp;Next&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;h3 id="xycore-an-overview"&gt;Xycore: An&amp;nbsp;overview&lt;/h3&gt;
+&lt;p&gt;So first up, let&amp;#8217;s talk about the finished product!
+In case you need it for reference or to give it a play, &lt;a href="https://js13kgames.com/entries/xycore"&gt;here&amp;#8217;s the link&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Xycore is a throwback to a specific genre of games, drawing a lot of inspiration from Daniel Remar&amp;#8217;s
+&lt;a href="http://www.remar.se/daniel/herocore.php"&gt;Hero Core&lt;/a&gt; and classic&amp;nbsp;Metroid.&lt;/p&gt;
+&lt;p&gt;You&amp;#8217;ve landed on an alien planet at a secret weapons facility, with a mission to destroy the Super Reactor at the core of the facility. The core is sealed by the power of four guardians, and you must destroy them to complete your&amp;nbsp;objective.&lt;/p&gt;
+&lt;p&gt;The game features four bosses, four weapon upgrades and a variety of hidden power-ups to help make the game easier.
+I also managed to fit in a few out-of-scope features that I feel add a lot to the style of the game - namely a fancy
+raster water effect, basic oscillator sounds and a bit of juice (Screenshake! Lerp!&amp;nbsp;Sometimes!)&lt;/p&gt;
+&lt;h3 id="the-original-idea"&gt;The original&amp;nbsp;idea&lt;/h3&gt;
+&lt;p&gt;When the 13th of August rolled around, I had a &lt;em&gt;completely&lt;/em&gt; different game in mind. In fact, it was less a game and more a fantasy console I was going to call&amp;nbsp;&amp;#8220;Mini13&amp;#8221;.&lt;/p&gt;
+&lt;p&gt;I had already spent a few days early in August tinkering with a really tight bytecode processor that could do basic operations on the canvas and map input, and the plan was to release this little &amp;#8220;Console&amp;#8221; with a pack-in game of Breakout or something along those&amp;nbsp;lines.&lt;/p&gt;
+&lt;p&gt;And for at least a few days I tinkered with the concept. It was essentially a &amp;#8216;&lt;span class="caps"&gt;CPU&lt;/span&gt;&amp;#8217; made up of complex opcodes that, instead of mapping to super low-level operations would instead map to more complicated &lt;span class="caps"&gt;JS&lt;/span&gt; &lt;span class="caps"&gt;API&lt;/span&gt; operations. Here&amp;#8217;s a simplified pseudocode&amp;nbsp;example:&lt;/p&gt;
+&lt;div class="xhighlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;code&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[];&lt;/span&gt;
+
+&lt;span class="c1"&gt;// &amp;quot;Opcodes&amp;quot; are stored in 8-bit binary format, each code taking&lt;/span&gt;
+&lt;span class="c1"&gt;// two bytes, and potential extra bytes depending on required&lt;/span&gt;
+&lt;span class="c1"&gt;// parameters - this is handled by the opcode handlers&lt;/span&gt;
+
+&lt;span class="nx"&gt;fetch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sb"&gt;`some_local_file.bin`&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;then&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;res&lt;/span&gt; &lt;span class="p"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;res&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;arrayBuffer&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+    &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;then&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;buffer&lt;/span&gt; &lt;span class="p"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;code&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;buffer&lt;/span&gt; &lt;span class="p"&gt;});&lt;/span&gt;
+
+&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;flags&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;zero&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="nx"&gt;overflow&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="nx"&gt;truth&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+&lt;span class="c1"&gt;// Program Counter&lt;/span&gt;
+&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;pc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="c1"&gt;// Registers are not fixed, just a dumb array&lt;/span&gt;
+&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;registers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[];&lt;/span&gt;
+
+&lt;span class="c1"&gt;// The ops the CPU can do are mapped to an array of functions&lt;/span&gt;
+&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;ops&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+    &lt;span class="c1"&gt;// No Op&lt;/span&gt;
+    &lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;pc&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="c1"&gt;// Return the next instruction location &lt;/span&gt;
+
+    &lt;span class="c1"&gt;// Cmp -- R Imm -- Takes a register index and an immediate&lt;/span&gt;
+    &lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;r&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;GetInt16&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;pc&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;GetInt16&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;pc&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;t&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;registers&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;r&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="nx"&gt;flags&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;zero&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;t&lt;/span&gt; &lt;span class="o"&gt;===&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="nx"&gt;flags&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;truth&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;t&lt;/span&gt; &lt;span class="o"&gt;===&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;pc&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// Most values are 16-bit, aside from addresses&lt;/span&gt;
+    &lt;span class="p"&gt;},&lt;/span&gt;
+
+    &lt;span class="c1"&gt;// Je -- Imm32 -- Jump to address if Equal&lt;/span&gt;
+    &lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;addr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;GetInt32&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;pc&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;flags&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;truth&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;addr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;pc&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;},&lt;/span&gt;
+
+    &lt;span class="c1"&gt;// DIMG -- R(idex) R(x) R(y)&lt;/span&gt;
+    &lt;span class="c1"&gt;// Draw image from global spritesheet to context &lt;/span&gt;
+    &lt;span class="c1"&gt;// An example of a &amp;#39;complex&amp;#39; instruction&lt;/span&gt;
+    &lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;idex&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;registers&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;GetInt16&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;pc&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)];&lt;/span&gt;
+        &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;registers&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;GetInt16&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;pc&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)];&lt;/span&gt;
+        &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;registers&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;GetInt16&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;pc&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;)];&lt;/span&gt;
+
+        &lt;span class="nx"&gt;DrawSprite&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;idex&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;y&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="c1"&gt;// My actual solution for sprites was to use something similar to&lt;/span&gt;
+        &lt;span class="c1"&gt;// the OAM Table in the NES/Famicom - a fixed array of sprite objects&lt;/span&gt;
+        &lt;span class="c1"&gt;// that get automatically drawn if active, with fixed properties&lt;/span&gt;
+        &lt;span class="c1"&gt;// like X,Y coordinates, Width and Height in spritesheet tiles and&lt;/span&gt;
+        &lt;span class="c1"&gt;// any attributes (Like whether it&amp;#39;s flipped or rotated or not)&lt;/span&gt;
+        &lt;span class="c1"&gt;// But this is just a really rough example.&lt;/span&gt;
+
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;pc&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;];&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I got up to the point where I had a bunch of pixels filling the screen based on some code, but I realized that at
+some point I was going to have to write an assembler or I&amp;#8217;d be entering opcodes manually for the duration of the
+competition, and I wasn&amp;#8217;t really up for&amp;nbsp;that.&lt;/p&gt;
+&lt;p&gt;So I cleared out the project folder, opened up Aseprite with a palette I had created for the competition, and set out
+to make a &amp;#8216;complete&amp;#8217; set of art to work with.
+After a bit of scribbling around, I came up with an initial sprite set (Click to&amp;nbsp;enlarge)&lt;/p&gt;
+&lt;p&gt;&lt;a href="static-images/xycore/sprsheet.png" data-fancybox="gallery" data-caption="The pieces I gave myself to work with"&gt;
+    &lt;img src="static-images/xycore/sprsheet.png" style="width:150px" /&gt;
+&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Most of it was random doodling, but I thought that it would serve as a good basis for creating &lt;em&gt;something&lt;/em&gt; to begin&amp;nbsp;with.&lt;/p&gt;
+&lt;p&gt;So with that I&amp;nbsp;began.&lt;/p&gt;
+&lt;h3 id="art-style-limitations"&gt;Art Style&amp;nbsp;Limitations&lt;/h3&gt;
+&lt;p&gt;From the moment I started doodling in Aseprite I had a certain set of limits in mind. The &amp;#8220;Fantasy Console&amp;#8221; I was originally planning had a custom 16-color palette, and I decided to keep that and work with&amp;nbsp;it.&lt;/p&gt;
+&lt;p&gt;&lt;a href="static-images/xycore/palette.png" data-fancybox="gallery" data-width="300px" data-caption="The palette"&gt;
+    &lt;img src="static-images/xycore/palette.png" style="width:150px" /&gt;
+&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I sacrificed the 16th color for transparency, allowing me to utilize the natural compression you get for free with &lt;a href="https://en.wikipedia.org/wiki/Portable_Network_Graphics#File_size_and_optimization_software"&gt;16-color &lt;span class="caps"&gt;PNG&lt;/span&gt; images&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I also find that working with a limited palette accelerates my workflow, as I have fewer overall design decisions to make and can&amp;#8217;t really mess around with hue and value too&amp;nbsp;much.&lt;/p&gt;
+&lt;p&gt;The initial spritesheet fell in at just under 5K without any compression, which I considered good enough - my goal was to use approximately half of the available space for art, the other half for&amp;nbsp;code.&lt;/p&gt;
+&lt;p&gt;I also created a font sheet to go with the game, but cut it out a couple of weeks into development because I didn&amp;#8217;t &lt;em&gt;really&lt;/em&gt; need it. Here it is for&amp;nbsp;reference!&lt;/p&gt;
+&lt;p&gt;&lt;a href="static-images/xycore/fontsheet.png" data-fancybox="gallery" data-caption="The font I ended up discarding"&gt;
+    &lt;img class="thumbnail" src="static-images/xycore/fontsheet.png" &gt;
+&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id="initial-design-decisions"&gt;Initial Design&amp;nbsp;Decisions&lt;/h3&gt;
+&lt;p&gt;After seeing the theme, &lt;code&gt;Back&lt;/code&gt;, and after throwing out my Fantasy Console concept, I ended up deciding on two key aspects or uses of the word &amp;#8220;Back&amp;#8221;: First as the &amp;#8220;back&amp;#8221; in &amp;#8220;throwback&amp;#8221;, and then as the &amp;#8220;back&amp;#8221; in&amp;nbsp;&amp;#8220;backtrack&amp;#8221;.&lt;/p&gt;
+&lt;p&gt;My initial spritesheet also helped inform this concept, since I had a few nods to some classics in the art - and if I was going to do a game inspired by Metroid and Hero Core, I was going to end up with some natural backtracking to find new bosses, powerups and&amp;nbsp;areas!&lt;/p&gt;
+&lt;p&gt;Much later on I also added in the classic &amp;#8220;Escape the self-destructing planet&amp;#8221; sequence, and that adds in a &amp;#8220;Get &lt;em&gt;back&lt;/em&gt; to your ship&amp;#8221; use of the&amp;nbsp;word.&lt;/p&gt;
+&lt;p&gt;I mostly ignored any further potential theme tie-ins: I really wanted to focus on a good core gameplay experience first, and adding in gimmicks might have hurt development time, cost and&amp;nbsp;gameplay.&lt;/p&gt;
+&lt;p&gt;Before beginning any actual coding, I played a bit of Hero Core again to better remember what it had going for it, and wrote down some notes on how I wanted my bosses to&amp;nbsp;behave.&lt;/p&gt;
+&lt;h3 id="a-note-on-my-design-process"&gt;A note on my design&amp;nbsp;process&lt;/h3&gt;
+&lt;p&gt;I&amp;#8217;ll be honest up-front and state for the record that I&amp;#8217;m a bit of a lazy designer. I don&amp;#8217;t write design docs.
+I sort of grow them instead, adding and removing bits and pieces as I see the need for them and generally repeatedly asking myself &amp;#8220;What next?&amp;#8221; from a player&amp;#8217;s point of&amp;nbsp;view.&lt;/p&gt;
+&lt;p&gt;I guess you could represent this design methodology as a flowchart, but that would get cumbersome. Instead, I use good old Emacs, and the magic of Org&amp;nbsp;Mode. &lt;/p&gt;
+&lt;p&gt;&lt;a href="static-images/xycore/emacs_organization.png" data-fancybox="gallery" data-caption="My Org file for the game"&gt;
+    &lt;img class="thumbnail" src="static-images/xycore/emacs_organization.png" &gt;
+&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Org Mode is one of many &lt;em&gt;major modes&lt;/em&gt; that can be added to Emacs. It provides a very simple way to create interactive informational documents in a similar fashion to Markdown, except that it comes with some built in conveniences (Such as collapsing headings into folding bullets, highlighting keywords, a timestamping/timesheet feature, a full agenda mode for scheduling and too many other features that I haven&amp;#8217;t even considered using&amp;nbsp;yet).&lt;/p&gt;
+&lt;p&gt;The file itself is a very simple &lt;span class="caps"&gt;ASCII&lt;/span&gt; document that looks something like&amp;nbsp;this:&lt;/p&gt;
+&lt;div class="xhighlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;DEV TODO:
+=========
+
+* DONE ENVIRONMENT PROGRAMMING -
+** TODO + Create subtle shifted tint for distorted area in Fire Zone
+** TODO + Create some plants/decor to be randomly placed in each area
+* THINGS REQUIRED -
+** DONE Mini-Core - 
+    Extra descriptions, code or anything can go here and be folded out of the way.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In my configuration I just hit &lt;span class="caps"&gt;TAB&lt;/span&gt; to fold a region, so I can quickly add notes or even subtrees to a section and quickly jump around, add more notes, refine things, strike through cancelled features,&amp;nbsp;etc.&lt;/p&gt;
+&lt;p&gt;I&amp;#8217;m using my own notation here for a lot of stuff, like the &amp;#8220;&lt;span class="caps"&gt;TODO&lt;/span&gt; +&amp;#8221; entries basically meaning &amp;#8220;For Version +1&amp;#8221;.
+Prioritization is something I could have used too, but didn&amp;#8217;t really feel the need to for this&amp;nbsp;project.&lt;/p&gt;
+&lt;p&gt;This document started from very humble beginnings, something along the lines&amp;nbsp;of:&lt;/p&gt;
+&lt;div class="xhighlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;DEV TODO:
+=========
+
+* REQUIRED -
+** Get player sprite moving on screen
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And it grew from there - I went through my spritesheet and added a feature in the document for each &amp;#8216;object&amp;#8217;, and wrote a little note on what it would do or be used for. If I couldn&amp;#8217;t think of something to use it for or thought it would be too time consuming or space consuming for the game, I cut it from the feature list and&amp;nbsp;continued.&lt;/p&gt;
+&lt;p&gt;This ended up giving me a pretty solid foundation to work with, and a list of things to do whenever I was at a&amp;nbsp;loss.&lt;/p&gt;
+&lt;h3 id="the-code"&gt;The&amp;nbsp;Code&lt;/h3&gt;
+&lt;p&gt;If you want to follow along with any of the code, the source is &lt;a href="https://github.com/64Mega/xycore-js13k-2019"&gt;up on&amp;nbsp;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;All of the game&amp;#8217;s code resides in &lt;code&gt;main.js&lt;/code&gt;, with the only dependency being &lt;code&gt;sprsheet4.png&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;The other files are various&amp;nbsp;dependencies:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Filename&lt;/th&gt;
+&lt;th&gt;Purpose&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;compiled.js&lt;/td&gt;
+&lt;td&gt;Build artifact from Closure compiler, left in as an example&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;compress.bat&lt;/td&gt;
+&lt;td&gt;Lazy batch file to run the Closure compiler and pipe the output into index1.html&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;index.html&lt;/td&gt;
+&lt;td&gt;My &amp;#8216;development&amp;#8217; html file.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;index_template.html&lt;/td&gt;
+&lt;td&gt;The first piece of the distributed &lt;span class="caps"&gt;HTML&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;index_end.html&lt;/td&gt;
+&lt;td&gt;The tail-end of the distributed &lt;span class="caps"&gt;HTML&lt;/span&gt;. In hindsight, could&amp;#8217;ve just piped a fixed value into the final &lt;span class="caps"&gt;HTML&lt;/span&gt; file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Other files are part of the JS13k submission&amp;nbsp;system.&lt;/p&gt;
+&lt;p&gt;Once built, the only files that need packing are &lt;code&gt;index1.html&lt;/code&gt; (Renamed to index.html for the js13k submission) and
+&lt;code&gt;sprsheet4.png&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;For compression, I made use of 7zip to create the &lt;span class="caps"&gt;ZIP&lt;/span&gt; file, then further compressed down with &lt;code&gt;advzip&lt;/code&gt; and &lt;code&gt;optipng&lt;/code&gt;.
+The exact commands I used are as&amp;nbsp;follows:&lt;/p&gt;
+&lt;div class="xhighlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nx"&gt;optipng&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;o7&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;zm1&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;9&lt;/span&gt; &lt;span class="nx"&gt;sprsheet4&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;png&lt;/span&gt;
+&lt;span class="nx"&gt;advzip&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;z&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="mi"&gt;5000&lt;/span&gt; &lt;span class="nx"&gt;dist&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;zip&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3 id="my-tools"&gt;My&amp;nbsp;Tools&lt;/h3&gt;
+&lt;p&gt;Tool choice is pretty important for JS13k. You need to be comfortable with what you&amp;#8217;re using, and it&amp;#8217;s a good idea
+to have some &amp;#8216;quality of life&amp;#8217;&amp;nbsp;extras.&lt;/p&gt;
+&lt;p&gt;My development environment is Windows, with three alternative ways to use Linux for any Linux-specific tools or
+conveniences (Those being a &lt;span class="caps"&gt;VM&lt;/span&gt; server, &lt;span class="caps"&gt;WSL&lt;/span&gt; (Though that&amp;#8217;s a buggy mess 50% of the time) and a physical laptop that I often just leave on a shelf and run a low-profile server, accessed via &lt;span class="caps"&gt;SSH&lt;/span&gt;).&lt;/p&gt;
+&lt;p&gt;My editor is Visual Studio Code for code editing, Emacs for organization (org-mode is&amp;nbsp;amazing).&lt;/p&gt;
+&lt;p&gt;&lt;span class="caps"&gt;VS&lt;/span&gt; Code has some strong benefits for me: Remote Workspaces being one of them, a feature I make use of frequently,
+and the built in debug interface is &lt;em&gt;crucial&lt;/em&gt; to smooth game&amp;nbsp;debugging. &lt;/p&gt;
+&lt;p&gt;Sure you can set breakpoints and such up in the Firefox/Chrome dev-tools, but &lt;span class="caps"&gt;VS&lt;/span&gt; Code&amp;#8217;s debugger will auto-focus 
+on a breakpoint or exception, show a nice list of locals, the call stack and has &lt;em&gt;extra types&lt;/em&gt; of&amp;nbsp;breakpoint. &lt;/p&gt;
+&lt;p&gt;Logpoints and conditional breakpoints are something you never knew you needed until you try them.
+I&amp;#8217;m still lazy and tend to automatically use &lt;code&gt;console.log()&lt;/code&gt; in my code without thinking, but logpoints
+are a lot cleaner and come with the benefit of not needing to tidy up your cascade of &lt;code&gt;console.log&lt;/code&gt;s after
+a gruelling debug&amp;nbsp;session. &lt;/p&gt;
+&lt;p&gt;Mid-competition there was an update to &lt;span class="caps"&gt;VS&lt;/span&gt; code that added Data Breakpoints - breakpoints that fire when a specific
+variables changes. All of these debugging tools together help to minimize the amount of hunting you have to do
+for weird bugs, and allow you to catch issues&amp;nbsp;earlier.&lt;/p&gt;
+&lt;p&gt;For art I tend to always use Aseprite for my pixel art, ClipStudio &lt;span class="caps"&gt;PAINT&lt;/span&gt; for quick concept sketches or a good old piece of paper and a pencil - I always have a few pencils at hand, and a clipboard with some cheap printer paper for doodles or&amp;nbsp;notes!&lt;/p&gt;
+&lt;p&gt;My build tools consisted of nothing but browser-sync - hot reloading is invaluable when you&amp;#8217;re doing rapid iteration!
+My last js13k attempt involved a somewhat complicated Gulp and Webpack setup, but since I decided to work in a monolithic file - a bad idea, I know, but I managed! - I decided to rather take the path of least resistance and manually compile my game&amp;nbsp;later.&lt;/p&gt;
+&lt;h3 id="level-data-storage"&gt;Level Data&amp;nbsp;Storage&lt;/h3&gt;
+&lt;p&gt;Early on I made a decision to store my levels as image data. I&amp;#8217;d done this for my previous JS13k entry, and it was
+fairly successful if a bit cumbersome. But it compresses way better than an inline array, and didn&amp;#8217;t require too much code to get working. There was one caveat that I&amp;#8217;ll bring up later, but suffice it to say that it &lt;em&gt;works&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;The map looks like this in its current form:
+&lt;a href="static-images/xycore/map.png" data-fancybox="gallery" data-caption="The game's map"&gt;
+    &lt;img class="thumbnail" src="static-images/xycore/map.png"&gt;
+&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The way this works is that in the game&amp;#8217;s code I have an array of 16 &lt;span class="caps"&gt;RGB&lt;/span&gt; values, each one representing a color in my palette. I read the map image in, copy it to an &lt;code&gt;ImageData&lt;/code&gt; buffer and read each pixel in the map, comparing it to the palette and pushing the returned palette index into a &lt;code&gt;map[]&lt;/code&gt; array.&lt;/p&gt;
+&lt;p&gt;Each palette index has a &amp;#8216;meaning&amp;#8217; to the game: White is walls, transparent (Black areas in this screenshot) is empty space, the one shade of red is enemies, another bosses, dark red doors,&amp;nbsp;etc.&lt;/p&gt;
+&lt;p&gt;Eventually I merged the spritesheet and map into a single file to help reduce &lt;span class="caps"&gt;ZIP&lt;/span&gt; file&amp;nbsp;overhead.&lt;/p&gt;
+&lt;p&gt;In hindsight, I could&amp;#8217;ve implemented a really simple in-game map using this! Just render a piece of the map based on where the player&amp;#8217;s screen coordinates are, and only render doors and walls.
+That said, I didn&amp;#8217;t really have much screen space to work with, given my next&amp;nbsp;limitation.&lt;/p&gt;
+&lt;h3 id="the-canvas"&gt;The&amp;nbsp;Canvas&lt;/h3&gt;
+&lt;p&gt;As a sort of holdover from the original Fantasy Console idea, I decided to limit my canvas resolution to 128x128 pixels. This not only meant I didn&amp;#8217;t have to worry about performance as much, but meant I didn&amp;#8217;t need large sprites to provide a decently &amp;#8220;busy&amp;#8221; looking game&amp;nbsp;world.&lt;/p&gt;
+&lt;p&gt;This also made map editing easier, since each 16x16 grid cell in Aseprite corresponds with a single&amp;nbsp;room.&lt;/p&gt;
+&lt;p&gt;In &lt;a href="https://github.com/64Mega/xycore-js13k-2019/blob/master/index.html"&gt;&lt;code&gt;index.html&lt;/code&gt;&lt;/a&gt; there&amp;#8217;s a bit of inline css to position the canvas on-screen as part of page layout, instead of trying to fiddle with it from the JavaScript side,
+as well as enable &amp;#8220;Crisp Scaling&amp;#8221; on the canvas so that the pixel art looked&amp;nbsp;sharp.&lt;/p&gt;
+&lt;p&gt;Here it is in expanded&amp;nbsp;form:&lt;/p&gt;
+&lt;div class="xhighlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;style&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;body&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="c"&gt;/* This sets up a nice uniform area to put the canvas &lt;/span&gt;
+&lt;span class="c"&gt;            in and &amp;#39;letterboxes&amp;#39; the sides */&lt;/span&gt;
+        &lt;span class="k"&gt;display&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;block&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;margin&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;background&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;black&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="nt"&gt;canvas&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="k"&gt;display&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;block&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;height&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="kt"&gt;%&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;margin&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;auto&lt;/span&gt; &lt;span class="kc"&gt;auto&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;image-rendering&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;pixelated&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; 
+        &lt;span class="n"&gt;image-rendering&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;crisp-edges&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;style&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;canvas&lt;/span&gt; &lt;span class="na"&gt;width&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;128&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;height&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;128&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;canvas&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I decided right at the beginning that this &lt;span class="caps"&gt;DOM&lt;/span&gt; configuration was &lt;em&gt;vital&lt;/em&gt; to the game&amp;#8217;s presentation. I demand crispy pixels and proper&amp;nbsp;framing!&lt;/p&gt;
+&lt;h3 id="code-organization"&gt;Code&amp;nbsp;Organization&lt;/h3&gt;
+&lt;p&gt;Brace yourself, &lt;a href="https://github.com/64Mega/xycore-js13k-2019/blob/master/main.js"&gt;&lt;code&gt;main.js&lt;/code&gt;&lt;/a&gt; contains the entire game. It&amp;#8217;s somewhere between 1000-1500 lines of actual&amp;nbsp;code.&lt;/p&gt;
+&lt;p&gt;Before submitting I went over it and tried to comment things as I remembered their purpose, so there &lt;em&gt;is&lt;/em&gt; some useful commentary, but there&amp;#8217;s a lot of weird code, some areas where I tried some silly things and even entire sections of dead code. Not too many, but they&amp;#8217;re&amp;nbsp;there.&lt;/p&gt;
+&lt;p&gt;Now as for &lt;em&gt;why&lt;/em&gt; everything is in one giant source file, it&amp;#8217;s because I was feeling somewhat lazy this year and didn&amp;#8217;t feel like setting up a bundler this year. For JS13k 2017 I used an overcomplicated build setup involving Webpack and Gulp. Next year, I&amp;#8217;m likely to try getting a Parcel workflow working - Parcel is my go-to for any other web projects I work on, but this year laziness won&amp;nbsp;out.&lt;/p&gt;
+&lt;p&gt;I did divide the source into four distinct areas: Global variable declarations, Function declarations, Initialization and Game&amp;nbsp;Loop.&lt;/p&gt;
+&lt;p&gt;Normally writing everything in one giant file like this would prove a major headache, but I make pretty heavy use of a Bookmark extension for &lt;span class="caps"&gt;VS&lt;/span&gt; Code that lets me keep things in relative order.
+That said, having some things in their own separate files would&amp;#8217;ve made things a lot easier in the long run. But I knew what I was signing myself up&amp;nbsp;for!&lt;/p&gt;
+&lt;h2 id="development-process"&gt;Development&amp;nbsp;Process&lt;/h2&gt;
+&lt;p&gt;The first thing I did once my spritesheet was created was get the player sprite onto the screen and rendered. The second thing I did was to implement a better general-purpose sprite drawing function that could rotate and scale sprites - I used this to flip and rotate sprites, which allowed a lot of sprite reuse later&amp;nbsp;on.&lt;/p&gt;
+&lt;p&gt;I also created a function to create sprite objects that contained the relevant data for a sprite&amp;#8217;s frames and size, with defaults. This is what it looks like (with&amp;nbsp;formatting):&lt;/p&gt;
+&lt;div class="xhighlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;SpriteID&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;width&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;height&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;numframes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;length&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;width&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;height&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt; 
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;From there, I went on and created a separate function for drawing tiles. The tile function takes an array of indexes into the spritesheet, and chooses the subtile to use based on a combination of the X and Y position the tile is drawn. This gives a bit of pseudorandom variation to the&amp;nbsp;tiles.&lt;/p&gt;
+&lt;h3 id="game-progression"&gt;Game&amp;nbsp;Progression&lt;/h3&gt;
+&lt;p&gt;After I had something moving around on my screen and a few rooms to move around in, I started thinking about
+what I&amp;#8217;d like to make with&amp;nbsp;this.&lt;/p&gt;
+&lt;p&gt;I decided to keep player mechanics as simple as possible: Free-movement with a &amp;#8216;shoot&amp;#8217; button. This meant I could immediately shift focus to the&amp;nbsp;environment.&lt;/p&gt;
+&lt;p&gt;The first thing I did was split the map into five distinct areas. Each of the four quadrants of the map make up an area, with the tiles that meet in the center being &amp;#8220;Area&amp;nbsp;0&amp;#8221;.&lt;/p&gt;
+&lt;p&gt;It was around this time that, one evening, I started tinkering with some raster effects and created the water effect that&amp;#8217;s found in the&amp;nbsp;game.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://thumbs.gfycat.com/ColorlessCleverCod-size_restricted.gif" data-fancybox="gallery" data-caption="The water effect"&gt;
+    &lt;img src="https://thumbs.gfycat.com/ColorlessCleverCod-small.gif" &gt;
+&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;My first solution to achieve this involved drawing a copy of the canvas into an &lt;code&gt;ImageData&lt;/code&gt; buffer. This is the original&amp;nbsp;code:&lt;/p&gt;
+&lt;div class="xhighlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;ibuffer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;context&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;getImageData&lt;/span&gt;&lt;span class="p"&gt;(...&lt;/span&gt;&lt;span class="nx"&gt;canvasDimensions&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;row&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;distrow&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;row&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;128&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;row&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;p&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;distortion&lt;/span&gt; &lt;span class="o"&gt;?&lt;/span&gt; &lt;span class="nx"&gt;round&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;Math&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;sin&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sintimer&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="nx"&gt;row&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;1280&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;ap&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;abs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// Really redundant&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;128&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;ap&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;idex&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;row&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;512&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// Get offset into buffer. Same as y*(width*4) + (x*4)&lt;/span&gt;
+        &lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;j&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;j&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;j&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="nx"&gt;ibuffer&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;idex&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="nx"&gt;j&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;ibuffer&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;idex&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="nx"&gt;ap&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="nx"&gt;j&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="nx"&gt;ibuffer&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;idex&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;0xFF&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// Set alpha to full value&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="c1"&gt;// My screenshake was also baked into this area of the code.&lt;/span&gt;
+&lt;span class="c1"&gt;// msin and mcos are defined just before the loop, based on global sintimer.&lt;/span&gt;
+
+&lt;span class="nx"&gt;context&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;putImageData&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;ibuffer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="c1"&gt;// I use ternary expressions a lot.&lt;/span&gt;
+    &lt;span class="nx"&gt;screenShake&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nx"&gt;globalclock&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; 
+        &lt;span class="o"&gt;?&lt;/span&gt; &lt;span class="nx"&gt;msin&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;screenShake&lt;/span&gt;&lt;span class="o"&gt;*-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;
+        &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;msin&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;screenShake&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+
+    &lt;span class="nx"&gt;screenShake&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nx"&gt;globalclock&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; 
+        &lt;span class="o"&gt;?&lt;/span&gt; &lt;span class="nx"&gt;mcos&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;screenShake&lt;/span&gt;&lt;span class="o"&gt;*-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;
+        &lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;mcos&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;screenShake&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Later on I discovered that this was a serious performance bottleneck: &lt;code&gt;Context.getImageData()&lt;/code&gt; is just too&amp;nbsp;slow.&lt;/p&gt;
+&lt;p&gt;So I created a faster solution that uses a buffer canvas and redraws slices of the main canvas to an offset. That looks something like&amp;nbsp;this:&lt;/p&gt;
+&lt;div class="xhighlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;// cbuffercontext is a &amp;quot;copy buffer&amp;quot; defined near the top of the file next to the primary &lt;/span&gt;
+&lt;span class="c1"&gt;// canvas/context. Here we&amp;#39;re clearing and copying the contents of the primary buffer to it.&lt;/span&gt;
+
+&lt;span class="nx"&gt;cbuffercontext&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;clearRect&lt;/span&gt;&lt;span class="p"&gt;(...&lt;/span&gt;&lt;span class="nx"&gt;canvasDimensions&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="nx"&gt;cbufferContext&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;drawImage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;canvas&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="c1"&gt;// In case you&amp;#39;re wondering, distrow is the row on-screen where the water effec starts,&lt;/span&gt;
+&lt;span class="c1"&gt;// defaulting to 0 (Whole screen). This is used to render partial water in some rooms &lt;/span&gt;
+&lt;span class="c1"&gt;// without too much special logic.&lt;/span&gt;
+
+&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;row&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;distrow&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;row&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;128&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;row&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;p&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;distortion&lt;/span&gt; &lt;span class="o"&gt;?&lt;/span&gt; &lt;span class="nx"&gt;round&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;Math&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;sin&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sintimer&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="nx"&gt;row&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;1280&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="c1"&gt;// Clear a line of the buffer&lt;/span&gt;
+
+    &lt;span class="nx"&gt;cbuffercontext&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;clearRect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;row&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;128&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; 
+
+    &lt;span class="c1"&gt;// Draw an offset slice. &lt;/span&gt;
+    &lt;span class="c1"&gt;// We only ever draw at 0 or -1, otherwise the effect is too pronounced&lt;/span&gt;
+
+    &lt;span class="nx"&gt;cbuffercontext&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;drawImage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;canvas&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;row&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;128&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;p&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="o"&gt;?&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;row&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;128&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="c1"&gt;// Copy the copy-buffer back to the main canvas&lt;/span&gt;
+&lt;span class="c1"&gt;// We clear the main canvas first, since black pixels are actually just transparent pixels.&lt;/span&gt;
+&lt;span class="nx"&gt;context&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;clearRect&lt;/span&gt;&lt;span class="p"&gt;(...&lt;/span&gt;&lt;span class="nx"&gt;canvasDimensions&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="c1"&gt;// xoff and yoff are the screenshake offsets in this version&lt;/span&gt;
+&lt;span class="nx"&gt;context&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;drawImage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;cbuffer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;xoff&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;yoff&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;At first I thought this would be a colossal waste of space, but it really grew on me, and I think it adds a lot of visual style to the game - so I kept&amp;nbsp;it!&lt;/p&gt;
+&lt;h3 id="a-bit-of-juice"&gt;A bit of&amp;nbsp;&amp;#8220;Juice&amp;#8221;&lt;/h3&gt;
+&lt;p&gt;While I was testing my game, I noticed that there was a lack of &lt;em&gt;impact&lt;/em&gt;. Something should happen when a bullet hits something, or when the player takes damage. Something other than the sprite flickering or a dispersion effect&amp;nbsp;spawning.&lt;/p&gt;
+&lt;p&gt;I added a &lt;em&gt;really&lt;/em&gt; simple screen shake system that shakes more and longer the higher the variable that controls the shaking is. I added it to &lt;em&gt;everything&lt;/em&gt; I could think of, and it definitely made the game feel punchier almost&amp;nbsp;immediately.&lt;/p&gt;
+&lt;p&gt;The code for this is somewhat simplistic and also not entirely well implemented: The amplitude of the shake is a function of the duration of the shake. I have &lt;em&gt;no&lt;/em&gt; idea what my thought process behind this was, but it means that a higher duration screenshake shakes the screen to a stupid&amp;nbsp;degree.&lt;/p&gt;
+&lt;p&gt;The code that does this is as follows (From Line 1705 in the&amp;nbsp;source)&lt;/p&gt;
+&lt;div class="xhighlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;msin&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;Math&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;sin&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sintimer&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="c1"&gt;// Simple sine and cosine values for variaton&lt;/span&gt;
+    &lt;span class="nx"&gt;mcos&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;Math&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;cos&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sintimer&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="c1"&gt;// Screenshake calculations - scales the screenshake timer by the given&lt;/span&gt;
+    &lt;span class="c1"&gt;// sine/cosine value and then again by the direction.&lt;/span&gt;
+    &lt;span class="nx"&gt;xoff&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;screenShake&lt;/span&gt;&lt;span class="o"&gt;?&lt;/span&gt;&lt;span class="nx"&gt;screenShake&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;globalclock&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;?&lt;/span&gt;&lt;span class="nx"&gt;msin&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;screenShake&lt;/span&gt;&lt;span class="o"&gt;*-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;msin&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;screenShake&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="nx"&gt;yoff&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;screenShake&lt;/span&gt;&lt;span class="o"&gt;?&lt;/span&gt;&lt;span class="nx"&gt;screenShake&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;globalclock&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;?&lt;/span&gt;&lt;span class="nx"&gt;mcos&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;screenShake&lt;/span&gt;&lt;span class="o"&gt;*-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;mcos&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;screenShake&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If you feel like playing around with this and seeing how bad high screenshake values can really get, try modifying the screenshake value for something silly like bullet impacts to something like 32 and watch the world shake itself&amp;nbsp;apart!&lt;/p&gt;
+&lt;h3 id="the-bosses"&gt;The&amp;nbsp;Bosses&lt;/h3&gt;
+&lt;h4 id="the-magma-centipede-boss"&gt;The &amp;#8220;Magma Centipede&amp;#8221;&amp;nbsp;boss&lt;/h4&gt;
+&lt;p&gt;After I created my four visual areas I decided I wanted to create four bosses based on the sprites I&amp;#8217;d already made.
+I began with the most difficult one, the Magma&amp;nbsp;Centipede/Worm.&lt;/p&gt;
+&lt;p&gt;Before creating the player code I had already experimented with creating a segmented enemy that drew multiple
+body parts as a &amp;#8216;line&amp;#8217; of segments. With a bit of tweaking I managed to get it to wriggle menacingly from the
+right-hand-side of the&amp;nbsp;screen.&lt;/p&gt;
+&lt;p&gt;In steps, I added more &amp;#8216;life&amp;#8217; to it, beginning with the ability to damage the player if touching. Then I made it take damage from the player&amp;#8217;s&amp;nbsp;weapon.&lt;/p&gt;
+&lt;p&gt;And at that point I decided I wanted a simple state machine. My implementation for all four bosses involves a large &lt;code&gt;switch&lt;/code&gt; statement that checks a variable named &lt;code&gt;bossPhase&lt;/code&gt;. The currently spawned boss has a data object that contains some common boss variables as well as some unique values, e.g.: the fire boss has a &lt;code&gt;segs&lt;/code&gt; variable to represent the number of segments&amp;nbsp;remaining.&lt;/p&gt;
+&lt;p&gt;From this point I started scripting the boss stage by stage. The first thing I made it do was appear from off-screen. This was a simple check against a variable holding the X value. Once it hit that value, it&amp;#8217;s off to the next &amp;#8216;phase&amp;#8217; of the&amp;nbsp;behavior.&lt;/p&gt;
+&lt;p&gt;Next I made it quickly disappear off screen when you took out one of its health bars, and return again with one a segment&amp;nbsp;removed.&lt;/p&gt;
+&lt;p&gt;Then I decided to mess around and made the fire-wave. That was a lot of fun to make, but is also some of the messiest code in the file! It&amp;#8217;s basically a super-long array of X and Y coordinates, and the boss loops through each of them
+decrementing the X value and assigning the Y value as a function of a sinewave based on that X&amp;nbsp;value.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;It was around this point that I gave the Closure compiler a try, and was pleasantly surprised when I found that I was only using 7.5k or so. I realized that with a bit of work I could add some interesting behaviors to my bosses, and make them a centerpiece for the&amp;nbsp;game.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id="the-venus-flytrap-boss"&gt;The &amp;#8220;Venus Flytrap&amp;#8221;&amp;nbsp;boss&lt;/h4&gt;
+&lt;p&gt;The next boss I tackled was the Unnamed Plant Boss/Venus Flytrap. I had already decided a few days before implementing this one that I wanted it to be a &amp;#8216;simple&amp;#8217; dodge phase, defense phase and damage phase: Dodge the bullet pods, destroy the vines, attack the center, repeat for another two waves.
+I was planning on saving the more &amp;#8216;complex&amp;#8217; behaviors for the last&amp;nbsp;boss.&lt;/p&gt;
+&lt;p&gt;A key addition to my implementation here was the creation of a &lt;code&gt;playerHurt&lt;/code&gt; function that enemies an bosses could call to damage the player, as well as a &lt;code&gt;playerProjectileTest&lt;/code&gt; function that would loop through the active player projectiles and apply a basic &lt;span class="caps"&gt;AABB&lt;/span&gt; test to them, running a callback if a collision was&amp;nbsp;happening.&lt;/p&gt;
+&lt;p&gt;The damage the vines inflict was implemented using a manual &lt;span class="caps"&gt;AABB&lt;/span&gt; test against the player coordinates, and would &amp;#8216;bump&amp;#8217; the player to the left or right depending on which side of the screen they were&amp;nbsp;on.&lt;/p&gt;
+&lt;p&gt;The final phase is the &amp;#8220;free damage&amp;#8221; state: You have as much time as you want to spam bullets at the plant bulb and get rid of an &lt;span class="caps"&gt;HP&lt;/span&gt;&amp;nbsp;bar.&lt;/p&gt;
+&lt;h4 id="the-mother-brain-boss"&gt;The &amp;#8220;Mother Brain&amp;#8221;&amp;nbsp;boss&lt;/h4&gt;
+&lt;p&gt;This boss was a pretty simple one too, because I was getting nervous as I crept closer to the 10k mark, and I wanted space to add extra enemies, weapon powerups and suit&amp;nbsp;upgrades&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Up to this point the weapon upgrades were automatically granted as soon as you destroyed a boss. This worked, but having an actual item to pick up after the boss room feels much more&amp;nbsp;rewarding.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Similarly to the Flytrap, I decided to have some sort of barrier to take down, so I started with a nod to the barriers in the original Metroid game when fighting Mother&amp;nbsp;Brain.&lt;/p&gt;
+&lt;p&gt;But barriers alone made for a boring and completely benign boss battle, so I &amp;#8220;temporarily&amp;#8221; added in a bunch of enemy spawners along the top and bottom of the central&amp;nbsp;corridor.&lt;/p&gt;
+&lt;p&gt;I decided to keep them, in the end, they added a somewhat random element to the boss, since anything could technically&amp;nbsp;spawn.&lt;/p&gt;
+&lt;p&gt;After taking down the first &lt;span class="caps"&gt;HP&lt;/span&gt; bar, the brain spawns in four turrets with projectiles that fire towards the player&amp;#8217;s position. This adds a bit of required dodging, but isn&amp;#8217;t too hard to get through. Originally I was going to spawn another wave of these, but I decided not to in the final game because this was going to be the first battle the player would&amp;nbsp;have.&lt;/p&gt;
+&lt;h4 id="the-tank-boss"&gt;The &amp;#8220;Tank&amp;#8221;&amp;nbsp;Boss&lt;/h4&gt;
+&lt;p&gt;I took on this boss pretty close to the end of development, after I&amp;#8217;d already added in a bunch of things like the health and suit upgrades, so I decided to go &amp;#8220;all out&amp;#8221; with&amp;nbsp;it.&lt;/p&gt;
+&lt;p&gt;Initially I just did slow linear movement from side-to-side, but I decided that didn&amp;#8217;t have enough impact. So I went and added a simple &lt;code&gt;lerp&lt;/code&gt; and quadratic easing function to the game. Still not feeling the impact enough, I added screenshake every time the boss &amp;#8216;stopped&amp;#8217;. This added a bit of punch to the&amp;nbsp;fight.&lt;/p&gt;
+&lt;p&gt;The drop-down from the ceiling was intended to give the player a window of opportunity to mash the fire button at the boss for a bit, but not for free - it was a bit too easy, so I added a wave of those tracking projectiles to this portion of the&amp;nbsp;fight.&lt;/p&gt;
+&lt;p&gt;Originally the fight drastically sped up as you got through the health bars, but I toned it down a bit. Even I was having trouble getting through it, and I made the&amp;nbsp;game!&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;On that note, it &lt;em&gt;is&lt;/em&gt; possible to defeat this boss without any weapon, suit or health upgrades. While debugging I did that several times, though it&amp;#8217;s pretty tough. In normal gameplay you can&amp;#8217;t encounter the boss without the third weapon upgrade, but you &lt;em&gt;can&lt;/em&gt; intentionally downgrade using the &lt;span class="caps"&gt;JS&lt;/span&gt; console by entering &lt;code&gt;playerWeapon = 0&lt;/code&gt;, if you&amp;#8217;d like to challenge yourself - but only if running the unobfuscated version of the game. I have &lt;em&gt;no&lt;/em&gt; idea what the variable name is once it&amp;#8217;s&amp;nbsp;minified!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="an-audio-experiment"&gt;An Audio&amp;nbsp;Experiment&lt;/h3&gt;
+&lt;p&gt;At some point during week 2 I had this harebrained notion to add sound to my game. I had already &lt;em&gt;firmly&lt;/em&gt; decided at the start of the competition that I knew nothing about the Browser Audio APIs and that it&amp;#8217;d be best left until next&amp;nbsp;time.&lt;/p&gt;
+&lt;p&gt;My brain beyond &lt;span class="caps"&gt;11PM&lt;/span&gt; doesn&amp;#8217;t care for my resolve. I cracked open &lt;span class="caps"&gt;MDN&lt;/span&gt;&amp;#8217;s docs on the &lt;span class="caps"&gt;API&lt;/span&gt;, picked out the squarewave oscillator and created a really simple sound&amp;nbsp;player.&lt;/p&gt;
+&lt;p&gt;It consists of three parts: An oscillator node, a gain node and a function that feeds the&amp;nbsp;oscillator.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;beep&lt;/code&gt; function takes as its argument an array of arrays. Each sub-array needs two values: A frequency and a duration.
+The function recursively consumes the array until done, setting the gain to a non-ear-destroying level upon starting a new note and setting it back to zero when ending a&amp;nbsp;note.&lt;/p&gt;
+&lt;p&gt;Here&amp;#8217;s the &lt;em&gt;entirety&lt;/em&gt; of the audio&amp;nbsp;code:&lt;/p&gt;
+&lt;div class="xhighlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;ac&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;AudioContext&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;osc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;ac&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;createOscillator&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;gain&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;ac&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;createGain&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="nx"&gt;osc&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;square&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="nx"&gt;osc&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;connect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;gain&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="nx"&gt;gain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;gain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mf"&gt;0.0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="nx"&gt;osc&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;start&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="nx"&gt;gain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;connect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;ac&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;destination&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;beep&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;notes&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;notes&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt; &lt;span class="c1"&gt;// Current frequency/duration pair&lt;/span&gt;
+    &lt;span class="nx"&gt;osc&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;frequency&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;setValueAtTime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="nx"&gt;ac&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;currentTime&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="nx"&gt;gain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;gain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mf"&gt;0.04&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="nx"&gt;setTimeout&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;_&lt;/span&gt;&lt;span class="p"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="nx"&gt;gain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;gain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="nx"&gt;osc&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;frequency&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// Helps prevent clipping&lt;/span&gt;
+
+        &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;notes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;length&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="nx"&gt;beep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;notes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;slice&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt; &lt;span class="c1"&gt;// Making the most of JS APIs!&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// Add a small offset to the duration to compensate for&lt;/span&gt;
+                &lt;span class="c1"&gt;// Firefox having some trouble with shorter durations.&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Here&amp;#8217;s an example sound, the &amp;#8220;Pickup&amp;#8221;&amp;nbsp;sound:&lt;/p&gt;
+&lt;div class="xhighlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;sndPickup&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="mi"&gt;523&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="p"&gt;],[&lt;/span&gt;&lt;span class="mi"&gt;466&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="p"&gt;],[&lt;/span&gt;&lt;span class="mi"&gt;311&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="p"&gt;],[&lt;/span&gt;&lt;span class="mi"&gt;261&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="p"&gt;],[&lt;/span&gt;&lt;span class="mi"&gt;523&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="p"&gt;],[&lt;/span&gt;&lt;span class="mi"&gt;1047&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="p"&gt;]];&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I created these sounds by ear using a note frequency chart and rounding the figures to the nearest integer. It worked out pretty &lt;span class="caps"&gt;OK&lt;/span&gt;, and the sounds are somewhat reminiscent of early &lt;span class="caps"&gt;DOS&lt;/span&gt; and arcade&amp;nbsp;games.&lt;/p&gt;
+&lt;h3 id="the-save-system"&gt;The Save&amp;nbsp;System&lt;/h3&gt;
+&lt;p&gt;This is another feature that I didn&amp;#8217;t think I would be able to add, but after looking into it, was actually really&amp;nbsp;straightforward.&lt;/p&gt;
+&lt;p&gt;I opted to use the &lt;code&gt;sessionStorage&lt;/code&gt; &lt;span class="caps"&gt;API&lt;/span&gt; as opposed to the &lt;code&gt;localStorage&lt;/code&gt; &lt;span class="caps"&gt;API&lt;/span&gt; since access control to the former is less restricted. This means that the game retains your progress so long as you have the tab open. Reloading, even hard-reloading, will keep your save data intact. To start a new game you&amp;#8217;d have to close the tab and reopen&amp;nbsp;it.&lt;/p&gt;
+&lt;p&gt;One little bug I ran into while working with &lt;code&gt;sessionStorage&lt;/code&gt; is that the &lt;code&gt;getItem&lt;/code&gt; method always returns a string, no matter what you stored to begin with, and I wasn&amp;#8217;t taking that into account. 
+I eventually went back over my code and, for every instance I was using it, coerced the returned value into a number like&amp;nbsp;so:&lt;/p&gt;
+&lt;div class="xhighlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;~~&lt;/span&gt;&lt;span class="nx"&gt;retrieve&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;px&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;That &lt;code&gt;retrieve&lt;/code&gt; function was an attempt on my part to reduce the byte footprint of the sessionStorage calls. The compiler can&amp;#8217;t minify the names of global &lt;span class="caps"&gt;API&lt;/span&gt; objects or their methods, so I tried to&amp;nbsp;delegate.&lt;/p&gt;
+&lt;p&gt;The compiler &amp;#8216;helpfully&amp;#8217; optimized my delegation out, replacing each instance of &lt;code&gt;retrieve&lt;/code&gt; and its counterpart &lt;code&gt;store&lt;/code&gt; with the full-length &lt;code&gt;sessionStorage.getItem&lt;/code&gt; and &lt;code&gt;sessionStorage.setItem&lt;/code&gt;. Before submitting I manually re-added the delegate functions and did a search/replace over the minified code to save some&amp;nbsp;space.&lt;/p&gt;
+&lt;p&gt;On death, the last save is &amp;#8216;loaded&amp;#8217; by reloading the window, which makes for a nice and neat reinitialization of the global state. The reload is achieved with this odd&amp;nbsp;assignment:&lt;/p&gt;
+&lt;div class="xhighlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;location&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;location&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3 id="player-progression"&gt;Player&amp;nbsp;Progression&lt;/h3&gt;
+&lt;p&gt;When I began work on the spritesheet, I started off &lt;em&gt;really&lt;/em&gt; simple. Initially I was going to limit sprites to one color to keep with the Hero Core inspiration, but with a more &lt;span class="caps"&gt;ZX&lt;/span&gt; Spectrum style. Then I started listening to some music and before I knew it I had revised the spritesheet with a much higher per-sprite color count. It definitely made the sprites more&amp;nbsp;vibrant!&lt;/p&gt;
+&lt;p&gt;That was when I started adding door sprites, different weapons and different suit colors, and basically the game I was planning turned into a&amp;nbsp;micro-Metroidvania!&lt;/p&gt;
+&lt;p&gt;For the majority of the project&amp;#8217;s development I wasn&amp;#8217;t sure I&amp;#8217;d be able to fit any of the desired features in, so I left the bulk of them alone until after I implemented what I saw as the game&amp;#8217;s &amp;#8220;heart&amp;#8221;, those being the boss&amp;nbsp;encounters.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;There are still quite a few potential objects and obstacles left out of the final competition version of the&amp;nbsp;game:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Electric barriers, meant to be brought down by fighting a mini-boss (Similarly to Hero&amp;nbsp;Core)&lt;/li&gt;
+&lt;li&gt;Switches that could open doors in other rooms, perhaps with a time&amp;nbsp;limit&lt;/li&gt;
+&lt;li&gt;Switchable weapons and ammo for each&amp;nbsp;weapon&lt;/li&gt;
+&lt;li&gt;Touch-screen dpad icons (I did implement that, but it was a bit of a big feature so I cut it for space&amp;nbsp;reasons)&lt;/li&gt;
+&lt;li&gt;&lt;span class="dquo"&gt;&amp;#8220;&lt;/span&gt;Crystals&amp;#8221; that were supposed to be in the rooms after a boss. You&amp;#8217;d destroy them to open the shell around the reactor in the center of the game&amp;nbsp;world.&lt;/li&gt;
+&lt;li&gt;Spikes! Not of the instant-death variety, but damaging with a bit of&amp;nbsp;knockback.&lt;/li&gt;
+&lt;li&gt;Magma! Originally intended for the lower-right corner of the&amp;nbsp;map.&lt;/li&gt;
+&lt;li&gt;Crusher traps! These would come down from the ceiling or up from the floor and cause major damage if the player got caught between&amp;nbsp;them.&lt;/li&gt;
+&lt;li&gt;Quick Man lasers! Not instant-death though, but I ended up recycling the art for the fourth&amp;nbsp;boss.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I might implement some of these if I get around to implementing a &amp;#8220;Version 1.1&amp;#8221; of the&amp;nbsp;game.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Once I was done with them, I added in the &amp;#8216;bonus&amp;#8217; features I really wanted: barrier doors, optional health upgrades, suit upgrades and enemy&amp;nbsp;variety.&lt;/p&gt;
+&lt;h4 id="player-weapons"&gt;Player&amp;nbsp;Weapons&lt;/h4&gt;
+&lt;p&gt;At the start of the game the intent was for the player to only have four weapons. The pea-shooter, laser rifle, plasma cannon and rocket launcher, in that&amp;nbsp;order.&lt;/p&gt;
+&lt;p&gt;Earlier in the boss implementation section I mentioned that the bosses originally granted a weapon upgrade when defeated. During testing I often set my weapon level to 3 so I could burst down phases I&amp;#8217;d already tested, but this had the side-effect of crashing the game when the level raised to 4 after defeating the&amp;nbsp;boss!&lt;/p&gt;
+&lt;p&gt;So my quick-n-dirty solution was to add a special &amp;#8216;5th&amp;#8217; weapon that you get after defeating the final boss, which is a simple reuse of the plasma explosion effect. A &amp;#8220;hyper beam&amp;#8221;, basically. Completely useless by that point in the game, but satisfying to&amp;nbsp;obtain!&lt;/p&gt;
+&lt;h4 id="barrier-doors"&gt;Barrier&amp;nbsp;Doors&lt;/h4&gt;
+&lt;p&gt;This one was a no-brainer to me. I had (initially) four weapons, and I thought that it&amp;#8217;d be nice to have a barrier for each&amp;nbsp;type. &lt;/p&gt;
+&lt;p&gt;Implementation-wise these are basically just in-world collision checks that stop the player from moving through them and will explode on contact with the right level of&amp;nbsp;projectile.&lt;/p&gt;
+&lt;p&gt;Placement of these was a little tricky - I only had 16 colors to work with on the map, and I was quickly running out. So I pulled a bit of modulo trickery that essentially boils down to&amp;nbsp;this:&lt;/p&gt;
+&lt;div class="xhighlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nx"&gt;spawnDoor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;cx&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;cy&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;cx&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Where the third argument is the &amp;#8216;type&amp;#8217; of door, and the variables &lt;code&gt;cx&lt;/code&gt; and &lt;code&gt;cy&lt;/code&gt; are the tile coordinates of the door.
+This did mean that placement was a little bit tricky, but it worked out in the end: I only had to use one map color to place the&amp;nbsp;doors!&lt;/p&gt;
+&lt;h4 id="health-upgrades"&gt;Health&amp;nbsp;Upgrades&lt;/h4&gt;
+&lt;p&gt;This was a bit of a no-brainer. I originally started out designing the game around a maximum of 6 health, but then as I started adding in enemies and more complicated bosses I found that the friends helping me test the game were having quite a bit of&amp;nbsp;trouble.&lt;/p&gt;
+&lt;p&gt;Each health upgrade adds two to the player&amp;#8217;s maximum health, and persists for the current game session. There are a total of four to find, and getting them all makes the game significantly&amp;nbsp;easier.&lt;/p&gt;
+&lt;h4 id="armor-upgrades"&gt;Armor&amp;nbsp;Upgrades&lt;/h4&gt;
+&lt;p&gt;For those who like to 100% things, and for those still having trouble with some of the bosses, I added in armor upgrades at the last moment. At first these were going to be traversal enablers. For example, you&amp;#8217;d be unable to enter water without the first tier of upgrade, and the fire zone would damage you until you got the second&amp;nbsp;one.&lt;/p&gt;
+&lt;p&gt;I scrapped that concept relatively quickly, since there were already barriers in the&amp;nbsp;game.&lt;/p&gt;
+&lt;p&gt;I later decided to use the assets, but made them behave as a damage modifier: Each upgrade reduces damage taken by 25%, for a total of 50% damage reduction if you collect both upgrades. This also makes the game a lot easier, but they&amp;#8217;re satisfying to&amp;nbsp;collect.&lt;/p&gt;
+&lt;h4 id="enemy-variety"&gt;Enemy&amp;nbsp;Variety&lt;/h4&gt;
+&lt;p&gt;During almost 90% of the project&amp;#8217;s development I only had two types of static turret enemy. One would shoot straight ahead from whatever surface it was spawned on, the other would shoot diagonally in the direction of the&amp;nbsp;player.&lt;/p&gt;
+&lt;p&gt;After I&amp;#8217;d populated the game&amp;#8217;s map a bit, this felt really bland. I was at the 12k mark already when I hit this point, but I managed to squeeze some really simple extra enemy behaviors in at the last minute - a &amp;#8220;rover&amp;#8221; enemy that moved left/right or up/down between walls, a static enemy that burst into a ring of projectiles when destroyed and a special turret that shoots tracking&amp;nbsp;projectiles.&lt;/p&gt;
+&lt;p&gt;Even this handful of extra enemy types adds a lot more variety to the game&amp;#8217;s areas, and given the way the respawn feature works, you can sometimes reroll into some really challenging&amp;nbsp;rooms!&lt;/p&gt;
+&lt;h3 id="ending-and-escape-sequence"&gt;Ending and Escape&amp;nbsp;Sequence&lt;/h3&gt;
+&lt;p&gt;The final sequence of the game was a really late addition. I didn&amp;#8217;t think I&amp;#8217;d have space for anything too fancy (And I was mostly right), but given that I had a few hundred bytes to spare I decided to add a win screen and an escape&amp;nbsp;sequence.&lt;/p&gt;
+&lt;p&gt;Originally the escape sequence was going to have a timer, but I found that given the limits to what I could do with regards to making a complex escape route, it wasn&amp;#8217;t worth the implementation - instead I chose to create a sense of tension with the screenshake and explosions, so it &lt;em&gt;seems&lt;/em&gt; like there&amp;#8217;s an urgency to escaping, and so that the end screen feels a bit more rewarding than simply flashing up the second you destroy the&amp;nbsp;reactor.&lt;/p&gt;
+&lt;p&gt;If I&amp;#8217;d had a bit more space to work with (And some more available map colors) I would have liked to have implemented an idea I had fairly early on: Block up some passageways and open up others so the player has to escape through areas they&amp;#8217;ve already been through a new route - maybe something for the post competition&amp;nbsp;version?&lt;/p&gt;
+&lt;h3 id="the-canvas-flip-bug"&gt;The Canvas Flip&amp;nbsp;Bug&lt;/h3&gt;
+&lt;p&gt;I had a mild panic a few days before submission when I discovered that, seemingly at random, the canvas was flipping itself upside down. After a bit of digging, I discovered it wasn&amp;#8217;t anything to do with the game but was a strange behaviour introduced into a specific version of Chromium that most Chromium based browsers are currently&amp;nbsp;using.&lt;/p&gt;
+&lt;p&gt;Whenever the tab loses focus (e.g.: The window gets minimized or you switch to another tab and back again), the canvas would flip and remain flipped until&amp;nbsp;reloading.&lt;/p&gt;
+&lt;p&gt;I confirmed that it wasn&amp;#8217;t &amp;#8220;just me&amp;#8221;, and have been finding it happening on any entry that utilizies the 2D render context (WebGL contexts seem immune to the&amp;nbsp;problem).&lt;/p&gt;
+&lt;p&gt;A friend of mine who was helping playtest the game just before submission intentionally flipped the canvas and played the game in &amp;#8220;Mirror mode&amp;#8221;, as he called it. Successfully too, I might add. So I labeled it a &amp;#8216;buggy feature&amp;#8217; and submitted the&amp;nbsp;game.&lt;/p&gt;
+&lt;h3 id="submission"&gt;Submission&lt;/h3&gt;
+&lt;p&gt;I made a point of making use of the &lt;a href="https://github.com/js13kGames/bot/blob/master/doc/how-to-submit.md#how-to-submit"&gt;new submission &lt;span class="caps"&gt;PR&lt;/span&gt; bot&lt;/a&gt; provided for this year&amp;#8217;s competition. It made submission a lot easier, and pointed out a really dumb mistake I&amp;#8217;d made (Forgot to rename &lt;code&gt;index1.html&lt;/code&gt; in the distributed zip to &lt;code&gt;index.html&lt;/code&gt;!).&lt;/p&gt;
+&lt;p&gt;I actually submitted my game nearly a full week before the deadline: I&amp;#8217;d basically run out of space and had actually accomplished my design goals for once - I&amp;#8217;m used to overscoping and cutting features like crazy before&amp;nbsp;submitting!&lt;/p&gt;
+&lt;p&gt;That said, after submission I encountered two unexpected bugs! Let&amp;#8217;s go over&amp;nbsp;them.&lt;/p&gt;
+&lt;h4 id="bug-1-monitor-sync-rate"&gt;Bug #1 - Monitor Sync&amp;nbsp;Rate&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;requestAnimationFrame&lt;/code&gt; is a pretty handy browser function. And I&amp;#8217;d always (naively) assumed it was going to try to give me a constant &amp;#8216;animation&amp;#8217; tick, that tick being roughly every 16ms or so. 60 frames per&amp;nbsp;second.&lt;/p&gt;
+&lt;p&gt;And I had no reason to believe otherwise! It works like that on all my devices! 
+So I treated updates as fixed-increment and used fixed values everywhere - a very bad idea, as it always is, because when a friend of mine tried it on his 120hz monitor, the game predictably ran twice as&amp;nbsp;fast!&lt;/p&gt;
+&lt;p&gt;I quickly implemented a traditional fixed timestep, which only took about seven lines of code total, and submitted a patch to the competition&amp;nbsp;organizers. &lt;/p&gt;
+&lt;p&gt;For those interested, my implementation of the timestep (Patched together after a hasty reading-up of a bunch of articles and StackOverflow answers) looks like&amp;nbsp;this:&lt;/p&gt;
+&lt;div class="xhighlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;// globals:&lt;/span&gt;
+&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;frameStart&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;frameDelta&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;FPS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;60&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;frameTime&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1000&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nx"&gt;FPS&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="c1"&gt;// At top of update function:&lt;/span&gt;
+&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;time&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;performance&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;now&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;delta&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;time&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="nx"&gt;frameStart&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;delta&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nx"&gt;delta&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;frameTime&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// To &amp;#39;skip&amp;#39; frames if we accumulate too much frame time&lt;/span&gt;
+    &lt;span class="nx"&gt;frameDelta&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="nx"&gt;delta&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;frameDelta&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;frameTime&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="c1"&gt;// Do Update Code here&lt;/span&gt;
+        &lt;span class="nx"&gt;frameDelta&lt;/span&gt; &lt;span class="o"&gt;-=&lt;/span&gt; &lt;span class="nx"&gt;frameTime&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="nx"&gt;frameStart&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;time&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nx"&gt;requestAnimationFrame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;main&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Note that this is a &lt;em&gt;fixed&lt;/em&gt; timestep, as opposed to the &lt;em&gt;variable&lt;/em&gt; timestep used in a lot of 3D engines (In those you tend to scale your movement by the delta time). This gives me the expected &lt;span class="caps"&gt;60FPS&lt;/span&gt; if it&amp;#8217;s achievable on the current hardware, and means I can get away with not having to touch my movement&amp;nbsp;code.&lt;/p&gt;
+&lt;h4 id="bug-2-color-profiles"&gt;Bug #2 - Color&amp;nbsp;Profiles&lt;/h4&gt;
+&lt;p&gt;Credit to &lt;a href="https://twitter.com/sirXemic"&gt;SirXemic&lt;/a&gt; for finding this one and contacting me with a fix.
+You should go try out his entry to the competition, &lt;a href="https://js13kgames.com/entries/sentetrox"&gt;SenTetrox&lt;/a&gt;, which is best described as Tetris with a really fun twist! Go give it a&amp;nbsp;play!&lt;/p&gt;
+&lt;p&gt;This bug is a little bit more obscure, but it&amp;#8217;s related to how I&amp;#8217;m generating my map: I&amp;#8217;m reading in pixels from my spritesheet and comparing them against exact &lt;span class="caps"&gt;RGB&lt;/span&gt; values in an&amp;nbsp;array.&lt;/p&gt;
+&lt;p&gt;What I failed to take into account was the &lt;em&gt;color profile&lt;/em&gt; of the player&amp;#8217;s monitor. If an image has no attached color profile, the browser will convert it on the fly to the user&amp;#8217;s color profile, using what I&amp;#8217;m assuming is a perceptive conversion - this means that while the colors will appear to look the same or similar-enough, the exact &lt;span class="caps"&gt;RGB&lt;/span&gt; values are&amp;nbsp;different.&lt;/p&gt;
+&lt;p&gt;I use Aseprite for all of my pixel art, and in this case in particular I was working with indexed &lt;span class="caps"&gt;PNG&lt;/span&gt; images. Because I hadn&amp;#8217;t set my defaults up for sRGB, it saved the images without a color&amp;nbsp;profile!&lt;/p&gt;
+&lt;p&gt;The game still worked on the majority of systems, but for anybody using a monitor with a different color profile, the game would be unable to load, as the map pixels wouldn&amp;#8217;t match any of the&amp;nbsp;palette-data.&lt;/p&gt;
+&lt;p&gt;This was a simple fix, as I just opened the spritesheet in Krita and converted to the sRGB color profile while choosing to use &lt;em&gt;absolute&lt;/em&gt; mode instead of &lt;em&gt;perceptive&lt;/em&gt; mode. Simple, but it stands as a good example of bugs that can easily fly under the&amp;nbsp;radar.&lt;/p&gt;
+&lt;h3 id="summary"&gt;Summary&lt;/h3&gt;
+&lt;p&gt;I&amp;#8217;ll sum things up here in the traditional postmortem format, to round things&amp;nbsp;off!&lt;/p&gt;
+&lt;h4 id="what-went-right"&gt;What Went&amp;nbsp;Right&lt;/h4&gt;
+&lt;p&gt;Having a clear idea of what I was making meant I knew exactly what I needed to do at each step to get to the core of the game I&amp;nbsp;wanted.&lt;/p&gt;
+&lt;p&gt;That idea was informed heavily by my decision to create an asset sheet before starting. I gave myself a palette of sprites to work with, and the game formed up from&amp;nbsp;there.&lt;/p&gt;
+&lt;p&gt;The timing of things worked out pretty well, since I was able to spend a good 1-2 hours every day on the game - this isn&amp;#8217;t always the case as I never know when I may or may not have extra work on my plate. Being able to finish the game in three weeks instead of four gave me some extra breathing room for bug testing and&amp;nbsp;polish.&lt;/p&gt;
+&lt;h4 id="what-went-wrong"&gt;What Went&amp;nbsp;Wrong&lt;/h4&gt;
+&lt;p&gt;Surprisingly little this year! My last two js13k games were, to be honest, hardly games - they were experiments, and I think I did a good job learning from them this&amp;nbsp;year.&lt;/p&gt;
+&lt;p&gt;If anything, my biggest failure this year was not spending the time setting up a more streamlined build process. I did a lot of manual compilation, compressing and size-checking throughout the&amp;nbsp;competition.&lt;/p&gt;
+&lt;h4 id="what-ill-do-next"&gt;What I&amp;#8217;ll Do&amp;nbsp;Next&lt;/h4&gt;
+&lt;p&gt;Generally I have a bad track-record when it comes to doing post-jam/post-competition work on my games, but given the &amp;#8220;completeness&amp;#8221; of this one, I feel it&amp;#8217;d only be right to make an attempt at a tidied up post-jam version with a few extras and tweaks. I&amp;#8217;ll be attempting that if time permits after the voting period (There&amp;#8217;s a load of games to get through, and some of them are time&amp;nbsp;consuming!)&lt;/p&gt;
+&lt;p&gt;I&amp;#8217;d like to work on a &amp;#8220;Super&amp;#8221; Xycore, something a bit more complex and not limited to weird infrastructural choices born of limitations, and with a wider selection of art, sounds and music - and if work doesn&amp;#8217;t get too busy, I&amp;#8217;ll probably get somewhere with&amp;nbsp;that.&lt;/p&gt;
+&lt;p&gt;For next year&amp;#8217;s JS13k I&amp;#8217;m hoping to prepare a common library of tools in advance, as well as an automated build system to streamline the process - and maybe I&amp;#8217;ll revive my original idea? Who&amp;nbsp;knows!&lt;/p&gt;
+&lt;p&gt;For now, I&amp;#8217;m going to be playing the other entries! I&amp;#8217;ve played around 60 so far and there are some real standout games this year - I&amp;#8217;m looking forward to seeing what else lies in&amp;nbsp;store!&lt;/p&gt;</content><category term="Development"></category><category term="JS13k"></category><category term="Postmortem"></category></entry><entry><title>2019 Site Revamp</title><link href="https://64mega.github.io/2019-site-revamp.html" rel="alternate"></link><published>2019-07-20T00:00:00+02:00</published><updated>2019-07-20T00:00:00+02:00</updated><author><name>Daniel '64Mega' Lawrence</name></author><id>tag:64mega.github.io,2019-07-20:/2019-site-revamp.html</id><summary type="html">&lt;p&gt;Behold, the only thing I ever do on my GitHub pages site anymore! Spruce up or change out my current site generator for a newer, fresher&amp;nbsp;one!&lt;/p&gt;
 &lt;p&gt;This time I wasn&amp;#8217;t intending to. It turns out I&amp;#8217;d done a dumb and not committed my actual site generator configuration …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Behold, the only thing I ever do on my GitHub pages site anymore! Spruce up or change out my current site generator for a newer, fresher&amp;nbsp;one!&lt;/p&gt;
 &lt;p&gt;This time I wasn&amp;#8217;t intending to. It turns out I&amp;#8217;d done a dumb and not committed my actual site generator configuration to GitHub or elsewhere. So I had to re-do everything from&amp;nbsp;scratch!&lt;/p&gt;
 &lt;p&gt;I stuck with Pelican, switched to the Twitchy theme, customized it pretty heavily to get closer to the style I wanted, and completely and utterly failed to import the old site from its&amp;nbsp;feed!&lt;/p&gt;

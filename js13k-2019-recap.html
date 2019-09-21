@@ -1,0 +1,992 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="Daniel '64Mega' Lawrence" />
+        <meta name="keywords" content="Development,JS13k,Postmortem" />
+        <meta name="description" content="In (hopefully) continuing tradition, here’s a postmortem for my JS13k 2019 entry, Xycore! Fair warning though, I’m writing this well over two weeks since touching the majority of the code, so I might have forgotten some things, or misremembered some things. I also wrote this over the period …" />
+
+
+    <title>JS13k 2019 Developer Commentary - 64Bytes</title>
+
+        <link rel="stylesheet" href="https://64mega.github.io/theme/css/bootstrap.pulse.min.css" type="text/css"/>
+
+    <link href="https://fonts.googleapis.com/css?family=Fira+Code&display=swap" rel="stylesheet">
+    <link href="https://64mega.github.io/theme/css/fontawesome-all.min.css" rel="stylesheet" />
+    <link href="https://64mega.github.io/theme/css/pygments/native.css" rel="stylesheet" />
+
+        <link href="https://64mega.github.io/theme/css/typogrify.css" rel="stylesheet" />
+    <link href="https://64mega.github.io/theme/css/pelican-twitchy.min.css" rel="stylesheet" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <!-- Feeds -->
+        <link href="https://64mega.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
+              title="64Bytes ATOM Feed" />
+        <link href="https://64mega.github.io/static-css/custom.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://64mega.github.io/theme/css/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="https://64mega.github.io/static-css/custom.css">
+
+    <link rel="stylesheet" href="https://64mega.github.io/static-css/article.css">
+
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#603cba">
+    <meta name="theme-color" content="#413a7b">
+</head>
+<body data-spy="scroll" data-target="#scrollspy">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper-small" class="twitchy-background">
+            <ul id="accordion-small" class="sidebar-nav sidebar-nav-small">
+                <li>
+        <a href="https://64mega.github.io" title="64Bytes" class="collapsed">
+            <span class="fas fa-home"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="https://64mega.github.io/archives.html" title="Recent Posts" class="collapsed">
+            <span class="fas fa-th-list"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li id="share-small">
+                    <a data-toggle="collapse" data-parent="#accordion-small" href="#collapse-share-small" title="Share" class="collapsed">
+                        <i class="fas fa-share-alt padding-small"></i>
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-share-small" class="collapse ">
+                    <li>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=https://64mega.github.io/js13k-2019-recap.html" title="Share via Facebook" target="popup">
+                            <i class="fas fa-facebook-square padding-small"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://plus.google.com/share?url=https://64mega.github.io/js13k-2019-recap.html" title="Share via Google+" target="popup">
+                            <i class="fas fa-google-plus padding-small"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical" title="Share via Twitter" target="popup">
+                            <i class="fas fa-twitter-square padding-small"></i>
+                        </a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion-small" href="#collapse-social-small" title="Social" class="collapsed">
+                        <i class="fas fa-users padding-small"></i>
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social-small" class="collapse ">
+                    <li>
+                        <a href="https://github.com/64Mega" title="GitHub"><i class="fab fa-github-square padding-small"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/64Mega" title="Twitter"><i class="fab fa-twitter-square padding-small"></i></a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="#" title="Back to top" class="collapsed">
+            <span class="fas fa-arrow-up"></span>
+        </a>
+    </li>
+            </ul>
+        </div>
+        <div id="sidebar-wrapper" class="twitchy-background">
+            <ul id="accordion" class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="https://64mega.github.io/">
+<img class="site-logo" src="https://64mega.github.io/static-images/classic-pc-logo.png" width="200" alt="Sitelogo"/>                     </a>
+                </li>
+                    <li class="nav-divider"></li>
+                    <li>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse-latest">
+                            <span class="fas fa-th-list padding-small"></span>
+                            Recent Posts
+                        </a>
+                    </li>
+                    <li class="panel anti-panel"><ul id="collapse-latest" class="sidebar_submenu collapse in">
+                        <li class="active">
+                            <a class="hide-overflow" href="https://64mega.github.io/js13k-2019-recap.html" title="JS13k 2019 Developer Commentary">
+                                    <i class="fas fa-file-alt padding-small"></i>
+                                JS13k 2019 Developer Commentary
+                            </a>
+                        </li>
+                        <li class="">
+                            <a class="hide-overflow" href="https://64mega.github.io/2019-site-revamp.html" title="2019 Site Revamp">
+                                    <i class="fas fa-file-alt padding-small"></i>
+                                2019 Site Revamp
+                            </a>
+                        </li>
+                        <li class="">
+                            <a class="hide-overflow" href="https://64mega.github.io/ld44-venture-out.html" title="LD44 - Venture-Out!">
+                                    <i class="fas fa-gamepad padding-small"></i>
+                                LD44 - Venture-Out!
+                            </a>
+                        </li>
+                        <li class="">
+                            <a class="hide-overflow" href="https://64mega.github.io/7d3d-2019-framework-demo.html" title="7D3D 2019 Framework Demo">
+                                    <i class="fas fa-gamepad padding-small"></i>
+                                7D3D 2019 Framework Demo
+                            </a>
+                        </li>
+                        <li class="">
+                            <a class="hide-overflow" href="https://64mega.github.io/7d3d-2018-software-renderer.html" title="7D3D 2018 Browser Software Renderer">
+                                    <i class="fas fa-gamepad padding-small"></i>
+                                7D3D 2018 Browser Software Renderer
+                            </a>
+                        </li>
+                    <li>
+                        <a href="https://64mega.github.io/archives.html">
+                            <i class="fas fa-arrow-right padding-small"></i>
+                            More
+                        </a>
+                    </li>
+                    </ul></li>
+                <li class="nav-divider"></li>
+                <li id="share">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-share" title="Share" class="collapsed">
+                        <i class="fas fa-share-alt padding-small"></i>
+                        Share
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-share" class="sidebar_submenu collapse ">
+                    <li>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=https://64mega.github.io/js13k-2019-recap.html" target="popup">
+                            <i class="fab fa-facebook-square padding-small"></i>
+                            Facebook
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://plus.google.com/share?url=https://64mega.github.io/js13k-2019-recap.html" target="popup">
+                            <i class="fab fa-google-plus-square padding-small"></i>
+                            Google+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical" target="popup">
+                            <i class="fab fa-twitter-square padding-small"></i>
+                            Twitter
+                        </a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-social">
+                        <i class="fas fa-users padding-small"></i>
+                        Social
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social" class="sidebar_submenu collapse ">
+                    <li>
+                        <a href="https://github.com/64Mega" target="_blank" title="GitHub">
+                            <i class="fab fa-github-square padding-small"></i>
+                            GitHub
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/64Mega" target="_blank" title="Twitter">
+                            <i class="fab fa-twitter-square padding-small"></i>
+                            Twitter
+                        </a>
+                    </li>
+                </ul></li>
+                
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-categories">
+                        <i class="fas fa-folder-open padding-small"></i>
+                        Categories
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-categories" class="sidebar_submenu collapse ">
+                    <li >
+                        <a href="https://64mega.github.io/category/game-development.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            Game Development
+                            <span class="badge badge-secondary float-right categorybadge">1</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://64mega.github.io/category/games.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            Games
+                            <span class="badge badge-secondary float-right categorybadge">5</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="https://64mega.github.io/category/posts.html">
+                            <i class="fas fa-folder-open padding-small"></i>
+                            Posts
+                            <span class="badge badge-secondary float-right categorybadge">2</span>
+                        </a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a href="https://64mega.github.io/category/games.html">
+                        <i class="fas fa-gamepad padding-small"></i>
+                        Games
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <!-- open/close sidebar -->
+        <a href="#menu-toggle" class="btn btn-primary" id="menu-toggle">
+            <span id="right-arrow" class="fas fa-chevron-right"  title="expand sidebar"></span>
+            <span id="left-arrow" class="fas fa-chevron-left" title="minimize sidebar"></span>
+        </a>
+       <!-- /open/close sidebar -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+<section id="content">
+    <article>
+        <div class="row">
+            <div class="col-lg-11">
+                <header class="page-header">
+                    <div class="article-header-custom">
+                        <h1>
+                            <a href="https://64mega.github.io/js13k-2019-recap.html"
+                            rel="bookmark"
+                            title="Permalink to JS13k 2019 Developer Commentary">
+                                JS13k 2019 Developer&nbsp;Commentary
+                            </a>
+                        </h1>
+                        <h4>
+<div class="post-info">
+    <div class="publish-info-block">
+        <small>
+            <span class="published">
+                <i class="fa fa-calendar padding-small"></i><time datetime="2019-09-17T00:00:00+02:00"> Tue 17 September 2019</time>
+            </span>
+            <span class="category">
+                <i class="fa fa-folder-open padding-small"></i><a href="https://64mega.github.io/category/posts.html">Posts</a>
+            </span>
+            <span class="tags">
+                <i class="fa fa-tags padding-small"></i>
+                <a href="https://64mega.github.io/tag/development.html">Development</a>,                 <a href="https://64mega.github.io/tag/js13k.html">JS13k</a>,                 <a href="https://64mega.github.io/tag/postmortem.html">Postmortem</a>            </span>
+        </small>
+    </div>
+</div><!-- /.post-info -->                        </h4>
+                        <p></p>
+                </div>
+                </header>
+        </div>
+        <div class="row">
+            <div class="col-lg-11">
+                
+
+                <div class="entry-content">
+                    <p>In (hopefully) continuing tradition, here&#8217;s a postmortem for my JS13k 2019 entry,&nbsp;Xycore!</p>
+<p>Fair warning though, I&#8217;m writing this well over two weeks since touching the majority of the code, so I might have forgotten some things, or misremembered some things. I also wrote <em>this</em> over the period of a week - it&#8217;s likely to come across as a bit <em>disjointed</em> or <em>random</em>. You have been&nbsp;warned.</p>
+<p>Feel free to hit me up on <a href="https://twitter.com/64Mega">Twitter</a> if you want some specific information on a feature that I glossed over or forgot to&nbsp;mention.</p>
+<blockquote>
+<p>Fun fact: I practically reworked my blog&#8217;s theme from the ground up during the course of writing this, to add useful features (Such as a fancybox gallery), a dark theme, proper code highlighting, some stylization of headings, a table of contents and a bunch of small style&nbsp;adjustments.</p>
+<p>The theme I&#8217;m using is <code>pelican-twitchy</code>, but I&#8217;ve changed nearly <em>everything</em> at this point. The only thing I&#8217;ve left alone is the sidebar&nbsp;(Mostly).</p>
+</blockquote>
+<p>This fancy Table of Contents will let you jump to any major heading, and if you want to quickly return to it, there&#8217;s a fancy little &#8220;Back to Top&#8221; button at the bottom right of the&nbsp;page.</p>
+<div class="toc">
+<ul>
+<li><a href="#xycore-an-overview">Xycore: An&nbsp;overview</a></li>
+<li><a href="#the-original-idea">The original&nbsp;idea</a></li>
+<li><a href="#art-style-limitations">Art Style&nbsp;Limitations</a></li>
+<li><a href="#initial-design-decisions">Initial Design&nbsp;Decisions</a></li>
+<li><a href="#a-note-on-my-design-process">A note on my design&nbsp;process</a></li>
+<li><a href="#the-code">The&nbsp;Code</a></li>
+<li><a href="#my-tools">My&nbsp;Tools</a></li>
+<li><a href="#level-data-storage">Level Data&nbsp;Storage</a></li>
+<li><a href="#the-canvas">The&nbsp;Canvas</a></li>
+<li><a href="#code-organization">Code&nbsp;Organization</a></li>
+<li><a href="#development-process">Development Process</a><ul>
+<li><a href="#game-progression">Game&nbsp;Progression</a></li>
+<li><a href="#a-bit-of-juice">A bit of&nbsp;&#8220;Juice&#8221;</a></li>
+<li><a href="#the-bosses">The Bosses</a><ul>
+<li><a href="#the-magma-centipede-boss">The &#8220;Magma Centipede&#8221;&nbsp;boss</a></li>
+<li><a href="#the-venus-flytrap-boss">The &#8220;Venus Flytrap&#8221;&nbsp;boss</a></li>
+<li><a href="#the-mother-brain-boss">The &#8220;Mother Brain&#8221;&nbsp;boss</a></li>
+<li><a href="#the-tank-boss">The &#8220;Tank&#8221;&nbsp;Boss</a></li>
+</ul>
+</li>
+<li><a href="#an-audio-experiment">An Audio&nbsp;Experiment</a></li>
+<li><a href="#the-save-system">The Save&nbsp;System</a></li>
+<li><a href="#player-progression">Player Progression</a><ul>
+<li><a href="#player-weapons">Player&nbsp;Weapons</a></li>
+<li><a href="#barrier-doors">Barrier&nbsp;Doors</a></li>
+<li><a href="#health-upgrades">Health&nbsp;Upgrades</a></li>
+<li><a href="#armor-upgrades">Armor&nbsp;Upgrades</a></li>
+<li><a href="#enemy-variety">Enemy&nbsp;Variety</a></li>
+</ul>
+</li>
+<li><a href="#ending-and-escape-sequence">Ending and Escape&nbsp;Sequence</a></li>
+<li><a href="#the-canvas-flip-bug">The Canvas Flip&nbsp;Bug</a></li>
+<li><a href="#submission">Submission</a><ul>
+<li><a href="#bug-1-monitor-sync-rate">Bug #1 - Monitor Sync&nbsp;Rate</a></li>
+<li><a href="#bug-2-color-profiles">Bug #2 - Color&nbsp;Profiles</a></li>
+</ul>
+</li>
+<li><a href="#summary">Summary</a><ul>
+<li><a href="#what-went-right">What Went&nbsp;Right</a></li>
+<li><a href="#what-went-wrong">What Went&nbsp;Wrong</a></li>
+<li><a href="#what-ill-do-next">What I&#8217;ll Do&nbsp;Next</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h3 id="xycore-an-overview">Xycore: An&nbsp;overview</h3>
+<p>So first up, let&#8217;s talk about the finished product!
+In case you need it for reference or to give it a play, <a href="https://js13kgames.com/entries/xycore">here&#8217;s the link</a>.</p>
+<p>Xycore is a throwback to a specific genre of games, drawing a lot of inspiration from Daniel Remar&#8217;s
+<a href="http://www.remar.se/daniel/herocore.php">Hero Core</a> and classic&nbsp;Metroid.</p>
+<p>You&#8217;ve landed on an alien planet at a secret weapons facility, with a mission to destroy the Super Reactor at the core of the facility. The core is sealed by the power of four guardians, and you must destroy them to complete your&nbsp;objective.</p>
+<p>The game features four bosses, four weapon upgrades and a variety of hidden power-ups to help make the game easier.
+I also managed to fit in a few out-of-scope features that I feel add a lot to the style of the game - namely a fancy
+raster water effect, basic oscillator sounds and a bit of juice (Screenshake! Lerp!&nbsp;Sometimes!)</p>
+<h3 id="the-original-idea">The original&nbsp;idea</h3>
+<p>When the 13th of August rolled around, I had a <em>completely</em> different game in mind. In fact, it was less a game and more a fantasy console I was going to call&nbsp;&#8220;Mini13&#8221;.</p>
+<p>I had already spent a few days early in August tinkering with a really tight bytecode processor that could do basic operations on the canvas and map input, and the plan was to release this little &#8220;Console&#8221; with a pack-in game of Breakout or something along those&nbsp;lines.</p>
+<p>And for at least a few days I tinkered with the concept. It was essentially a &#8216;<span class="caps">CPU</span>&#8217; made up of complex opcodes that, instead of mapping to super low-level operations would instead map to more complicated <span class="caps">JS</span> <span class="caps">API</span> operations. Here&#8217;s a simplified pseudocode&nbsp;example:</p>
+<div class="xhighlight"><pre><span></span><span class="kd">let</span> <span class="nx">code</span> <span class="o">=</span> <span class="p">[];</span>
+
+<span class="c1">// &quot;Opcodes&quot; are stored in 8-bit binary format, each code taking</span>
+<span class="c1">// two bytes, and potential extra bytes depending on required</span>
+<span class="c1">// parameters - this is handled by the opcode handlers</span>
+
+<span class="nx">fetch</span><span class="p">(</span><span class="sb">`some_local_file.bin`</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">res</span> <span class="p">=&gt;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">arrayBuffer</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">buffer</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="nx">code</span> <span class="o">=</span> <span class="nx">buffer</span> <span class="p">});</span>
+
+<span class="kd">let</span> <span class="nx">flags</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">zero</span> <span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nx">overflow</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nx">truth</span><span class="o">:</span> <span class="kc">false</span>
+<span class="p">};</span>
+
+<span class="c1">// Program Counter</span>
+<span class="kd">let</span> <span class="nx">pc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="c1">// Registers are not fixed, just a dumb array</span>
+<span class="kd">let</span> <span class="nx">registers</span> <span class="o">=</span> <span class="p">[];</span>
+
+<span class="c1">// The ops the CPU can do are mapped to an array of functions</span>
+<span class="kd">let</span> <span class="nx">ops</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1">// No Op</span>
+    <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">pc</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="c1">// Return the next instruction location </span>
+
+    <span class="c1">// Cmp -- R Imm -- Takes a register index and an immediate</span>
+    <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">GetInt16</span><span class="p">(</span><span class="nx">pc</span><span class="o">+</span><span class="mi">2</span><span class="p">);</span>
+        <span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">GetInt16</span><span class="p">(</span><span class="nx">pc</span><span class="o">+</span><span class="mi">4</span><span class="p">);</span>
+        <span class="kd">let</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">registers</span><span class="p">[</span><span class="nx">r</span><span class="p">]</span> <span class="o">-</span> <span class="nx">i</span><span class="p">;</span>
+        <span class="nx">flags</span><span class="p">.</span><span class="nx">zero</span> <span class="o">=</span> <span class="nx">t</span> <span class="o">===</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="nx">flags</span><span class="p">.</span><span class="nx">truth</span> <span class="o">=</span> <span class="nx">t</span> <span class="o">===</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">pc</span> <span class="o">+</span> <span class="mi">6</span><span class="p">;</span> <span class="c1">// Most values are 16-bit, aside from addresses</span>
+    <span class="p">},</span>
+
+    <span class="c1">// Je -- Imm32 -- Jump to address if Equal</span>
+    <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">addr</span> <span class="o">=</span> <span class="nx">GetInt32</span><span class="p">(</span><span class="nx">pc</span><span class="o">+</span><span class="mi">2</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">flags</span><span class="p">.</span><span class="nx">truth</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">addr</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">pc</span><span class="o">+</span><span class="mi">6</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="c1">// DIMG -- R(idex) R(x) R(y)</span>
+    <span class="c1">// Draw image from global spritesheet to context </span>
+    <span class="c1">// An example of a &#39;complex&#39; instruction</span>
+    <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">idex</span> <span class="o">=</span> <span class="nx">registers</span><span class="p">[</span><span class="nx">GetInt16</span><span class="p">(</span><span class="nx">pc</span><span class="o">+</span><span class="mi">2</span><span class="p">)];</span>
+        <span class="kd">let</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">registers</span><span class="p">[</span><span class="nx">GetInt16</span><span class="p">(</span><span class="nx">pc</span><span class="o">+</span><span class="mi">4</span><span class="p">)];</span>
+        <span class="kd">let</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">registers</span><span class="p">[</span><span class="nx">GetInt16</span><span class="p">(</span><span class="nx">pc</span><span class="o">+</span><span class="mi">6</span><span class="p">)];</span>
+
+        <span class="nx">DrawSprite</span><span class="p">(</span><span class="nx">idex</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
+        <span class="c1">// My actual solution for sprites was to use something similar to</span>
+        <span class="c1">// the OAM Table in the NES/Famicom - a fixed array of sprite objects</span>
+        <span class="c1">// that get automatically drawn if active, with fixed properties</span>
+        <span class="c1">// like X,Y coordinates, Width and Height in spritesheet tiles and</span>
+        <span class="c1">// any attributes (Like whether it&#39;s flipped or rotated or not)</span>
+        <span class="c1">// But this is just a really rough example.</span>
+
+        <span class="k">return</span> <span class="nx">pc</span><span class="o">+</span><span class="mi">8</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">];</span>
+</pre></div>
+
+
+<p>I got up to the point where I had a bunch of pixels filling the screen based on some code, but I realized that at
+some point I was going to have to write an assembler or I&#8217;d be entering opcodes manually for the duration of the
+competition, and I wasn&#8217;t really up for&nbsp;that.</p>
+<p>So I cleared out the project folder, opened up Aseprite with a palette I had created for the competition, and set out
+to make a &#8216;complete&#8217; set of art to work with.
+After a bit of scribbling around, I came up with an initial sprite set (Click to&nbsp;enlarge)</p>
+<p><a href="static-images/xycore/sprsheet.png" data-fancybox="gallery" data-caption="The pieces I gave myself to work with">
+    <img src="static-images/xycore/sprsheet.png" style="width:150px" />
+</a></p>
+<p>Most of it was random doodling, but I thought that it would serve as a good basis for creating <em>something</em> to begin&nbsp;with.</p>
+<p>So with that I&nbsp;began.</p>
+<h3 id="art-style-limitations">Art Style&nbsp;Limitations</h3>
+<p>From the moment I started doodling in Aseprite I had a certain set of limits in mind. The &#8220;Fantasy Console&#8221; I was originally planning had a custom 16-color palette, and I decided to keep that and work with&nbsp;it.</p>
+<p><a href="static-images/xycore/palette.png" data-fancybox="gallery" data-width="300px" data-caption="The palette">
+    <img src="static-images/xycore/palette.png" style="width:150px" />
+</a></p>
+<p>I sacrificed the 16th color for transparency, allowing me to utilize the natural compression you get for free with <a href="https://en.wikipedia.org/wiki/Portable_Network_Graphics#File_size_and_optimization_software">16-color <span class="caps">PNG</span> images</a>.</p>
+<p>I also find that working with a limited palette accelerates my workflow, as I have fewer overall design decisions to make and can&#8217;t really mess around with hue and value too&nbsp;much.</p>
+<p>The initial spritesheet fell in at just under 5K without any compression, which I considered good enough - my goal was to use approximately half of the available space for art, the other half for&nbsp;code.</p>
+<p>I also created a font sheet to go with the game, but cut it out a couple of weeks into development because I didn&#8217;t <em>really</em> need it. Here it is for&nbsp;reference!</p>
+<p><a href="static-images/xycore/fontsheet.png" data-fancybox="gallery" data-caption="The font I ended up discarding">
+    <img class="thumbnail" src="static-images/xycore/fontsheet.png" >
+</a></p>
+<h3 id="initial-design-decisions">Initial Design&nbsp;Decisions</h3>
+<p>After seeing the theme, <code>Back</code>, and after throwing out my Fantasy Console concept, I ended up deciding on two key aspects or uses of the word &#8220;Back&#8221;: First as the &#8220;back&#8221; in &#8220;throwback&#8221;, and then as the &#8220;back&#8221; in&nbsp;&#8220;backtrack&#8221;.</p>
+<p>My initial spritesheet also helped inform this concept, since I had a few nods to some classics in the art - and if I was going to do a game inspired by Metroid and Hero Core, I was going to end up with some natural backtracking to find new bosses, powerups and&nbsp;areas!</p>
+<p>Much later on I also added in the classic &#8220;Escape the self-destructing planet&#8221; sequence, and that adds in a &#8220;Get <em>back</em> to your ship&#8221; use of the&nbsp;word.</p>
+<p>I mostly ignored any further potential theme tie-ins: I really wanted to focus on a good core gameplay experience first, and adding in gimmicks might have hurt development time, cost and&nbsp;gameplay.</p>
+<p>Before beginning any actual coding, I played a bit of Hero Core again to better remember what it had going for it, and wrote down some notes on how I wanted my bosses to&nbsp;behave.</p>
+<h3 id="a-note-on-my-design-process">A note on my design&nbsp;process</h3>
+<p>I&#8217;ll be honest up-front and state for the record that I&#8217;m a bit of a lazy designer. I don&#8217;t write design docs.
+I sort of grow them instead, adding and removing bits and pieces as I see the need for them and generally repeatedly asking myself &#8220;What next?&#8221; from a player&#8217;s point of&nbsp;view.</p>
+<p>I guess you could represent this design methodology as a flowchart, but that would get cumbersome. Instead, I use good old Emacs, and the magic of Org&nbsp;Mode. </p>
+<p><a href="static-images/xycore/emacs_organization.png" data-fancybox="gallery" data-caption="My Org file for the game">
+    <img class="thumbnail" src="static-images/xycore/emacs_organization.png" >
+</a></p>
+<p>Org Mode is one of many <em>major modes</em> that can be added to Emacs. It provides a very simple way to create interactive informational documents in a similar fashion to Markdown, except that it comes with some built in conveniences (Such as collapsing headings into folding bullets, highlighting keywords, a timestamping/timesheet feature, a full agenda mode for scheduling and too many other features that I haven&#8217;t even considered using&nbsp;yet).</p>
+<p>The file itself is a very simple <span class="caps">ASCII</span> document that looks something like&nbsp;this:</p>
+<div class="xhighlight"><pre><span></span>DEV TODO:
+=========
+
+* DONE ENVIRONMENT PROGRAMMING -
+** TODO + Create subtle shifted tint for distorted area in Fire Zone
+** TODO + Create some plants/decor to be randomly placed in each area
+* THINGS REQUIRED -
+** DONE Mini-Core - 
+    Extra descriptions, code or anything can go here and be folded out of the way.
+</pre></div>
+
+
+<p>In my configuration I just hit <span class="caps">TAB</span> to fold a region, so I can quickly add notes or even subtrees to a section and quickly jump around, add more notes, refine things, strike through cancelled features,&nbsp;etc.</p>
+<p>I&#8217;m using my own notation here for a lot of stuff, like the &#8220;<span class="caps">TODO</span> +&#8221; entries basically meaning &#8220;For Version +1&#8221;.
+Prioritization is something I could have used too, but didn&#8217;t really feel the need to for this&nbsp;project.</p>
+<p>This document started from very humble beginnings, something along the lines&nbsp;of:</p>
+<div class="xhighlight"><pre><span></span>DEV TODO:
+=========
+
+* REQUIRED -
+** Get player sprite moving on screen
+</pre></div>
+
+
+<p>And it grew from there - I went through my spritesheet and added a feature in the document for each &#8216;object&#8217;, and wrote a little note on what it would do or be used for. If I couldn&#8217;t think of something to use it for or thought it would be too time consuming or space consuming for the game, I cut it from the feature list and&nbsp;continued.</p>
+<p>This ended up giving me a pretty solid foundation to work with, and a list of things to do whenever I was at a&nbsp;loss.</p>
+<h3 id="the-code">The&nbsp;Code</h3>
+<p>If you want to follow along with any of the code, the source is <a href="https://github.com/64Mega/xycore-js13k-2019">up on&nbsp;GitHub</a></p>
+<p>All of the game&#8217;s code resides in <code>main.js</code>, with the only dependency being <code>sprsheet4.png</code>. </p>
+<p>The other files are various&nbsp;dependencies:</p>
+<table>
+<thead>
+<tr>
+<th>Filename</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>compiled.js</td>
+<td>Build artifact from Closure compiler, left in as an example</td>
+</tr>
+<tr>
+<td>compress.bat</td>
+<td>Lazy batch file to run the Closure compiler and pipe the output into index1.html</td>
+</tr>
+<tr>
+<td>index.html</td>
+<td>My &#8216;development&#8217; html file.</td>
+</tr>
+<tr>
+<td>index_template.html</td>
+<td>The first piece of the distributed <span class="caps">HTML</span></td>
+</tr>
+<tr>
+<td>index_end.html</td>
+<td>The tail-end of the distributed <span class="caps">HTML</span>. In hindsight, could&#8217;ve just piped a fixed value into the final <span class="caps">HTML</span> file</td>
+</tr>
+</tbody>
+</table>
+<p>Other files are part of the JS13k submission&nbsp;system.</p>
+<p>Once built, the only files that need packing are <code>index1.html</code> (Renamed to index.html for the js13k submission) and
+<code>sprsheet4.png</code>.</p>
+<p>For compression, I made use of 7zip to create the <span class="caps">ZIP</span> file, then further compressed down with <code>advzip</code> and <code>optipng</code>.
+The exact commands I used are as&nbsp;follows:</p>
+<div class="xhighlight"><pre><span></span><span class="nx">optipng</span> <span class="o">-</span><span class="nx">o7</span> <span class="o">-</span><span class="nx">zm1</span><span class="o">-</span><span class="mi">9</span> <span class="nx">sprsheet4</span><span class="p">.</span><span class="nx">png</span>
+<span class="nx">advzip</span> <span class="o">-</span><span class="nx">z</span> <span class="o">-</span><span class="mi">4</span> <span class="o">-</span><span class="nx">i</span> <span class="mi">5000</span> <span class="nx">dist</span><span class="p">.</span><span class="nx">zip</span>
+</pre></div>
+
+
+<h3 id="my-tools">My&nbsp;Tools</h3>
+<p>Tool choice is pretty important for JS13k. You need to be comfortable with what you&#8217;re using, and it&#8217;s a good idea
+to have some &#8216;quality of life&#8217;&nbsp;extras.</p>
+<p>My development environment is Windows, with three alternative ways to use Linux for any Linux-specific tools or
+conveniences (Those being a <span class="caps">VM</span> server, <span class="caps">WSL</span> (Though that&#8217;s a buggy mess 50% of the time) and a physical laptop that I often just leave on a shelf and run a low-profile server, accessed via <span class="caps">SSH</span>).</p>
+<p>My editor is Visual Studio Code for code editing, Emacs for organization (org-mode is&nbsp;amazing).</p>
+<p><span class="caps">VS</span> Code has some strong benefits for me: Remote Workspaces being one of them, a feature I make use of frequently,
+and the built in debug interface is <em>crucial</em> to smooth game&nbsp;debugging. </p>
+<p>Sure you can set breakpoints and such up in the Firefox/Chrome dev-tools, but <span class="caps">VS</span> Code&#8217;s debugger will auto-focus 
+on a breakpoint or exception, show a nice list of locals, the call stack and has <em>extra types</em> of&nbsp;breakpoint. </p>
+<p>Logpoints and conditional breakpoints are something you never knew you needed until you try them.
+I&#8217;m still lazy and tend to automatically use <code>console.log()</code> in my code without thinking, but logpoints
+are a lot cleaner and come with the benefit of not needing to tidy up your cascade of <code>console.log</code>s after
+a gruelling debug&nbsp;session. </p>
+<p>Mid-competition there was an update to <span class="caps">VS</span> code that added Data Breakpoints - breakpoints that fire when a specific
+variables changes. All of these debugging tools together help to minimize the amount of hunting you have to do
+for weird bugs, and allow you to catch issues&nbsp;earlier.</p>
+<p>For art I tend to always use Aseprite for my pixel art, ClipStudio <span class="caps">PAINT</span> for quick concept sketches or a good old piece of paper and a pencil - I always have a few pencils at hand, and a clipboard with some cheap printer paper for doodles or&nbsp;notes!</p>
+<p>My build tools consisted of nothing but browser-sync - hot reloading is invaluable when you&#8217;re doing rapid iteration!
+My last js13k attempt involved a somewhat complicated Gulp and Webpack setup, but since I decided to work in a monolithic file - a bad idea, I know, but I managed! - I decided to rather take the path of least resistance and manually compile my game&nbsp;later.</p>
+<h3 id="level-data-storage">Level Data&nbsp;Storage</h3>
+<p>Early on I made a decision to store my levels as image data. I&#8217;d done this for my previous JS13k entry, and it was
+fairly successful if a bit cumbersome. But it compresses way better than an inline array, and didn&#8217;t require too much code to get working. There was one caveat that I&#8217;ll bring up later, but suffice it to say that it <em>works</em>.</p>
+<p>The map looks like this in its current form:
+<a href="static-images/xycore/map.png" data-fancybox="gallery" data-caption="The game's map">
+    <img class="thumbnail" src="static-images/xycore/map.png">
+</a></p>
+<p>The way this works is that in the game&#8217;s code I have an array of 16 <span class="caps">RGB</span> values, each one representing a color in my palette. I read the map image in, copy it to an <code>ImageData</code> buffer and read each pixel in the map, comparing it to the palette and pushing the returned palette index into a <code>map[]</code> array.</p>
+<p>Each palette index has a &#8216;meaning&#8217; to the game: White is walls, transparent (Black areas in this screenshot) is empty space, the one shade of red is enemies, another bosses, dark red doors,&nbsp;etc.</p>
+<p>Eventually I merged the spritesheet and map into a single file to help reduce <span class="caps">ZIP</span> file&nbsp;overhead.</p>
+<p>In hindsight, I could&#8217;ve implemented a really simple in-game map using this! Just render a piece of the map based on where the player&#8217;s screen coordinates are, and only render doors and walls.
+That said, I didn&#8217;t really have much screen space to work with, given my next&nbsp;limitation.</p>
+<h3 id="the-canvas">The&nbsp;Canvas</h3>
+<p>As a sort of holdover from the original Fantasy Console idea, I decided to limit my canvas resolution to 128x128 pixels. This not only meant I didn&#8217;t have to worry about performance as much, but meant I didn&#8217;t need large sprites to provide a decently &#8220;busy&#8221; looking game&nbsp;world.</p>
+<p>This also made map editing easier, since each 16x16 grid cell in Aseprite corresponds with a single&nbsp;room.</p>
+<p>In <a href="https://github.com/64Mega/xycore-js13k-2019/blob/master/index.html"><code>index.html</code></a> there&#8217;s a bit of inline css to position the canvas on-screen as part of page layout, instead of trying to fiddle with it from the JavaScript side,
+as well as enable &#8220;Crisp Scaling&#8221; on the canvas so that the pixel art looked&nbsp;sharp.</p>
+<p>Here it is in expanded&nbsp;form:</p>
+<div class="xhighlight"><pre><span></span><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+    <span class="nt">body</span> <span class="p">{</span>
+        <span class="c">/* This sets up a nice uniform area to put the canvas </span>
+<span class="c">            in and &#39;letterboxes&#39; the sides */</span>
+        <span class="k">display</span><span class="p">:</span> <span class="kc">block</span><span class="p">;</span>
+        <span class="k">margin</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">background</span><span class="p">:</span> <span class="kc">black</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nt">canvas</span> <span class="p">{</span>
+        <span class="k">display</span><span class="p">:</span> <span class="kc">block</span><span class="p">;</span>
+        <span class="k">height</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">margin</span><span class="p">:</span> <span class="kc">auto</span> <span class="kc">auto</span><span class="p">;</span>
+        <span class="n">image-rendering</span><span class="p">:</span> <span class="kc">pixelated</span><span class="p">;</span> 
+        <span class="n">image-rendering</span><span class="p">:</span> <span class="kc">crisp-edges</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">canvas</span> <span class="na">width</span><span class="o">=</span><span class="s">&quot;128&quot;</span> <span class="na">height</span><span class="o">=</span><span class="s">&quot;128&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">canvas</span><span class="p">&gt;</span>
+</pre></div>
+
+
+<p>I decided right at the beginning that this <span class="caps">DOM</span> configuration was <em>vital</em> to the game&#8217;s presentation. I demand crispy pixels and proper&nbsp;framing!</p>
+<h3 id="code-organization">Code&nbsp;Organization</h3>
+<p>Brace yourself, <a href="https://github.com/64Mega/xycore-js13k-2019/blob/master/main.js"><code>main.js</code></a> contains the entire game. It&#8217;s somewhere between 1000-1500 lines of actual&nbsp;code.</p>
+<p>Before submitting I went over it and tried to comment things as I remembered their purpose, so there <em>is</em> some useful commentary, but there&#8217;s a lot of weird code, some areas where I tried some silly things and even entire sections of dead code. Not too many, but they&#8217;re&nbsp;there.</p>
+<p>Now as for <em>why</em> everything is in one giant source file, it&#8217;s because I was feeling somewhat lazy this year and didn&#8217;t feel like setting up a bundler this year. For JS13k 2017 I used an overcomplicated build setup involving Webpack and Gulp. Next year, I&#8217;m likely to try getting a Parcel workflow working - Parcel is my go-to for any other web projects I work on, but this year laziness won&nbsp;out.</p>
+<p>I did divide the source into four distinct areas: Global variable declarations, Function declarations, Initialization and Game&nbsp;Loop.</p>
+<p>Normally writing everything in one giant file like this would prove a major headache, but I make pretty heavy use of a Bookmark extension for <span class="caps">VS</span> Code that lets me keep things in relative order.
+That said, having some things in their own separate files would&#8217;ve made things a lot easier in the long run. But I knew what I was signing myself up&nbsp;for!</p>
+<h2 id="development-process">Development&nbsp;Process</h2>
+<p>The first thing I did once my spritesheet was created was get the player sprite onto the screen and rendered. The second thing I did was to implement a better general-purpose sprite drawing function that could rotate and scale sprites - I used this to flip and rotate sprites, which allowed a lot of sprite reuse later&nbsp;on.</p>
+<p>I also created a function to create sprite objects that contained the relevant data for a sprite&#8217;s frames and size, with defaults. This is what it looks like (with&nbsp;formatting):</p>
+<div class="xhighlight"><pre><span></span><span class="kd">let</span> <span class="nx">SpriteID</span> <span class="o">=</span> <span class="p">(</span><span class="nx">frames</span><span class="p">,</span> <span class="nx">width</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="nx">height</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span> 
+    <span class="k">return</span> <span class="p">{</span> <span class="nx">frames</span><span class="p">,</span> <span class="nx">numframes</span><span class="o">:</span> <span class="nx">frames</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span> <span class="p">};</span> 
+<span class="p">}</span>
+</pre></div>
+
+
+<p>From there, I went on and created a separate function for drawing tiles. The tile function takes an array of indexes into the spritesheet, and chooses the subtile to use based on a combination of the X and Y position the tile is drawn. This gives a bit of pseudorandom variation to the&nbsp;tiles.</p>
+<h3 id="game-progression">Game&nbsp;Progression</h3>
+<p>After I had something moving around on my screen and a few rooms to move around in, I started thinking about
+what I&#8217;d like to make with&nbsp;this.</p>
+<p>I decided to keep player mechanics as simple as possible: Free-movement with a &#8216;shoot&#8217; button. This meant I could immediately shift focus to the&nbsp;environment.</p>
+<p>The first thing I did was split the map into five distinct areas. Each of the four quadrants of the map make up an area, with the tiles that meet in the center being &#8220;Area&nbsp;0&#8221;.</p>
+<p>It was around this time that, one evening, I started tinkering with some raster effects and created the water effect that&#8217;s found in the&nbsp;game.</p>
+<p><a href="https://thumbs.gfycat.com/ColorlessCleverCod-size_restricted.gif" data-fancybox="gallery" data-caption="The water effect">
+    <img src="https://thumbs.gfycat.com/ColorlessCleverCod-small.gif" >
+</a></p>
+<p>My first solution to achieve this involved drawing a copy of the canvas into an <code>ImageData</code> buffer. This is the original&nbsp;code:</p>
+<div class="xhighlight"><pre><span></span><span class="kd">let</span> <span class="nx">ibuffer</span> <span class="o">=</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getImageData</span><span class="p">(...</span><span class="nx">canvasDimensions</span><span class="p">);</span>
+<span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">row</span> <span class="o">=</span> <span class="nx">distrow</span><span class="p">;</span> <span class="nx">row</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">;</span> <span class="nx">row</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">distortion</span> <span class="o">?</span> <span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">sintimer</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="nx">row</span><span class="o">*</span><span class="mi">1280</span><span class="p">))</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">ap</span> <span class="o">=</span> <span class="nx">abs</span><span class="p">(</span><span class="nx">p</span><span class="p">);</span> <span class="c1">// Really redundant</span>
+    <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="o">-</span><span class="nx">ap</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">idex</span> <span class="o">=</span> <span class="p">(</span><span class="nx">row</span><span class="o">*</span><span class="mi">512</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="nx">i</span><span class="o">*</span><span class="mi">4</span><span class="p">);</span> <span class="c1">// Get offset into buffer. Same as y*(width*4) + (x*4)</span>
+        <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">ibuffer</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="nx">idex</span><span class="o">+</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="nx">ibuffer</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="nx">idex</span><span class="o">+</span><span class="nx">ap</span><span class="o">+</span><span class="nx">j</span><span class="p">];</span>
+        <span class="p">}</span>
+        <span class="nx">ibuffer</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="nx">idex</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span> <span class="c1">// Set alpha to full value</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// My screenshake was also baked into this area of the code.</span>
+<span class="c1">// msin and mcos are defined just before the loop, based on global sintimer.</span>
+
+<span class="nx">context</span><span class="p">.</span><span class="nx">putImageData</span><span class="p">(</span><span class="nx">ibuffer</span><span class="p">,</span>
+    <span class="c1">// I use ternary expressions a lot.</span>
+    <span class="nx">screenShake</span> <span class="o">*</span> <span class="nx">globalclock</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> 
+        <span class="o">?</span> <span class="nx">msin</span><span class="o">*</span><span class="nx">screenShake</span><span class="o">*-</span><span class="mi">1</span>
+        <span class="o">:</span> <span class="nx">msin</span><span class="o">*</span><span class="nx">screenShake</span><span class="o">*</span><span class="mi">1</span><span class="p">,</span>
+
+    <span class="nx">screenShake</span> <span class="o">*</span> <span class="nx">globalclock</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> 
+        <span class="o">?</span> <span class="nx">mcos</span><span class="o">*</span><span class="nx">screenShake</span><span class="o">*-</span><span class="mi">1</span>
+        <span class="o">:</span><span class="nx">mcos</span><span class="o">*</span><span class="nx">screenShake</span><span class="o">*</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Later on I discovered that this was a serious performance bottleneck: <code>Context.getImageData()</code> is just too&nbsp;slow.</p>
+<p>So I created a faster solution that uses a buffer canvas and redraws slices of the main canvas to an offset. That looks something like&nbsp;this:</p>
+<div class="xhighlight"><pre><span></span><span class="c1">// cbuffercontext is a &quot;copy buffer&quot; defined near the top of the file next to the primary </span>
+<span class="c1">// canvas/context. Here we&#39;re clearing and copying the contents of the primary buffer to it.</span>
+
+<span class="nx">cbuffercontext</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(...</span><span class="nx">canvasDimensions</span><span class="p">);</span>
+<span class="nx">cbufferContext</span><span class="p">.</span><span class="nx">drawImage</span><span class="p">(</span><span class="nx">canvas</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="c1">// In case you&#39;re wondering, distrow is the row on-screen where the water effec starts,</span>
+<span class="c1">// defaulting to 0 (Whole screen). This is used to render partial water in some rooms </span>
+<span class="c1">// without too much special logic.</span>
+
+<span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">row</span> <span class="o">=</span> <span class="nx">distrow</span><span class="p">;</span> <span class="nx">row</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">;</span> <span class="nx">row</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">distortion</span> <span class="o">?</span> <span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">sintimer</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="nx">row</span><span class="o">*</span><span class="mi">1280</span><span class="p">))</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="c1">// Clear a line of the buffer</span>
+
+    <span class="nx">cbuffercontext</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">row</span><span class="p">,</span><span class="mi">128</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span> 
+
+    <span class="c1">// Draw an offset slice. </span>
+    <span class="c1">// We only ever draw at 0 or -1, otherwise the effect is too pronounced</span>
+
+    <span class="nx">cbuffercontext</span><span class="p">.</span><span class="nx">drawImage</span><span class="p">(</span><span class="nx">canvas</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">row</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">p</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nx">row</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Copy the copy-buffer back to the main canvas</span>
+<span class="c1">// We clear the main canvas first, since black pixels are actually just transparent pixels.</span>
+<span class="nx">context</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(...</span><span class="nx">canvasDimensions</span><span class="p">);</span>
+
+<span class="c1">// xoff and yoff are the screenshake offsets in this version</span>
+<span class="nx">context</span><span class="p">.</span><span class="nx">drawImage</span><span class="p">(</span><span class="nx">cbuffer</span><span class="p">,</span><span class="nx">xoff</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nx">yoff</span><span class="p">);</span>
+</pre></div>
+
+
+<p>At first I thought this would be a colossal waste of space, but it really grew on me, and I think it adds a lot of visual style to the game - so I kept&nbsp;it!</p>
+<h3 id="a-bit-of-juice">A bit of&nbsp;&#8220;Juice&#8221;</h3>
+<p>While I was testing my game, I noticed that there was a lack of <em>impact</em>. Something should happen when a bullet hits something, or when the player takes damage. Something other than the sprite flickering or a dispersion effect&nbsp;spawning.</p>
+<p>I added a <em>really</em> simple screen shake system that shakes more and longer the higher the variable that controls the shaking is. I added it to <em>everything</em> I could think of, and it definitely made the game feel punchier almost&nbsp;immediately.</p>
+<p>The code for this is somewhat simplistic and also not entirely well implemented: The amplitude of the shake is a function of the duration of the shake. I have <em>no</em> idea what my thought process behind this was, but it means that a higher duration screenshake shakes the screen to a stupid&nbsp;degree.</p>
+<p>The code that does this is as follows (From Line 1705 in the&nbsp;source)</p>
+<div class="xhighlight"><pre><span></span><span class="kd">let</span> <span class="nx">msin</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">sintimer</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="c1">// Simple sine and cosine values for variaton</span>
+    <span class="nx">mcos</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">sintimer</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span>
+    <span class="c1">// Screenshake calculations - scales the screenshake timer by the given</span>
+    <span class="c1">// sine/cosine value and then again by the direction.</span>
+    <span class="nx">xoff</span> <span class="o">=</span> <span class="nx">screenShake</span><span class="o">?</span><span class="nx">screenShake</span><span class="o">*</span><span class="nx">globalclock</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="o">?</span><span class="nx">msin</span><span class="o">*</span><span class="nx">screenShake</span><span class="o">*-</span><span class="mi">1</span><span class="o">:</span><span class="nx">msin</span><span class="o">*</span><span class="nx">screenShake</span><span class="o">*</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="nx">yoff</span> <span class="o">=</span> <span class="nx">screenShake</span><span class="o">?</span><span class="nx">screenShake</span><span class="o">*</span><span class="nx">globalclock</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="o">?</span><span class="nx">mcos</span><span class="o">*</span><span class="nx">screenShake</span><span class="o">*-</span><span class="mi">1</span><span class="o">:</span><span class="nx">mcos</span><span class="o">*</span><span class="nx">screenShake</span><span class="o">*</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span>
+</pre></div>
+
+
+<p>If you feel like playing around with this and seeing how bad high screenshake values can really get, try modifying the screenshake value for something silly like bullet impacts to something like 32 and watch the world shake itself&nbsp;apart!</p>
+<h3 id="the-bosses">The&nbsp;Bosses</h3>
+<h4 id="the-magma-centipede-boss">The &#8220;Magma Centipede&#8221;&nbsp;boss</h4>
+<p>After I created my four visual areas I decided I wanted to create four bosses based on the sprites I&#8217;d already made.
+I began with the most difficult one, the Magma&nbsp;Centipede/Worm.</p>
+<p>Before creating the player code I had already experimented with creating a segmented enemy that drew multiple
+body parts as a &#8216;line&#8217; of segments. With a bit of tweaking I managed to get it to wriggle menacingly from the
+right-hand-side of the&nbsp;screen.</p>
+<p>In steps, I added more &#8216;life&#8217; to it, beginning with the ability to damage the player if touching. Then I made it take damage from the player&#8217;s&nbsp;weapon.</p>
+<p>And at that point I decided I wanted a simple state machine. My implementation for all four bosses involves a large <code>switch</code> statement that checks a variable named <code>bossPhase</code>. The currently spawned boss has a data object that contains some common boss variables as well as some unique values, e.g.: the fire boss has a <code>segs</code> variable to represent the number of segments&nbsp;remaining.</p>
+<p>From this point I started scripting the boss stage by stage. The first thing I made it do was appear from off-screen. This was a simple check against a variable holding the X value. Once it hit that value, it&#8217;s off to the next &#8216;phase&#8217; of the&nbsp;behavior.</p>
+<p>Next I made it quickly disappear off screen when you took out one of its health bars, and return again with one a segment&nbsp;removed.</p>
+<p>Then I decided to mess around and made the fire-wave. That was a lot of fun to make, but is also some of the messiest code in the file! It&#8217;s basically a super-long array of X and Y coordinates, and the boss loops through each of them
+decrementing the X value and assigning the Y value as a function of a sinewave based on that X&nbsp;value.</p>
+<blockquote>
+<p>It was around this point that I gave the Closure compiler a try, and was pleasantly surprised when I found that I was only using 7.5k or so. I realized that with a bit of work I could add some interesting behaviors to my bosses, and make them a centerpiece for the&nbsp;game.</p>
+</blockquote>
+<h4 id="the-venus-flytrap-boss">The &#8220;Venus Flytrap&#8221;&nbsp;boss</h4>
+<p>The next boss I tackled was the Unnamed Plant Boss/Venus Flytrap. I had already decided a few days before implementing this one that I wanted it to be a &#8216;simple&#8217; dodge phase, defense phase and damage phase: Dodge the bullet pods, destroy the vines, attack the center, repeat for another two waves.
+I was planning on saving the more &#8216;complex&#8217; behaviors for the last&nbsp;boss.</p>
+<p>A key addition to my implementation here was the creation of a <code>playerHurt</code> function that enemies an bosses could call to damage the player, as well as a <code>playerProjectileTest</code> function that would loop through the active player projectiles and apply a basic <span class="caps">AABB</span> test to them, running a callback if a collision was&nbsp;happening.</p>
+<p>The damage the vines inflict was implemented using a manual <span class="caps">AABB</span> test against the player coordinates, and would &#8216;bump&#8217; the player to the left or right depending on which side of the screen they were&nbsp;on.</p>
+<p>The final phase is the &#8220;free damage&#8221; state: You have as much time as you want to spam bullets at the plant bulb and get rid of an <span class="caps">HP</span>&nbsp;bar.</p>
+<h4 id="the-mother-brain-boss">The &#8220;Mother Brain&#8221;&nbsp;boss</h4>
+<p>This boss was a pretty simple one too, because I was getting nervous as I crept closer to the 10k mark, and I wanted space to add extra enemies, weapon powerups and suit&nbsp;upgrades</p>
+<blockquote>
+<p>Up to this point the weapon upgrades were automatically granted as soon as you destroyed a boss. This worked, but having an actual item to pick up after the boss room feels much more&nbsp;rewarding.</p>
+</blockquote>
+<p>Similarly to the Flytrap, I decided to have some sort of barrier to take down, so I started with a nod to the barriers in the original Metroid game when fighting Mother&nbsp;Brain.</p>
+<p>But barriers alone made for a boring and completely benign boss battle, so I &#8220;temporarily&#8221; added in a bunch of enemy spawners along the top and bottom of the central&nbsp;corridor.</p>
+<p>I decided to keep them, in the end, they added a somewhat random element to the boss, since anything could technically&nbsp;spawn.</p>
+<p>After taking down the first <span class="caps">HP</span> bar, the brain spawns in four turrets with projectiles that fire towards the player&#8217;s position. This adds a bit of required dodging, but isn&#8217;t too hard to get through. Originally I was going to spawn another wave of these, but I decided not to in the final game because this was going to be the first battle the player would&nbsp;have.</p>
+<h4 id="the-tank-boss">The &#8220;Tank&#8221;&nbsp;Boss</h4>
+<p>I took on this boss pretty close to the end of development, after I&#8217;d already added in a bunch of things like the health and suit upgrades, so I decided to go &#8220;all out&#8221; with&nbsp;it.</p>
+<p>Initially I just did slow linear movement from side-to-side, but I decided that didn&#8217;t have enough impact. So I went and added a simple <code>lerp</code> and quadratic easing function to the game. Still not feeling the impact enough, I added screenshake every time the boss &#8216;stopped&#8217;. This added a bit of punch to the&nbsp;fight.</p>
+<p>The drop-down from the ceiling was intended to give the player a window of opportunity to mash the fire button at the boss for a bit, but not for free - it was a bit too easy, so I added a wave of those tracking projectiles to this portion of the&nbsp;fight.</p>
+<p>Originally the fight drastically sped up as you got through the health bars, but I toned it down a bit. Even I was having trouble getting through it, and I made the&nbsp;game!</p>
+<blockquote>
+<p>On that note, it <em>is</em> possible to defeat this boss without any weapon, suit or health upgrades. While debugging I did that several times, though it&#8217;s pretty tough. In normal gameplay you can&#8217;t encounter the boss without the third weapon upgrade, but you <em>can</em> intentionally downgrade using the <span class="caps">JS</span> console by entering <code>playerWeapon = 0</code>, if you&#8217;d like to challenge yourself - but only if running the unobfuscated version of the game. I have <em>no</em> idea what the variable name is once it&#8217;s&nbsp;minified!</p>
+</blockquote>
+<h3 id="an-audio-experiment">An Audio&nbsp;Experiment</h3>
+<p>At some point during week 2 I had this harebrained notion to add sound to my game. I had already <em>firmly</em> decided at the start of the competition that I knew nothing about the Browser Audio APIs and that it&#8217;d be best left until next&nbsp;time.</p>
+<p>My brain beyond <span class="caps">11PM</span> doesn&#8217;t care for my resolve. I cracked open <span class="caps">MDN</span>&#8217;s docs on the <span class="caps">API</span>, picked out the squarewave oscillator and created a really simple sound&nbsp;player.</p>
+<p>It consists of three parts: An oscillator node, a gain node and a function that feeds the&nbsp;oscillator.</p>
+<p>The <code>beep</code> function takes as its argument an array of arrays. Each sub-array needs two values: A frequency and a duration.
+The function recursively consumes the array until done, setting the gain to a non-ear-destroying level upon starting a new note and setting it back to zero when ending a&nbsp;note.</p>
+<p>Here&#8217;s the <em>entirety</em> of the audio&nbsp;code:</p>
+<div class="xhighlight"><pre><span></span><span class="kd">let</span> <span class="nx">ac</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AudioContext</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">osc</span> <span class="o">=</span> <span class="nx">ac</span><span class="p">.</span><span class="nx">createOscillator</span><span class="p">()</span>
+<span class="kd">let</span> <span class="nx">gain</span> <span class="o">=</span> <span class="nx">ac</span><span class="p">.</span><span class="nx">createGain</span><span class="p">()</span>
+<span class="nx">osc</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="s1">&#39;square&#39;</span><span class="p">;</span>
+<span class="nx">osc</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="nx">gain</span><span class="p">);</span>
+<span class="nx">gain</span><span class="p">.</span><span class="nx">gain</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+<span class="nx">osc</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+<span class="nx">gain</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="nx">ac</span><span class="p">.</span><span class="nx">destination</span><span class="p">);</span>
+
+<span class="kd">let</span> <span class="nx">beep</span> <span class="o">=</span> <span class="p">(</span><span class="nx">notes</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">n</span> <span class="o">=</span> <span class="nx">notes</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="c1">// Current frequency/duration pair</span>
+    <span class="nx">osc</span><span class="p">.</span><span class="nx">frequency</span><span class="p">.</span><span class="nx">setValueAtTime</span><span class="p">(</span><span class="nx">n</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">ac</span><span class="p">.</span><span class="nx">currentTime</span><span class="p">);</span>
+    <span class="nx">gain</span><span class="p">.</span><span class="nx">gain</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="mf">0.04</span><span class="p">;</span>
+
+    <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">_</span><span class="p">=&gt;</span> <span class="p">{</span>
+        <span class="nx">gain</span><span class="p">.</span><span class="nx">gain</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="nx">osc</span><span class="p">.</span><span class="nx">frequency</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// Helps prevent clipping</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="nx">notes</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">beep</span><span class="p">(</span><span class="nx">notes</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span> <span class="c1">// Making the most of JS APIs!</span>
+        <span class="p">}</span>
+    <span class="p">},</span> <span class="nx">n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">5</span><span class="p">);</span> <span class="c1">// Add a small offset to the duration to compensate for</span>
+                <span class="c1">// Firefox having some trouble with shorter durations.</span>
+<span class="p">};</span>
+</pre></div>
+
+
+<p>Here&#8217;s an example sound, the &#8220;Pickup&#8221;&nbsp;sound:</p>
+<div class="xhighlight"><pre><span></span><span class="kd">let</span> <span class="nx">sndPickup</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">523</span><span class="p">,</span><span class="mi">30</span><span class="p">],[</span><span class="mi">466</span><span class="p">,</span><span class="mi">30</span><span class="p">],[</span><span class="mi">311</span><span class="p">,</span><span class="mi">30</span><span class="p">],[</span><span class="mi">261</span><span class="p">,</span><span class="mi">30</span><span class="p">],[</span><span class="mi">523</span><span class="p">,</span><span class="mi">30</span><span class="p">],[</span><span class="mi">1047</span><span class="p">,</span><span class="mi">30</span><span class="p">]];</span>
+</pre></div>
+
+
+<p>I created these sounds by ear using a note frequency chart and rounding the figures to the nearest integer. It worked out pretty <span class="caps">OK</span>, and the sounds are somewhat reminiscent of early <span class="caps">DOS</span> and arcade&nbsp;games.</p>
+<h3 id="the-save-system">The Save&nbsp;System</h3>
+<p>This is another feature that I didn&#8217;t think I would be able to add, but after looking into it, was actually really&nbsp;straightforward.</p>
+<p>I opted to use the <code>sessionStorage</code> <span class="caps">API</span> as opposed to the <code>localStorage</code> <span class="caps">API</span> since access control to the former is less restricted. This means that the game retains your progress so long as you have the tab open. Reloading, even hard-reloading, will keep your save data intact. To start a new game you&#8217;d have to close the tab and reopen&nbsp;it.</p>
+<p>One little bug I ran into while working with <code>sessionStorage</code> is that the <code>getItem</code> method always returns a string, no matter what you stored to begin with, and I wasn&#8217;t taking that into account. 
+I eventually went back over my code and, for every instance I was using it, coerced the returned value into a number like&nbsp;so:</p>
+<div class="xhighlight"><pre><span></span><span class="o">~~</span><span class="nx">retrieve</span><span class="p">(</span><span class="s1">&#39;px&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>That <code>retrieve</code> function was an attempt on my part to reduce the byte footprint of the sessionStorage calls. The compiler can&#8217;t minify the names of global <span class="caps">API</span> objects or their methods, so I tried to&nbsp;delegate.</p>
+<p>The compiler &#8216;helpfully&#8217; optimized my delegation out, replacing each instance of <code>retrieve</code> and its counterpart <code>store</code> with the full-length <code>sessionStorage.getItem</code> and <code>sessionStorage.setItem</code>. Before submitting I manually re-added the delegate functions and did a search/replace over the minified code to save some&nbsp;space.</p>
+<p>On death, the last save is &#8216;loaded&#8217; by reloading the window, which makes for a nice and neat reinitialization of the global state. The reload is achieved with this odd&nbsp;assignment:</p>
+<div class="xhighlight"><pre><span></span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">;</span>
+</pre></div>
+
+
+<h3 id="player-progression">Player&nbsp;Progression</h3>
+<p>When I began work on the spritesheet, I started off <em>really</em> simple. Initially I was going to limit sprites to one color to keep with the Hero Core inspiration, but with a more <span class="caps">ZX</span> Spectrum style. Then I started listening to some music and before I knew it I had revised the spritesheet with a much higher per-sprite color count. It definitely made the sprites more&nbsp;vibrant!</p>
+<p>That was when I started adding door sprites, different weapons and different suit colors, and basically the game I was planning turned into a&nbsp;micro-Metroidvania!</p>
+<p>For the majority of the project&#8217;s development I wasn&#8217;t sure I&#8217;d be able to fit any of the desired features in, so I left the bulk of them alone until after I implemented what I saw as the game&#8217;s &#8220;heart&#8221;, those being the boss&nbsp;encounters.</p>
+<blockquote>
+<p>There are still quite a few potential objects and obstacles left out of the final competition version of the&nbsp;game:</p>
+<ul>
+<li>Electric barriers, meant to be brought down by fighting a mini-boss (Similarly to Hero&nbsp;Core)</li>
+<li>Switches that could open doors in other rooms, perhaps with a time&nbsp;limit</li>
+<li>Switchable weapons and ammo for each&nbsp;weapon</li>
+<li>Touch-screen dpad icons (I did implement that, but it was a bit of a big feature so I cut it for space&nbsp;reasons)</li>
+<li><span class="dquo">&#8220;</span>Crystals&#8221; that were supposed to be in the rooms after a boss. You&#8217;d destroy them to open the shell around the reactor in the center of the game&nbsp;world.</li>
+<li>Spikes! Not of the instant-death variety, but damaging with a bit of&nbsp;knockback.</li>
+<li>Magma! Originally intended for the lower-right corner of the&nbsp;map.</li>
+<li>Crusher traps! These would come down from the ceiling or up from the floor and cause major damage if the player got caught between&nbsp;them.</li>
+<li>Quick Man lasers! Not instant-death though, but I ended up recycling the art for the fourth&nbsp;boss.</li>
+</ul>
+<p>I might implement some of these if I get around to implementing a &#8220;Version 1.1&#8221; of the&nbsp;game.</p>
+</blockquote>
+<p>Once I was done with them, I added in the &#8216;bonus&#8217; features I really wanted: barrier doors, optional health upgrades, suit upgrades and enemy&nbsp;variety.</p>
+<h4 id="player-weapons">Player&nbsp;Weapons</h4>
+<p>At the start of the game the intent was for the player to only have four weapons. The pea-shooter, laser rifle, plasma cannon and rocket launcher, in that&nbsp;order.</p>
+<p>Earlier in the boss implementation section I mentioned that the bosses originally granted a weapon upgrade when defeated. During testing I often set my weapon level to 3 so I could burst down phases I&#8217;d already tested, but this had the side-effect of crashing the game when the level raised to 4 after defeating the&nbsp;boss!</p>
+<p>So my quick-n-dirty solution was to add a special &#8216;5th&#8217; weapon that you get after defeating the final boss, which is a simple reuse of the plasma explosion effect. A &#8220;hyper beam&#8221;, basically. Completely useless by that point in the game, but satisfying to&nbsp;obtain!</p>
+<h4 id="barrier-doors">Barrier&nbsp;Doors</h4>
+<p>This one was a no-brainer to me. I had (initially) four weapons, and I thought that it&#8217;d be nice to have a barrier for each&nbsp;type. </p>
+<p>Implementation-wise these are basically just in-world collision checks that stop the player from moving through them and will explode on contact with the right level of&nbsp;projectile.</p>
+<p>Placement of these was a little tricky - I only had 16 colors to work with on the map, and I was quickly running out. So I pulled a bit of modulo trickery that essentially boils down to&nbsp;this:</p>
+<div class="xhighlight"><pre><span></span><span class="nx">spawnDoor</span><span class="p">(</span><span class="nx">cx</span><span class="o">*</span><span class="mi">8</span><span class="p">,</span><span class="nx">cy</span><span class="o">*</span><span class="mi">8</span><span class="p">,</span><span class="nx">cx</span><span class="o">%</span><span class="mi">4</span><span class="p">);</span>
+</pre></div>
+
+
+<p>Where the third argument is the &#8216;type&#8217; of door, and the variables <code>cx</code> and <code>cy</code> are the tile coordinates of the door.
+This did mean that placement was a little bit tricky, but it worked out in the end: I only had to use one map color to place the&nbsp;doors!</p>
+<h4 id="health-upgrades">Health&nbsp;Upgrades</h4>
+<p>This was a bit of a no-brainer. I originally started out designing the game around a maximum of 6 health, but then as I started adding in enemies and more complicated bosses I found that the friends helping me test the game were having quite a bit of&nbsp;trouble.</p>
+<p>Each health upgrade adds two to the player&#8217;s maximum health, and persists for the current game session. There are a total of four to find, and getting them all makes the game significantly&nbsp;easier.</p>
+<h4 id="armor-upgrades">Armor&nbsp;Upgrades</h4>
+<p>For those who like to 100% things, and for those still having trouble with some of the bosses, I added in armor upgrades at the last moment. At first these were going to be traversal enablers. For example, you&#8217;d be unable to enter water without the first tier of upgrade, and the fire zone would damage you until you got the second&nbsp;one.</p>
+<p>I scrapped that concept relatively quickly, since there were already barriers in the&nbsp;game.</p>
+<p>I later decided to use the assets, but made them behave as a damage modifier: Each upgrade reduces damage taken by 25%, for a total of 50% damage reduction if you collect both upgrades. This also makes the game a lot easier, but they&#8217;re satisfying to&nbsp;collect.</p>
+<h4 id="enemy-variety">Enemy&nbsp;Variety</h4>
+<p>During almost 90% of the project&#8217;s development I only had two types of static turret enemy. One would shoot straight ahead from whatever surface it was spawned on, the other would shoot diagonally in the direction of the&nbsp;player.</p>
+<p>After I&#8217;d populated the game&#8217;s map a bit, this felt really bland. I was at the 12k mark already when I hit this point, but I managed to squeeze some really simple extra enemy behaviors in at the last minute - a &#8220;rover&#8221; enemy that moved left/right or up/down between walls, a static enemy that burst into a ring of projectiles when destroyed and a special turret that shoots tracking&nbsp;projectiles.</p>
+<p>Even this handful of extra enemy types adds a lot more variety to the game&#8217;s areas, and given the way the respawn feature works, you can sometimes reroll into some really challenging&nbsp;rooms!</p>
+<h3 id="ending-and-escape-sequence">Ending and Escape&nbsp;Sequence</h3>
+<p>The final sequence of the game was a really late addition. I didn&#8217;t think I&#8217;d have space for anything too fancy (And I was mostly right), but given that I had a few hundred bytes to spare I decided to add a win screen and an escape&nbsp;sequence.</p>
+<p>Originally the escape sequence was going to have a timer, but I found that given the limits to what I could do with regards to making a complex escape route, it wasn&#8217;t worth the implementation - instead I chose to create a sense of tension with the screenshake and explosions, so it <em>seems</em> like there&#8217;s an urgency to escaping, and so that the end screen feels a bit more rewarding than simply flashing up the second you destroy the&nbsp;reactor.</p>
+<p>If I&#8217;d had a bit more space to work with (And some more available map colors) I would have liked to have implemented an idea I had fairly early on: Block up some passageways and open up others so the player has to escape through areas they&#8217;ve already been through a new route - maybe something for the post competition&nbsp;version?</p>
+<h3 id="the-canvas-flip-bug">The Canvas Flip&nbsp;Bug</h3>
+<p>I had a mild panic a few days before submission when I discovered that, seemingly at random, the canvas was flipping itself upside down. After a bit of digging, I discovered it wasn&#8217;t anything to do with the game but was a strange behaviour introduced into a specific version of Chromium that most Chromium based browsers are currently&nbsp;using.</p>
+<p>Whenever the tab loses focus (e.g.: The window gets minimized or you switch to another tab and back again), the canvas would flip and remain flipped until&nbsp;reloading.</p>
+<p>I confirmed that it wasn&#8217;t &#8220;just me&#8221;, and have been finding it happening on any entry that utilizies the 2D render context (WebGL contexts seem immune to the&nbsp;problem).</p>
+<p>A friend of mine who was helping playtest the game just before submission intentionally flipped the canvas and played the game in &#8220;Mirror mode&#8221;, as he called it. Successfully too, I might add. So I labeled it a &#8216;buggy feature&#8217; and submitted the&nbsp;game.</p>
+<h3 id="submission">Submission</h3>
+<p>I made a point of making use of the <a href="https://github.com/js13kGames/bot/blob/master/doc/how-to-submit.md#how-to-submit">new submission <span class="caps">PR</span> bot</a> provided for this year&#8217;s competition. It made submission a lot easier, and pointed out a really dumb mistake I&#8217;d made (Forgot to rename <code>index1.html</code> in the distributed zip to <code>index.html</code>!).</p>
+<p>I actually submitted my game nearly a full week before the deadline: I&#8217;d basically run out of space and had actually accomplished my design goals for once - I&#8217;m used to overscoping and cutting features like crazy before&nbsp;submitting!</p>
+<p>That said, after submission I encountered two unexpected bugs! Let&#8217;s go over&nbsp;them.</p>
+<h4 id="bug-1-monitor-sync-rate">Bug #1 - Monitor Sync&nbsp;Rate</h4>
+<p><code>requestAnimationFrame</code> is a pretty handy browser function. And I&#8217;d always (naively) assumed it was going to try to give me a constant &#8216;animation&#8217; tick, that tick being roughly every 16ms or so. 60 frames per&nbsp;second.</p>
+<p>And I had no reason to believe otherwise! It works like that on all my devices! 
+So I treated updates as fixed-increment and used fixed values everywhere - a very bad idea, as it always is, because when a friend of mine tried it on his 120hz monitor, the game predictably ran twice as&nbsp;fast!</p>
+<p>I quickly implemented a traditional fixed timestep, which only took about seven lines of code total, and submitted a patch to the competition&nbsp;organizers. </p>
+<p>For those interested, my implementation of the timestep (Patched together after a hasty reading-up of a bunch of articles and StackOverflow answers) looks like&nbsp;this:</p>
+<div class="xhighlight"><pre><span></span><span class="c1">// globals:</span>
+<span class="kd">let</span> <span class="nx">frameStart</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">frameDelta</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">FPS</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="nx">frameTime</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">/</span><span class="nx">FPS</span><span class="p">;</span>
+
+<span class="c1">// At top of update function:</span>
+<span class="kd">let</span> <span class="nx">main</span> <span class="o">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">time</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">performance</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>
+    <span class="kd">let</span> <span class="nx">delta</span> <span class="o">=</span> <span class="nx">time</span> <span class="o">-</span> <span class="nx">frameStart</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">delta</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">)</span> <span class="nx">delta</span> <span class="o">=</span> <span class="nx">frameTime</span><span class="p">;</span> <span class="c1">// To &#39;skip&#39; frames if we accumulate too much frame time</span>
+    <span class="nx">frameDelta</span> <span class="o">+=</span> <span class="nx">delta</span><span class="p">;</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="nx">frameDelta</span> <span class="o">&gt;</span> <span class="nx">frameTime</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Do Update Code here</span>
+        <span class="nx">frameDelta</span> <span class="o">-=</span> <span class="nx">frameTime</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">frameStart</span> <span class="o">=</span> <span class="nx">time</span><span class="p">;</span>
+    <span class="nx">requestAnimationFrame</span><span class="p">(</span><span class="nx">main</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Note that this is a <em>fixed</em> timestep, as opposed to the <em>variable</em> timestep used in a lot of 3D engines (In those you tend to scale your movement by the delta time). This gives me the expected <span class="caps">60FPS</span> if it&#8217;s achievable on the current hardware, and means I can get away with not having to touch my movement&nbsp;code.</p>
+<h4 id="bug-2-color-profiles">Bug #2 - Color&nbsp;Profiles</h4>
+<p>Credit to <a href="https://twitter.com/sirXemic">SirXemic</a> for finding this one and contacting me with a fix.
+You should go try out his entry to the competition, <a href="https://js13kgames.com/entries/sentetrox">SenTetrox</a>, which is best described as Tetris with a really fun twist! Go give it a&nbsp;play!</p>
+<p>This bug is a little bit more obscure, but it&#8217;s related to how I&#8217;m generating my map: I&#8217;m reading in pixels from my spritesheet and comparing them against exact <span class="caps">RGB</span> values in an&nbsp;array.</p>
+<p>What I failed to take into account was the <em>color profile</em> of the player&#8217;s monitor. If an image has no attached color profile, the browser will convert it on the fly to the user&#8217;s color profile, using what I&#8217;m assuming is a perceptive conversion - this means that while the colors will appear to look the same or similar-enough, the exact <span class="caps">RGB</span> values are&nbsp;different.</p>
+<p>I use Aseprite for all of my pixel art, and in this case in particular I was working with indexed <span class="caps">PNG</span> images. Because I hadn&#8217;t set my defaults up for sRGB, it saved the images without a color&nbsp;profile!</p>
+<p>The game still worked on the majority of systems, but for anybody using a monitor with a different color profile, the game would be unable to load, as the map pixels wouldn&#8217;t match any of the&nbsp;palette-data.</p>
+<p>This was a simple fix, as I just opened the spritesheet in Krita and converted to the sRGB color profile while choosing to use <em>absolute</em> mode instead of <em>perceptive</em> mode. Simple, but it stands as a good example of bugs that can easily fly under the&nbsp;radar.</p>
+<h3 id="summary">Summary</h3>
+<p>I&#8217;ll sum things up here in the traditional postmortem format, to round things&nbsp;off!</p>
+<h4 id="what-went-right">What Went&nbsp;Right</h4>
+<p>Having a clear idea of what I was making meant I knew exactly what I needed to do at each step to get to the core of the game I&nbsp;wanted.</p>
+<p>That idea was informed heavily by my decision to create an asset sheet before starting. I gave myself a palette of sprites to work with, and the game formed up from&nbsp;there.</p>
+<p>The timing of things worked out pretty well, since I was able to spend a good 1-2 hours every day on the game - this isn&#8217;t always the case as I never know when I may or may not have extra work on my plate. Being able to finish the game in three weeks instead of four gave me some extra breathing room for bug testing and&nbsp;polish.</p>
+<h4 id="what-went-wrong">What Went&nbsp;Wrong</h4>
+<p>Surprisingly little this year! My last two js13k games were, to be honest, hardly games - they were experiments, and I think I did a good job learning from them this&nbsp;year.</p>
+<p>If anything, my biggest failure this year was not spending the time setting up a more streamlined build process. I did a lot of manual compilation, compressing and size-checking throughout the&nbsp;competition.</p>
+<h4 id="what-ill-do-next">What I&#8217;ll Do&nbsp;Next</h4>
+<p>Generally I have a bad track-record when it comes to doing post-jam/post-competition work on my games, but given the &#8220;completeness&#8221; of this one, I feel it&#8217;d only be right to make an attempt at a tidied up post-jam version with a few extras and tweaks. I&#8217;ll be attempting that if time permits after the voting period (There&#8217;s a load of games to get through, and some of them are time&nbsp;consuming!)</p>
+<p>I&#8217;d like to work on a &#8220;Super&#8221; Xycore, something a bit more complex and not limited to weird infrastructural choices born of limitations, and with a wider selection of art, sounds and music - and if work doesn&#8217;t get too busy, I&#8217;ll probably get somewhere with&nbsp;that.</p>
+<p>For next year&#8217;s JS13k I&#8217;m hoping to prepare a common library of tools in advance, as well as an automated build system to streamline the process - and maybe I&#8217;ll revive my original idea? Who&nbsp;knows!</p>
+<p>For now, I&#8217;m going to be playing the other entries! I&#8217;ve played around 60 so far and there are some real standout games this year - I&#8217;m looking forward to seeing what else lies in&nbsp;store!</p>
+                    <a class="top-widget" href="#"><span>△</span><span>Back To Top</span></a>
+                </div>
+                <footer class="text-right">
+                    <p>- Daniel '64Mega' Lawrence</p>
+                </footer>
+    <section id="comments" class="comments ">
+        <hr/>
+        <h2>Comments</h2>
+        <div id="disqus_thread"></div>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </section>
+            </div>
+        </div>
+    </article>
+</section>
+<footer>
+    <hr>
+    <div class="row">
+        <div class="col-lg-9 text-center">
+            <p><small>
+                Built with <a href="http://docs.getpelican.com/en/latest">Pelican</a>
+                <br />
+                Theme based on <a href="https://github.com/ingwinlu/pelican-twitchy">pelican-twitchy</a>                      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>, except where indicated otherwise.
+
+            </small></p>
+        </div>
+    </div>
+</footer>            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+    <!-- jQuery Version 1.11.2 -->
+    <script src="https://64mega.github.io/theme/js/jquery-1.11.2.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://64mega.github.io/theme/js/bootstrap.min.js"></script>
+    <!-- Fancybox Script -->
+    <script src="https://64mega.github.io/theme/js/jquery.fancybox.min.js"></script>
+    <!-- twitchy Script -->
+    <script src="https://64mega.github.io/theme/js/pelican_twitchy.min.js"></script>
+    <!-- Begin Cookie Consent https://silktide.com/tools/cookie-consent/ -->
+    <script>
+        window.cookieconsent_options = {
+            message: "This site <em>may</em> contain some cookies 🍪.",
+            learnMore: "More info",
+            link: null,
+            dismiss: "Got it!",
+            theme: "https://64mega.github.io/theme/css/cookieconsent/dark-floating.css",
+        };
+    </script>
+    <script src="https://64mega.github.io/theme/js/cookieconsent.min.js"></script>
+    <!-- End Cookie Consent -->
+
+<!-- disqus -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = '64megaspace'; // required: replace example with your forum shortname
+
+            var disqus_identifier = 'js13k-2019-recap';
+        var disqus_url = 'https://64mega.github.io/js13k-2019-recap.html';
+
+    var disqus_config = function () {
+        this.language = "en";
+    };
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- /disqus -->
+</body>
+</html>

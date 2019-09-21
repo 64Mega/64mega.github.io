@@ -1,9 +1,13 @@
 blockquote {
-    background-color: white;
-    padding: 0.75rem;
-    color: gray;
-    box-sizing: border-box;
-    box-shadow: 1px 1px 2px 1px #AAA;
+    background-color: #28434b;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding: 0.50rem;
+    padding-top: 1rem;
+    color: white;
+    font-size: 10pt;
+    box-shadow: 1px 1px 3px black;
+    border-radius: 4px;    
 }
 
 img {
@@ -15,4 +19,11 @@ img {
 .itch-embed {
     display: block;
     margin: auto auto;
+    box-sizing: content-box;    
+    padding: 1rem;    
+    box-shadow: inset -1px 1px 3px black;
+    border-bottom: 1px solid #2b3642;
+    border-left: 1px solid #2b3642;
+    border-radius: 4px;
+    background-color: rgb(14, 15, 24);
 }

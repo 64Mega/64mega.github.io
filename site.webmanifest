@@ -10,6 +10,5 @@
     ],
     "theme_color": "#413a7b",
     "background_color": "#413a7b",
-    "start_url": "http://64mega.github.io",
     "display": "standalone"
 }
