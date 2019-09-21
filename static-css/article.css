@@ -4,10 +4,15 @@ blockquote {
     margin-right: 1rem;
     padding: 0.50rem;
     padding-top: 1rem;
+    padding-bottom: 0.5rem;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
     color: white;
-    font-size: 10pt;
+    font-size: 11pt;
     box-shadow: 1px 1px 3px black;
-    border-radius: 4px;    
+    border-radius: 4px;
+    text-align: justify;
+    text-justify: kashida;
 }
 
 img {

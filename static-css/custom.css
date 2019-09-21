@@ -90,7 +90,7 @@
     margin: 0;
 }
 
-.fancybox-image {
+.fancybox-image {    
     image-rendering: crisp-edges;
     image-rendering: pixelated;
 }
@@ -190,7 +190,8 @@ table {
     background-color: #222936;
     color: #FFE;
     border: 2px double #101319;
-    padding:0;    
+    padding:0;
+    margin: 1rem;
 }
 
 thead {        
@@ -258,6 +259,7 @@ a[data-fancybox] {
 .entry-content > p {
     padding-left: 1rem;
     padding-right: 1rem;
+    text-align: justify;
     text-justify: auto;
 }
 

@@ -270,8 +270,8 @@ My last js13k attempt involved a somewhat complicated Gulp and Webpack setup, bu
 &lt;h3 id="level-data-storage"&gt;Level Data&amp;nbsp;Storage&lt;/h3&gt;
 &lt;p&gt;Early on I made a decision to store my levels as image data. I&amp;#8217;d done this for my previous JS13k entry, and it was
 fairly successful if a bit cumbersome. But it compresses way better than an inline array, and didn&amp;#8217;t require too much code to get working. There was one caveat that I&amp;#8217;ll bring up later, but suffice it to say that it &lt;em&gt;works&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;The map looks like this in its current form:
-&lt;a href="static-images/xycore/map.png" data-fancybox="gallery" data-caption="The game's map"&gt;
+&lt;p&gt;The map looks like this in its current&amp;nbsp;form:&lt;/p&gt;
+&lt;p&gt;&lt;a href="static-images/xycore/map.png" data-fancybox="gallery" data-caption="The game's map"&gt;
     &lt;img class="thumbnail" src="static-images/xycore/map.png"&gt;
 &lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The way this works is that in the game&amp;#8217;s code I have an array of 16 &lt;span class="caps"&gt;RGB&lt;/span&gt; values, each one representing a color in my palette. I read the map image in, copy it to an &lt;code&gt;ImageData&lt;/code&gt; buffer and read each pixel in the map, comparing it to the palette and pushing the returned palette index into a &lt;code&gt;map[]&lt;/code&gt; array.&lt;/p&gt;
@@ -449,7 +449,8 @@ I was planning on saving the more &amp;#8216;complex&amp;#8217; behaviors for th
 &lt;p&gt;The drop-down from the ceiling was intended to give the player a window of opportunity to mash the fire button at the boss for a bit, but not for free - it was a bit too easy, so I added a wave of those tracking projectiles to this portion of the&amp;nbsp;fight.&lt;/p&gt;
 &lt;p&gt;Originally the fight drastically sped up as you got through the health bars, but I toned it down a bit. Even I was having trouble getting through it, and I made the&amp;nbsp;game!&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;On that note, it &lt;em&gt;is&lt;/em&gt; possible to defeat this boss without any weapon, suit or health upgrades. While debugging I did that several times, though it&amp;#8217;s pretty tough. In normal gameplay you can&amp;#8217;t encounter the boss without the third weapon upgrade, but you &lt;em&gt;can&lt;/em&gt; intentionally downgrade using the &lt;span class="caps"&gt;JS&lt;/span&gt; console by entering &lt;code&gt;playerWeapon = 0&lt;/code&gt;, if you&amp;#8217;d like to challenge yourself - but only if running the unobfuscated version of the game. I have &lt;em&gt;no&lt;/em&gt; idea what the variable name is once it&amp;#8217;s&amp;nbsp;minified!&lt;/p&gt;
+&lt;p&gt;On that note, it &lt;em&gt;is&lt;/em&gt; possible to defeat this boss without any weapon, suit or health upgrades. While debugging I did that several times, though it&amp;#8217;s pretty&amp;nbsp;tough. &lt;/p&gt;
+&lt;p&gt;During normal gameplay you can&amp;#8217;t encounter the boss without the third weapon upgrade, but you &lt;em&gt;can&lt;/em&gt; intentionally downgrade using the &lt;span class="caps"&gt;JS&lt;/span&gt; console by entering &lt;code&gt;playerWeapon = 0&lt;/code&gt;, if you&amp;#8217;d like to challenge yourself - but only if running the unobfuscated version of the game. I have &lt;em&gt;no&lt;/em&gt; idea what the variable name is once it&amp;#8217;s&amp;nbsp;minified!&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h3 id="an-audio-experiment"&gt;An Audio&amp;nbsp;Experiment&lt;/h3&gt;
 &lt;p&gt;At some point during week 2 I had this harebrained notion to add sound to my game. I had already &lt;em&gt;firmly&lt;/em&gt; decided at the start of the competition that I knew nothing about the Browser Audio APIs and that it&amp;#8217;d be best left until next&amp;nbsp;time.&lt;/p&gt;

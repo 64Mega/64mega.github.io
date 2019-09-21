@@ -31,10 +31,10 @@
     <!-- Feeds -->
         <link href="https://64mega.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
               title="64Bytes ATOM Feed" />
-        <link href="https://64mega.github.io/static-css/custom.css" rel="stylesheet" />
+        <link href="https://64mega.github.io/static-css/custom.css?cache=1569078052" rel="stylesheet" />
 
     <link rel="stylesheet" href="https://64mega.github.io/theme/css/jquery.fancybox.min.css">
-    <link rel="stylesheet" href="https://64mega.github.io/static-css/custom.css?cache=20190921">
+    <link rel="stylesheet" href="https://64mega.github.io/static-css/custom.css?cache=1569078052">
 
     <link rel="stylesheet" href="https://64mega.github.io/static-css/article.css">
 
@@ -565,8 +565,8 @@ My last js13k attempt involved a somewhat complicated Gulp and Webpack setup, bu
 <h3 id="level-data-storage">Level Data&nbsp;Storage</h3>
 <p>Early on I made a decision to store my levels as image data. I&#8217;d done this for my previous JS13k entry, and it was
 fairly successful if a bit cumbersome. But it compresses way better than an inline array, and didn&#8217;t require too much code to get working. There was one caveat that I&#8217;ll bring up later, but suffice it to say that it <em>works</em>.</p>
-<p>The map looks like this in its current form:
-<a href="static-images/xycore/map.png" data-fancybox="gallery" data-caption="The game's map">
+<p>The map looks like this in its current&nbsp;form:</p>
+<p><a href="static-images/xycore/map.png" data-fancybox="gallery" data-caption="The game's map">
     <img class="thumbnail" src="static-images/xycore/map.png">
 </a></p>
 <p>The way this works is that in the game&#8217;s code I have an array of 16 <span class="caps">RGB</span> values, each one representing a color in my palette. I read the map image in, copy it to an <code>ImageData</code> buffer and read each pixel in the map, comparing it to the palette and pushing the returned palette index into a <code>map[]</code> array.</p>
@@ -744,7 +744,8 @@ I was planning on saving the more &#8216;complex&#8217; behaviors for the last&n
 <p>The drop-down from the ceiling was intended to give the player a window of opportunity to mash the fire button at the boss for a bit, but not for free - it was a bit too easy, so I added a wave of those tracking projectiles to this portion of the&nbsp;fight.</p>
 <p>Originally the fight drastically sped up as you got through the health bars, but I toned it down a bit. Even I was having trouble getting through it, and I made the&nbsp;game!</p>
 <blockquote>
-<p>On that note, it <em>is</em> possible to defeat this boss without any weapon, suit or health upgrades. While debugging I did that several times, though it&#8217;s pretty tough. In normal gameplay you can&#8217;t encounter the boss without the third weapon upgrade, but you <em>can</em> intentionally downgrade using the <span class="caps">JS</span> console by entering <code>playerWeapon = 0</code>, if you&#8217;d like to challenge yourself - but only if running the unobfuscated version of the game. I have <em>no</em> idea what the variable name is once it&#8217;s&nbsp;minified!</p>
+<p>On that note, it <em>is</em> possible to defeat this boss without any weapon, suit or health upgrades. While debugging I did that several times, though it&#8217;s pretty&nbsp;tough. </p>
+<p>During normal gameplay you can&#8217;t encounter the boss without the third weapon upgrade, but you <em>can</em> intentionally downgrade using the <span class="caps">JS</span> console by entering <code>playerWeapon = 0</code>, if you&#8217;d like to challenge yourself - but only if running the unobfuscated version of the game. I have <em>no</em> idea what the variable name is once it&#8217;s&nbsp;minified!</p>
 </blockquote>
 <h3 id="an-audio-experiment">An Audio&nbsp;Experiment</h3>
 <p>At some point during week 2 I had this harebrained notion to add sound to my game. I had already <em>firmly</em> decided at the start of the competition that I knew nothing about the Browser Audio APIs and that it&#8217;d be best left until next&nbsp;time.</p>
