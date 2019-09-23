@@ -31,10 +31,10 @@
     <!-- Feeds -->
         <link href="https://64mega.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
               title="64Bytes ATOM Feed" />
-        <link href="https://64mega.github.io/static-css/custom.css?cache=1569078052" rel="stylesheet" />
+        <link href="https://64mega.github.io/static-css/custom.css?cache=1569266029" rel="stylesheet" />
 
     <link rel="stylesheet" href="https://64mega.github.io/theme/css/jquery.fancybox.min.css">
-    <link rel="stylesheet" href="https://64mega.github.io/static-css/custom.css?cache=1569078052">
+    <link rel="stylesheet" href="https://64mega.github.io/static-css/custom.css?cache=1569266029">
 
     <link rel="stylesheet" href="https://64mega.github.io/static-css/article.css">
 
@@ -890,7 +890,7 @@ So I treated updates as fixed-increment and used fixed values everywhere - a ver
 
 <p>Note that this is a <em>fixed</em> timestep, as opposed to the <em>variable</em> timestep used in a lot of 3D engines (In those you tend to scale your movement by the delta time). This gives me the expected <span class="caps">60FPS</span> if it&#8217;s achievable on the current hardware, and means I can get away with not having to touch my movement&nbsp;code.</p>
 <h4 id="bug-2-color-profiles">Bug #2 - Color&nbsp;Profiles</h4>
-<p>Credit to <a href="https://twitter.com/sirXemic">SirXemic</a> for finding this one and contacting me with a fix.
+<p>Credit to <a href="https://twitter.com/sirXemic">sirxemic</a> for finding this one and contacting me with a fix.
 You should go try out his entry to the competition, <a href="https://js13kgames.com/entries/sentetrox">SenTetrox</a>, which is best described as Tetris with a really fun twist! Go give it a&nbsp;play!</p>
 <p>This bug is a little bit more obscure, but it&#8217;s related to how I&#8217;m generating my map: I&#8217;m reading in pixels from my spritesheet and comparing them against exact <span class="caps">RGB</span> values in an&nbsp;array.</p>
 <p>What I failed to take into account was the <em>color profile</em> of the player&#8217;s monitor. If an image has no attached color profile, the browser will convert it on the fly to the user&#8217;s color profile, using what I&#8217;m assuming is a perceptive conversion - this means that while the colors will appear to look the same or similar-enough, the exact <span class="caps">RGB</span> values are&nbsp;different.</p>
