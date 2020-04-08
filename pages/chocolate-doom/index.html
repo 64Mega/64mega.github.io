@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Chocolate Doom</title>
+        <style>
+            body {
+                display: grid;
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr;
+                background: black;
+                width: calc(100vw);
+                height: calc(100vh);
+                margin: 0;
+                padding: 0;
+                position: relative;
+                place-items: center;
+            }
+
+            canvas {
+                display: block;
+                grid-row: 1 / 2;
+                grid-column: 1 / 2;
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                max-height: 100%;
+                width: 100%;
+            }
+
+            @import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
+
+            #root-modal {
+                font-family: 'Space Mono', monospace;
+                background-color: rgba(18, 30, 63, 0.452);
+                padding: 20px;
+                position: relative;
+                z-index: 100;
+                grid-row: 1/2;
+                grid-column: 1/2;
+                display: flex;
+                font-size: 14px;
+                flex-direction: column;
+                justify-items: center;
+                color: white;
+                text-align: center;
+                font-family: monospace;
+                transform: translateY(0px);
+            }
+
+            .hide {
+                animation: remove-modal-anim 1s ease-in forwards 1;
+            }
+
+            @keyframes remove-modal-anim {
+                from {
+                    display: flex;
+                    transform: translateY(0px);
+                }
+                to {
+                    transform: translateY(-200vh);
+                    display: none;
+                }
+            }
+
+            #root-modal button {
+                padding: 8px;
+                background-color: royalblue;
+                font-family: monospace;
+                font-weight: bold;
+                color: white;
+                width: fit-content;
+                align-self: center;
+                border: 2px solid white;
+                box-shadow: 1px 2px 8px black;
+                cursor: pointer;
+                transition: 0.2s ease;
+            }
+
+            #root-modal ul {
+                max-height: 320px;
+                text-align: left;
+                overflow-y: auto;
+                border: 4px double white;
+                padding-right: 40px;
+                background-color: rgba(0, 0, 0, 0.4);
+            }
+
+            #root-modal button:hover {
+                background-color: cornflowerblue;
+            }
+
+            #root-modal button:active {
+                background-color: navy;
+                border-color: cornflowerblue;
+                outline: 1px dotted white;
+                outline-offset: -7px;
+            }
+
+            #root-modal h3 {
+                margin: 0;
+                padding: 0;
+                font-size: 20px;
+                line-height: 1.5;
+                text-align: center;
+            }
+
+            .inner-modal {
+                width: 60%;
+                margin: 0 auto;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas
+            width="320"
+            height="240"
+            class="emscripten"
+            id="canvas"
+            oncontextmenu="event.preventDefault()"
+            tabindex="-1"
+        ></canvas>
+
+        <div id="root-modal">
+            <div class="inner-modal">
+                <h3>Semi-Secret Chocolate-Doom Port Page!</h3>
+                <p>
+                    I was bored one night and decided to see how long it would
+                    take to port Chocolate Doom to the web using Emscripten.
+                    (Result: Approximately 3 hours).
+                </p>
+                <p>
+                    This is the <b><em>Shareware</em></b> episode of Doom. I'm
+                    tinkering with allowing people to pull in a local WAD and
+                    play it. Not that you should want to, there are a few quirks
+                    to this hasty port:
+                </p>
+                <ul>
+                    <li>
+                        <h4>Scaling behaves weirdly</h4>
+                        <p>
+                            Scaling doesn't quite work right until you force the
+                            game to recalculate its viewport.
+                        </p>
+                        <p>
+                            The easiest way to do that is to click on the canvas
+                            or hit F11 and switch to fullscreen, and back again
+                            if you want.
+                        </p>
+                    </li>
+                    <li>
+                        <h4>The game hangs on exit</h4>
+                        <p>
+                            I already reworked a very tiny portion of the game's
+                            code to use <code>emscripten_set_main_loop</code> in
+                            order to get this to run, but something happens on
+                            exit that I'm still working out how to handle.
+                        </p>
+                        <p>Temporary solution: Don't exit.</p>
+                    </li>
+                    <li>
+                        <h4>Sound doesn't work</h4>
+                        <p>
+                            Well, it compiled and "works", if you call
+                            ear-grating explosions of glitchy audio "working". I
+                            disabled it in code for the moment: Chocolate Doom's
+                            OPL3 emulator expects a very particular sample
+                            format (AUDIO_S16SYS or LSB) and SDL2 is refusing to
+                            give it that.
+                        </p>
+                        <p>
+                            This might be due to my OS setting (It's set to
+                            24-bit), will test and make modifications as
+                            necessary. Doom without sound is boring.
+                        </p>
+                    </li>
+                </ul>
+                <p>
+                    With that being said, click the button below to load it up.
+                </p>
+                <p>
+                    Controls are mapped to 'modern' defaults (WASD movement, E
+                    to activate).
+                </p>
+            </div>
+            <button id="modal-play-button">Play DOOM</button>
+        </div>
+
+        <script type="text/javascript">
+            var statusElement = document.getElementById('status');
+            var progressElement = document.getElementById('progress');
+            var spinnerElement = document.getElementById('spinner');
+
+            var Module = {
+                preRun: [],
+                postRun: [],
+                arguments: ['-iwad DOOM.WAD'],
+                print: (function() {
+                    var element = document.getElementById('output');
+                    if (element) element.value = ''; // clear browser cache
+                    return function(text) {
+                        if (arguments.length > 1)
+                            text = Array.prototype.slice
+                                .call(arguments)
+                                .join(' ');
+                        // These replacements are necessary if you render to raw HTML
+                        //text = text.replace(/&/g, "&amp;");
+                        //text = text.replace(/</g, "&lt;");
+                        //text = text.replace(/>/g, "&gt;");
+                        //text = text.replace('\n', '<br>', 'g');
+                        console.log(text);
+                        if (element) {
+                            element.value += text + '\n';
+                            element.scrollTop = element.scrollHeight; // focus on bottom
+                        }
+                    };
+                })(),
+                printErr: function(text) {
+                    if (arguments.length > 1)
+                        text = Array.prototype.slice.call(arguments).join(' ');
+                    console.error(text);
+                },
+                canvas: (function() {
+                    var canvas = document.getElementById('canvas');
+
+                    // As a default initial behavior, pop up an alert when webgl context is lost. To make your
+                    // application robust, you may want to override this behavior before shipping!
+                    // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
+                    canvas.addEventListener(
+                        'webglcontextlost',
+                        function(e) {
+                            alert(
+                                'WebGL context lost. You will need to reload the page.'
+                            );
+                            e.preventDefault();
+                        },
+                        false
+                    );
+
+                    return canvas;
+                })(),
+                setStatus: function(text) {
+                    if (!Module.setStatus.last)
+                        Module.setStatus.last = { time: Date.now(), text: '' };
+                    if (text === Module.setStatus.last.text) return;
+                    var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
+                    var now = Date.now();
+                    if (m && now - Module.setStatus.last.time < 30) return; // if this is a progress update, skip it if too soon
+                    Module.setStatus.last.time = now;
+                    Module.setStatus.last.text = text;
+                },
+                totalDependencies: 0,
+                monitorRunDependencies: function(left) {
+                    this.totalDependencies = Math.max(
+                        this.totalDependencies,
+                        left
+                    );
+                    Module.setStatus(
+                        left
+                            ? 'Preparing... (' +
+                                  (this.totalDependencies - left) +
+                                  '/' +
+                                  this.totalDependencies +
+                                  ')'
+                            : 'All downloads complete.'
+                    );
+                }
+            };
+            Module.setStatus('Downloading...');
+            window.onerror = function(event) {
+                // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
+                Module.setStatus('Exception thrown, see JavaScript console');
+                spinnerElement.style.display = 'none';
+                Module.setStatus = function(text) {
+                    if (text)
+                        Module.printErr('[post-exception status] ' + text);
+                };
+            };
+        </script>
+        <script src="utils.js"></script>
+    </body>
+</html>
