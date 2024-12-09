@@ -165,6 +165,10 @@ function loadTimers() {
 
     if(!Array.isArray(payload)) return;
 
+    payload.sort((a, b) => {
+        return ((new Date(b.target)) - (new Date(a.target)));
+    })
+
     for(const timer of payload) {
         new MicroTimer(timer.label, timer.target, '#timers', (label, target) => {
             console.log("Delete", label, target);
