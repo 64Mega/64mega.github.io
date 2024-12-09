@@ -1,5 +1,6 @@
 console.log("Hello World");
-import {DateTime} from './luxon.min.js';
+
+let canNotify = false;
 
 if(!navigator.serviceWorker?.controller) {
     navigator.serviceWorker.register("https://64mega.github.io/pages/microtimer/sw.js").then(function(reg) {
@@ -24,6 +25,10 @@ class MicroTimer {
         this.remaining_m = 0;
         this.remaining_h = 0;
         this.remaining_d = 0;
+
+        this.label = label;
+        this.targetDate = targetDate;
+        this.deleted = false;
 
         if((new Date(targetDate)) < (new Date())) {
             return this;
@@ -68,7 +73,7 @@ class MicroTimer {
 
         this.reloadData();
 
-        setInterval(() => {
+        this.interval = setInterval(() => {
             this.reloadData();
         }, 10);
 
@@ -79,6 +84,12 @@ class MicroTimer {
         const timeNow = (new Date()).getTime();
         const timeThen = (new Date(this.targetDate)).getTime();
         let timeDiff = timeThen - timeNow;
+
+        if(timeThen < timeNow) {
+            clearInterval(this.interval);
+            deleteTimer(this.label, this.targetDate);
+            notifyCompletion(this.label);
+        }
 
         let ms_bucket = 0;
         let s_bucket = 0;
@@ -228,6 +239,15 @@ function deleteTimer(label,target) {
     }
 }
 
+const notifyCompletion = (label) => {
+    const options = {
+        body: `The countdown '${label}' has ended.`,
+        icon: 'https://64mega.github.io/pages/microtimer/icon.png'
+    }
+
+    new Notification(`It's Time!`, options);
+}
+
 
 window.addEventListener('load', () => {
 
@@ -271,4 +291,10 @@ window.addEventListener('load', () => {
 
     loadTimers();
 
+    // Register notifications service
+    Notification.requestPermission().then((result) => {
+        if(result === 'granted') {
+            canNotify = true;
+        }
+    })
 });
