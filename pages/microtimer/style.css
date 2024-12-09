@@ -65,7 +65,7 @@ body {
 
     background-image: url('starfield.jpg');
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
     background-attachment: scroll;
 }
 
