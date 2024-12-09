@@ -217,8 +217,14 @@ function reloadTimers(target) {
     loadTimers();
 }
 
-function deleteTimer(label,target) {
-    if(confirm("Are you sure you want to delete this timer?")) {
+function deleteTimer(label,target, requireConfirmation) {
+    let confirmed = true;
+
+    if(requireConfirmation) {
+        confirmed = confirm("Are you sure you want to delete this timer?");
+    }
+
+    if(confirmed) {
         const data = localStorage.getItem('microtimer-timers');
         if(!data) return;
         const payload = JSON.parse(data);
