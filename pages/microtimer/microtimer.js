@@ -2,7 +2,7 @@ console.log("Hello World");
 import {DateTime} from './luxon.min.js';
 
 if(!navigator.serviceWorker?.controller) {
-    navigator.serviceWorker.register("sw.js").then(function(reg) {
+    navigator.serviceWorker.register("https://64mega.github.io/pages/microtimer/sw.js").then(function(reg) {
         console.log("Service worker has been registered for scope: " + reg.scope);
     });
 }
