@@ -60,6 +60,7 @@ body {
     display: flex;
     flex-direction: column;
     place-items: center;
+    padding: 1rem;
     gap: 2rem;
 
     background-image: url('bg.jpg');
