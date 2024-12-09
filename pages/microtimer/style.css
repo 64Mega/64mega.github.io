@@ -98,6 +98,16 @@ section {
     justify-content: space-evenly;
 }
 
+@media only screen
+and (min-device-width: 320px)
+and (max-device-width: 480px)
+and (-webkit-min-device-pixel-ratio: 2)
+and (orientation: portrait) {
+    .microtimer {
+        font-size: 18px;
+    }
+}
+
 button {
     font-family: 'SMB', 'Super Mario Bros. NES', monospace;
     padding: 0.5rem;
