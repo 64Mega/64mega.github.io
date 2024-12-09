@@ -131,7 +131,7 @@ class MicroTimer {
     }
 
     updateDisplay() {
-        this.element.innerText = `${this.remaining_d.toString().padStart(2, '0')}:${this.remaining_h.toString().padStart(2, '0')}:${this.remaining_m.toString().padStart(2, '0')}:${this.remaining_s.toString().padStart(2, '0')}:${this.remaining_ms.toString().padStart(4, '0')}`;
+        this.element.innerText = `${this.remaining_d.toString().padStart(2, '0')}:${this.remaining_h.toString().padStart(2, '0')}:${this.remaining_m.toString().padStart(2, '0')}:${this.remaining_s.toString().padStart(2, '0')}:${this.remaining_ms.toString().padStart(3, '0')}`;
     }
 
 }
