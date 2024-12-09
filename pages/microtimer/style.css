@@ -63,7 +63,7 @@ body {
     padding: 1rem;
     gap: 2rem;
 
-    background-image: url('galaxy_bg_2024.jpg');
+    background-image: url('bg.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -80,7 +80,7 @@ section {
     user-select: none;
     flex-direction: column;
     /*background-color: #FFF2;*/
-    background: linear-gradient(to bottom, #FFF4, #35345522);
+    background: linear-gradient(to bottom, #4166, #35345544);
     /*background-color: #251e37;*/
     border-radius: 3px;
     /*border: 1px solid #383442;*/
