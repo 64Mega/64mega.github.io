@@ -1,0 +1,9 @@
+{
+  "name": "MicroTimer",
+  "short_name": "MicroTimer",
+  "theme_color": "#2196f3",
+  "background_color": "#2196f3",
+  "display": "minimal-ui",
+  "scope": "/",
+  "start_url": "/"
+}

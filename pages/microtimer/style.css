@@ -1,0 +1,219 @@
+@font-face {
+    font-family: 'Brosnan';
+    src: url('brosnan.otf');
+}
+
+@font-face {
+    font-family: 'Countdown';
+    src: url('countdown.otf');
+}
+
+@font-face {
+    font-family: 'Lady Radical';
+    src: url('lady_radical.ttf');
+}
+
+@font-face {
+    font-family: 'Meckablecka';
+    src: url('meckablecka.otf');
+}
+
+@font-face {
+    font-family: 'SMB';
+    src: url('smb.ttf');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    width: 100vw;
+    height: 100vh;
+    background-color: #353455;
+    margin: 0;
+    padding: 0;
+    font-family: 'Lady Radical', 'Montserrat', sans-serif;
+    color: #FAEBFF;
+}
+
+h1 {
+    font-family: 'Brosnan', sans-serif;
+    font-size: 56px;
+    text-shadow: -1px 0 #000, 1px 0 #000, 0 6px #777, 0 -1px #000;
+}
+
+h3 {
+    font-weight: normal;
+    font-size: 42px;
+    padding: 0;
+    margin: 0;
+    color: #FAEBFF;
+    text-shadow: -1px 0 #000, 1px 0 #000, 0 6px #735bdd, 0 -1px #000;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    gap: 2rem;
+
+    background-image: url('bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h1, h2, h3 {
+    user-select: none;
+}
+
+section {
+    display: flex;
+    padding: 1.5rem;
+    user-select: none;
+    flex-direction: column;
+    /*background-color: #FFF2;*/
+    background: linear-gradient(to bottom, #FFF4, #35345522);
+    /*background-color: #251e37;*/
+    border-radius: 3px;
+    /*border: 1px solid #383442;*/
+    /*border-bottom-color: #112;*/
+    /*border-left-color: #112;*/
+    /*box-shadow: 1px 2px 3px #000A;*/
+    text-align: center;
+    gap: 1.5rem;
+    width: max-content;
+}
+
+.microtimer {
+    font-family: 'SMB', 'Super Mario Bros. NES', monospace;
+    font-size: 24px;
+    user-select: none;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+button {
+    font-family: 'SMB', 'Super Mario Bros. NES', monospace;
+    padding: 0.5rem;
+    background: linear-gradient(to bottom, #a88aff, #4331b8);
+    border: 1px solid #091551;
+    border-radius: 3px;
+    color: #e3e5f1;
+    user-select: none;
+}
+
+button:hover {
+    background: linear-gradient(to bottom, #d8b4ff, #8054cd);
+    cursor: pointer;
+}
+
+button:active {
+    background: linear-gradient(to bottom, #3c2483, #524598);
+    box-shadow: inset 0 1px 1px #0005;
+}
+
+.glass {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    box-shadow:
+        /* Bottom and right depth effect */
+            inset -0.75px -0.5px rgba(255, 255, 255, 0.1),
+                /* Top and left depth effect */
+            inset +0.75px +0.5px rgba(255, 255, 255, 0.025),
+                /* Shadow effect */
+            3px 2px 10px rgba(0, 0, 0, 0.25),
+                /* Short subsurface effect */
+            inset 0px 0px 10px 5px rgba(255, 255, 255, 0.025),
+                /* Long subsurface effect */
+            inset 0px 0px 40px 5px rgba(255, 255, 255, 0.025);
+
+    /* Allow children to fill the parent */
+    position: relative;
+
+    /* Round the corners */
+    border-radius: 5px;
+
+    /* Hide the corners of the header */
+    overflow: hidden;
+}
+
+.light {
+    /* Apply the background image */
+    background-image: url("light.png");
+    background-repeat: repeat;
+    background-size: 750px;
+
+    /* Adjust the intensity */
+    opacity: 0.075;
+
+    /* Fill the background space */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+
+    /* Render behind other children */
+    z-index: -1;
+}
+
+#timers {
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+    flex-wrap: wrap;
+    place-content: center;
+}
+
+dialog {
+    place-self: center;
+    flex-direction: column;
+    background: #EEE2;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    color: #FEEFEF;
+}
+
+.dialog-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0.8rem;
+}
+
+.dialog-container input {
+    margin-bottom: 1rem;
+
+    padding: 0.5rem;
+}
+
+
+
+
+
+.dialog-container label {
+    margin-top: 1rem;
+}
+
+dialog::backdrop {
+    display: block;
+    background-color: #0008;
+
+}
+
+.icon-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    width: 2rem;
+    aspect-ratio: 1;
+    text-align: center;
+}

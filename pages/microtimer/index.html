@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Microtimer</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+<h1>Microtimer</h1>
+
+<button id="add-timer">Add</button>
+
+<div id="timers">
+
+</div>
+
+<dialog id="create-dialog" >
+    <div class="dialog-container glass">
+        <div class="light"></div>
+        <h3>Create Timer</h3>
+        <label for="inp-description">Description:</label>
+        <input id="inp-description" autofocus type="text">
+
+        <label for="inp-target">Target Time:</label>
+
+        <input type="datetime-local" id="inp-target">
+
+        <button id="btn-create-timer" class="glass">
+            <span>
+                Create Timer
+            </span>
+        </button>
+    </div>
+</dialog>
+
+<script src="microtimer.js" type="module"></script>
+</body>
+</html>
