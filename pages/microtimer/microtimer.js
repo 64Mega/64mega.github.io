@@ -87,7 +87,7 @@ class MicroTimer {
 
         if(timeThen < timeNow) {
             clearInterval(this.interval);
-            deleteTimer(this.label, this.targetDate);
+            deleteTimer(this.label, this.targetDate, false);
             notifyCompletion(this.label);
         }
 
@@ -217,7 +217,7 @@ function reloadTimers(target) {
     loadTimers();
 }
 
-function deleteTimer(label,target, requireConfirmation) {
+function deleteTimer(label,target, requireConfirmation = true) {
     let confirmed = true;
 
     if(requireConfirmation) {
