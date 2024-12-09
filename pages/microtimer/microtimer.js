@@ -177,7 +177,7 @@ function loadTimers() {
     if(!Array.isArray(payload)) return;
 
     payload.sort((a, b) => {
-        return ((new Date(b.target)) - (new Date(a.target)));
+        return ((new Date(a.target)) - (new Date(b.target)));
     })
 
     for(const timer of payload) {
