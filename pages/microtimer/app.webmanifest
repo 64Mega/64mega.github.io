@@ -1,0 +1,15 @@
+{
+  "name": "MicroTimer",
+  "short_name": "A small countdown app made for fun",
+  "theme_color": "#8054cd",
+  "background_color": "#3c2483",
+  "display": "fullscreen",
+  "scope": "https://64mega.github.io/pages/microtimer/",
+  "start_url": "https://64mega.github.io/pages/microtimer/",
+  "id": "tech.astryl.apps.web.microtimer",
+  "icons": [
+    {
+        "src": "icon.png"
+    }
+  ]
+}
