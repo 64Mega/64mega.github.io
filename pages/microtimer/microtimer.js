@@ -1,12 +1,14 @@
 console.log("Hello World");
 
 let canNotify = false;
+let showMilliseconds = localStorage.getItem("showMilliseconds") === 'true';
 
-if(!navigator.serviceWorker?.controller) {
-    navigator.serviceWorker.register("https://64mega.github.io/pages/microtimer/sw.js").then(function(reg) {
+if (!navigator.serviceWorker?.controller) {
+    navigator.serviceWorker.register("https://64mega.github.io/pages/microtimer/sw.js").then(function (reg) {
         console.log("Service worker has been registered for scope: " + reg.scope);
     });
 }
+
 
 class MicroTimer {
     static _id = 0;
@@ -30,7 +32,7 @@ class MicroTimer {
         this.targetDate = targetDate;
         this.deleted = false;
 
-        if((new Date(targetDate)) < (new Date())) {
+        if ((new Date(targetDate)) < (new Date())) {
             return this;
         }
 
@@ -60,7 +62,7 @@ class MicroTimer {
         deleteButton.classList.add('icon-button');
 
         deleteButton.addEventListener('click', () => {
-            if(delCb) {
+            if (delCb) {
                 delCb(label, targetDate);
             }
         })
@@ -85,7 +87,7 @@ class MicroTimer {
         const timeThen = (new Date(this.targetDate)).getTime();
         let timeDiff = timeThen - timeNow;
 
-        if(timeThen < timeNow) {
+        if (timeThen < timeNow) {
             clearInterval(this.interval);
             deleteTimer(this.label, this.targetDate, false);
             notifyCompletion(this.label);
@@ -102,19 +104,19 @@ class MicroTimer {
         const minute_ms = 1000 * 60;
         const second_ms = 1000;
 
-        while(timeDiff >= day_ms) {
+        while (timeDiff >= day_ms) {
             timeDiff -= day_ms;
             d_bucket += 1;
         }
-        while(timeDiff >= hour_ms) {
+        while (timeDiff >= hour_ms) {
             timeDiff -= hour_ms;
             h_bucket += 1;
         }
-        while(timeDiff >= minute_ms) {
+        while (timeDiff >= minute_ms) {
             timeDiff -= minute_ms;
             m_bucket += 1;
         }
-        while(timeDiff >= second_ms) {
+        while (timeDiff >= second_ms) {
             timeDiff -= second_ms;
             s_bucket += 1;
         }
@@ -131,8 +133,11 @@ class MicroTimer {
     }
 
     updateDisplay() {
-        // this.element.innerText = `${this.remaining_d.toString().padStart(2, '0')}:${this.remaining_h.toString().padStart(2, '0')}:${this.remaining_m.toString().padStart(2, '0')}:${this.remaining_s.toString().padStart(2, '0')}:${this.remaining_ms.toString().padStart(3, '0')}`;
-        this.element.innerText = `${this.remaining_d.toString().padStart(2, '0')}:${this.remaining_h.toString().padStart(2, '0')}:${this.remaining_m.toString().padStart(2, '0')}:${this.remaining_s.toString().padStart(2, '0')}`;
+        if (showMilliseconds) {
+            this.element.innerText = `${this.remaining_d.toString().padStart(2, '0')}:${this.remaining_h.toString().padStart(2, '0')}:${this.remaining_m.toString().padStart(2, '0')}:${this.remaining_s.toString().padStart(2, '0')}:${this.remaining_ms.toString().padStart(3, '0')}`;
+        } else {
+            this.element.innerText = `${this.remaining_d.toString().padStart(2, '0')}:${this.remaining_h.toString().padStart(2, '0')}:${this.remaining_m.toString().padStart(2, '0')}:${this.remaining_s.toString().padStart(2, '0')}`;
+        }
     }
 
 }
@@ -170,18 +175,18 @@ initDataJSBackgroundAttachmentFixed();
 
 function loadTimers() {
     const data = localStorage.getItem('microtimer-timers');
-    if(!data) return;
+    if (!data) return;
 
     const payload = JSON.parse(data);
-    if(!payload) return;
+    if (!payload) return;
 
-    if(!Array.isArray(payload)) return;
+    if (!Array.isArray(payload)) return;
 
     payload.sort((a, b) => {
         return ((new Date(a.target)) - (new Date(b.target)));
     })
 
-    for(const timer of payload) {
+    for (const timer of payload) {
         new MicroTimer(timer.label, timer.target, '#timers', (label, target) => {
             console.log("Delete", label, target);
             deleteTimer(label, target);
@@ -209,35 +214,35 @@ function reloadTimers(target) {
     const timers = document.querySelectorAll('.microtimer-section');
     const targetElement = document.querySelector(target);
 
-    if(!targetElement) return;
+    if (!targetElement) return;
 
-    for(const node of timers) {
+    for (const node of timers) {
         targetElement.removeChild(node);
     }
 
     loadTimers();
 }
 
-function deleteTimer(label,target, requireConfirmation = true) {
+function deleteTimer(label, target, requireConfirmation = true) {
     let confirmed = true;
 
-    if(requireConfirmation) {
+    if (requireConfirmation) {
         confirmed = confirm("Are you sure you want to delete this timer?");
     }
 
-    if(confirmed) {
+    if (confirmed) {
         const data = localStorage.getItem('microtimer-timers');
-        if(!data) return;
+        if (!data) return;
         const payload = JSON.parse(data);
 
-        if(!payload) return;
+        if (!payload) return;
 
         const newPayload = payload.filter(x => x.label !== label && x.target !== target);
         console.log("New Payload:", newPayload);
         localStorage.setItem('microtimer-timers', JSON.stringify(newPayload));
 
         const timers = document.querySelectorAll('.microtimer-section');
-        for(const timer of timers) {
+        for (const timer of timers) {
             timer.remove();
         }
 
@@ -264,30 +269,52 @@ window.addEventListener('load', () => {
     const formTarget = document.querySelector('#inp-target');
     const formSubmit = document.querySelector('#btn-create-timer');
     const btnAddTimer = document.querySelector('#add-timer');
+    const btnOpenSettings = document.querySelector('#open-settings');
+    const settingsDialog = document.querySelector('#settings-dialog');
+    const btnSettingsApply = document.querySelector('#btn-set-apply');
+    const btnSettingsCancel = document.querySelector('#btn-set-cancel');
+    const checkShowMilliseconds = document.querySelector('#inp-set-milliseconds');
 
     let isModalOpen = false;
 
     btnAddTimer.addEventListener('click', event => {
-        if(isModalOpen) return;
+        if (isModalOpen) return;
 
         createDialog.showModal();
     });
+
+    btnOpenSettings.addEventListener('click', event => {
+        settingsDialog.showModal();
+        checkShowMilliseconds.checked = showMilliseconds;
+    });
+
+    btnSettingsCancel.addEventListener('click', event => {
+        settingsDialog.close();
+    });
+
+    btnSettingsApply.addEventListener('click', event => {
+        showMilliseconds = checkShowMilliseconds.checked;
+        console.log(`Setting showMilliseconds to ${checkShowMilliseconds.checked}`);
+        localStorage.setItem('showMilliseconds', showMilliseconds ? 'true' : 'false');
+        settingsDialog.close();
+    });
+
 
     formSubmit.addEventListener('click', event => {
         const label = formDescription.value;
         const target = formTarget.value;
 
-        if(!label) {
+        if (!label) {
             alert("Please enter a label");
             return;
         }
 
-        if(!target) {
+        if (!target) {
             alert("Please enter a target time");
             return;
         }
 
-        if(isNaN((new Date(target)).valueOf())) {
+        if (isNaN((new Date(target)).valueOf())) {
             alert("Please enter a valid date in the form:\nYYYY-MM-DD HH:mm:ss");
             return;
         }
@@ -300,7 +327,7 @@ window.addEventListener('load', () => {
 
     // Register notifications service
     Notification.requestPermission().then((result) => {
-        if(result === 'granted') {
+        if (result === 'granted') {
             canNotify = true;
         }
     })

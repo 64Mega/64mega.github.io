@@ -4,13 +4,16 @@
     <title>Microtimer</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="style.css?q=20241209-2032">
+    <link rel="stylesheet" href="style.css?q=20241212-0951">
     <link rel="manifest" href="app.webmanifest">
 </head>
 <body>
 <h1>Microtimer</h1>
 
-<button id="add-timer">Add</button>
+<div class="toolbar">
+    <button id="add-timer">Add</button>
+    <button id="open-settings">Settings</button>
+</div>
 
 <div id="timers">
 
@@ -35,6 +38,30 @@
     </div>
 </dialog>
 
-<script src="microtimer.js?q=20241209-2032" type="module"></script>
+<dialog id="settings-dialog">
+    <div class="dialog-container glass">
+        <div class="light"></div>
+        <h3>Change Settings</h3>
+        <div class="field">
+            <label for="inp-set-milliseconds">Show Milliseconds?</label>
+            <input type="checkbox" id="inp-set-milliseconds" autofocus>
+        </div>
+
+        <div class="horizontal">
+            <button id="btn-set-cancel" class="glass secondary">
+                <span>
+                    Cancel
+                </span>
+            </button>
+            <button id="btn-set-apply" class="glass">
+                <span>
+                    Apply Settings
+                </span>
+            </button>
+        </div>
+    </div>
+</dialog>
+
+<script src="microtimer.js?q=20241212-0951" type="module"></script>
 </body>
 </html>
