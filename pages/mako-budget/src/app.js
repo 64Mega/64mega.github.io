@@ -1,5 +1,4 @@
 import {BaseComponent} from "./shared/base-component.js";
-import {CounterFeature} from "./features/counter.js";
 import {AddAccountFeature} from "./features/add-account.js";
 
 // Include services
