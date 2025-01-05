@@ -85,7 +85,7 @@ export class AddAccountFeature extends BaseComponent {
                 
                 <span style="display: flex; gap: 1.5rem; justify-content: space-between; align-items: center;">
                     <label for="add-account__inp-opening-balance" class="bold">Opening Balance</label>
-                    <input type="number" required value="${this.openingBalance.toFixed(2)}" class="inpBalance" id="add-account__inp-opening-balance" />
+                    <input type="number" inputmode="decimal" required value="${this.openingBalance.toFixed(2)}" class="inpBalance" id="add-account__inp-opening-balance" />
                 </span>
                 
                 <input type="submit" class="btn-submit" value="Add Account" />

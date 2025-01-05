@@ -124,17 +124,17 @@ export class AddEntryFeature extends BaseComponent {
                 
                 <span style="display: flex; gap: 1.5rem; justify-content: space-between; align-items: center;">
                     <label for="add-account__inp-qty" class="bold">Qty</label>
-                    <input type="number" value="${this.qty}" class="inpQty" id="add-account__inp-qty" />
+                    <input inputmode="numeric" type="number" value="${this.qty}" class="inpQty" id="add-account__inp-qty" />
                 </span>
                 
                 <span style="display: flex; gap: 1.5rem; justify-content: space-between; align-items: center;">
                     <label for="add-account__inp-target" class="bold">Target</label>
-                    <input type="number" value="${this.target.toFixed(2)}" class="inpTarget" id="add-account__inp-target" />
+                    <input inputmode="decimal" type="number" value="${this.target.toFixed(2)}" class="inpTarget" id="add-account__inp-target" />
                 </span>
                 
                 <span style="display: flex; gap: 1.5rem; justify-content: space-between; align-items: center;">
                     <label for="add-account__inp-actual" class="bold">Actual</label>
-                    <input type="number" value="${this.actual.toFixed(2)}" class="inpActual" id="add-account__inp-actual" />
+                    <input inputmode="decimal" type="number" value="${this.actual.toFixed(2)}" class="inpActual" id="add-account__inp-actual" />
                 </span>                
                 
                 <input type="submit" class="btn-submit" value="Add Entry" />

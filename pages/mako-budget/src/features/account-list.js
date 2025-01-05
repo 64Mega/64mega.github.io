@@ -139,7 +139,7 @@ export class AccountListFeature extends BaseComponent {
                     <input value="${item.value.name}" class="table-input inp-name-${index}" type="text">
                 </td>
                 <td class="balance" style="font-family: monospace; width: 90px; text-align: right;">
-                    <input class="opening-balance-${index} table-input" value="${item.value.balance.toFixed(2)}">
+                    <input inputmode="decimal" type="number" class="opening-balance-${index} table-input" value="${item.value.balance.toFixed(2)}">
                 </td>                    
                 <td class="calc-${index}" style="font-family: monospace; width: 90px; text-align: right;">0.00</td>
                 <td class="calc-actual-${index}" style="font-family: monospace; width: 90px; text-align: right;">0.00</td>
