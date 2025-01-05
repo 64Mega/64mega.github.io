@@ -1,0 +1,12 @@
+{
+  "name": "mako-budget",
+  "private": true,
+  "author": "Astrid Lawrence",
+  "scripts": {
+    "start": "live-server --port=12010 --no-browser"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2"
+  }
+}

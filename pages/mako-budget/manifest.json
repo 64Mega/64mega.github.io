@@ -1,0 +1,9 @@
+{
+  "name": "Mako Budget",
+  "short_name": "Mako Budget",
+  "theme_color": "#2196f3",
+  "background_color": "#2196f3",
+  "display": "minimal-ui",
+  "scope": "/",
+  "start_url": "/"
+}
