@@ -1,9 +1,15 @@
 {
   "name": "Mako Budget",
   "short_name": "Mako Budget",
-  "theme_color": "#2196f3",
-  "background_color": "#2196f3",
-  "display": "minimal-ui",
-  "scope": "/",
-  "start_url": "/"
+  "theme_color": "#8054cd",
+  "background_color": "#3c2483",
+  "display": "fullscreen",
+  "scope": "https://64mega.github.io/pages/mako-budget/",
+  "start_url": "https://64mega.github.io/pages/mako-budget/",
+  "id": "tech.astryl.apps.web.makobudget",
+  "icons": [
+    {
+      "src": "icon.png"
+    }
+  ]
 }
