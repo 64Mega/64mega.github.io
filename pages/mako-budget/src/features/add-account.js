@@ -71,12 +71,24 @@ export class AddAccountFeature extends BaseComponent {
                 balance: this.openingBalance,
             });
         }
+
+        const btnClose = container.querySelector('.close-button');
+        btnClose.onclick = () => {
+            this.name = '';
+            this.openingBalance = 0;
+            this.render();
+
+            Bus.dispatch('account-added');
+        }
     }
 
     render() {
         const template = `
             <div class="container card-flat flex-v">
-                <h3>Add Account</h3>                
+                <span style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3>Add Account</h3>
+                    <button class="close-button"></button>
+                </span>              
                 
                 <span style="display: flex; gap: 1.5rem; justify-content: space-between; align-items: center;">    
                     <label for="add-account__inp-name" class="bold">Name</label>

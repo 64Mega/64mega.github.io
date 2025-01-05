@@ -110,12 +110,27 @@ export class AddEntryFeature extends BaseComponent {
                 skip: this.skip,
             });
         }
+
+        const btnClose = container.querySelector('.close-button');
+        btnClose.onclick = () => {
+            this.name = '';
+            this.qty = 1;
+            this.target = 0;
+            this.actual = 0;
+            this.skip = false;
+            this.render();
+
+            Bus.dispatch('entry-added');
+        }
     }
 
     render() {
         const template = `
             <div class="container card-flat flex-v">
-                <h3>Add Budget Entry</h3>                
+                <span style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3>Add Budget Entry</h3>
+                    <button class="close-button"></button>
+                </span>   
                 
                 <span style="display: flex; gap: 1.5rem; justify-content: space-between; align-items: center;">    
                     <label for="add-account__inp-name" class="bold">Name</label>
